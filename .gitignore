@@ -6,3 +6,4 @@
 *.out
 *.iml
 self_distributing_system/.DS_Store
+build.gradle
