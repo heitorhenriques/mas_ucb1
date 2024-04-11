@@ -31,9 +31,7 @@ Em seguida, rode o _client_ que fará as requisições usando:
 dana Get.o
 ```
 
-Por fim, precisamos executar o projeto JaCaMo. 
-
-Por fim abra mais um terminal no diretório base do projeto, onde o arquivo _gradlew_ está, e execute o comando.
+Por fim, precisamos executar o projeto JaCaMo. Abra mais um terminal no diretório base do projeto, onde o arquivo _gradlew_ está, e execute o comando.
 
 ```bash
 ./gradlew run
