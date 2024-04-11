@@ -1,0 +1,8 @@
+.gradle/
+*.o
+*.json
+*.gz
+*.zl
+*.out
+*.iml
+self_distributing_system/.DS_Store
