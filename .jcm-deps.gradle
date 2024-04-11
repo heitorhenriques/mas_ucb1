@@ -3,6 +3,12 @@
 
 apply plugin: 'java'
 
+repositories {
+  // This is where Gradle will search for libraries
+  mavenCentral()
+}
+
 dependencies {
-    
+  // Add JFreeChart dependency with desired version
+  implementation 'org.jfree:jfreechart:1.5.4' // Replace with the latest version if needed
 }
