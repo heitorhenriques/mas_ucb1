@@ -10,6 +10,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,7 +21,8 @@ public class Counter extends Artifact {
 
 	void init(int initialValue) {
 		defineObsProperty("count", initialValue);
-		LineChartExample.startGraph(null);
+		Graph.startGraph(null);
+		avgTime = new ArrayList<>();
 	}
 
 	@OPERATION
@@ -53,6 +55,7 @@ public class Counter extends Artifact {
 		avg_time.set(res2);
 		action.set(res1);
 		avgTime.add(res2);
+		Graph.updateData(avgTime);
 	}
 
 	@OPERATION
