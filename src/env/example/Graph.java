@@ -7,12 +7,17 @@ import java.util.List;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
 public class Graph extends JFrame {
 
   private static final long serialVersionUID = 1L;
-  private static DefaultCategoryDataset dataset;
+  private static XYSeries seriesTotal;
+  private XYSeriesCollection dataset;
+  private JFreeChart chart;
+  private static ChartPanel chartPanel;
 
   // Função para iniciar o gráfico
   // Cria uma nova tela e printa o gráfico vazio
@@ -25,55 +30,33 @@ public class Graph extends JFrame {
     });
   }
 
+  // Cria o gráfico
   public Graph(String title, List<Double> avgTimes) {
     super(title);
-    // Create dataset
-    dataset = new DefaultCategoryDataset();
 
-    // Create chart
-    JFreeChart chart = ChartFactory.createLineChart(
-        "UCB1 Convergence", // Chart title
-        "Date", // X-Axis Label
+    // Inicia as séries e o dataset
+    seriesTotal = new XYSeries("Average Time");
+    dataset = new XYSeriesCollection(seriesTotal);
+
+    // Cria o gráfico visual
+    chart = ChartFactory.createXYLineChart(
+        title, // Título
+        "Iteration", // X-Axis Label
         "Average Time", // Y-Axis Label
-        dataset);
+        dataset,
+        PlotOrientation.VERTICAL,
+        true, true, false);
 
-    ChartPanel panel = new ChartPanel(chart);
-    setContentPane(panel);
+    chartPanel = new ChartPanel(chart);
+    setContentPane(chartPanel);
   }
 
-  // private DefaultCategoryDataset createDataset() {
-  //   String series1 = "Average Times";
-  //   String series2 = "Unique Visitor";
+  public static void updateData(Double newValue) {
+    // Adiciona o novo valor à série
+    seriesTotal.add(seriesTotal.getItemCount() + 1, newValue);
 
-  //   DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-
-  //   dataset.addValue(200, series1, "2016-12-19");
-  //   dataset.addValue(150, series1, "2016-12-20");
-  //   dataset.addValue(100, series1, "2016-12-21");
-  //   dataset.addValue(210, series1, "2016-12-22");
-  //   dataset.addValue(240, series1, "2016-12-23");
-  //   dataset.addValue(195, series1, "2016-12-24");
-  //   dataset.addValue(245, series1, "2016-12-25");
-
-  //   dataset.addValue(150, series2, "2016-12-19");
-  //   dataset.addValue(130, series2, "2016-12-20");
-  //   dataset.addValue(95, series2, "2016-12-21");
-  //   dataset.addValue(195, series2, "2016-12-22");
-  //   dataset.addValue(200, series2, "2016-12-23");
-  //   dataset.addValue(180, series2, "2016-12-24");
-  //   dataset.addValue(230, series2, "2016-12-25");
-
-  //   return dataset;
-  // }
-
-  public static void updateData(List<Double> newData) {
-    String series1 = "Average Times";
-    // Get current timestamp (optional)
-    // String timestamp = ...; // Get current date/time
-    for (int i = 0; i < newData.size(); i++) {
-      Double value = newData.get(i);
-      dataset.addValue(value, series1, "haha"); // Update with timestamp if needed
-    }
+    // Atualiza o gráfico no painel
+    chartPanel.repaint();
   }
-  
+
 }

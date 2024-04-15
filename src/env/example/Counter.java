@@ -3,26 +3,17 @@
 package example;
 
 import cartago.*;
-import jason.stdlib.list;
-import jason.stdlib.string;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Counter extends Artifact {
-
-	private List<Double> avgTime;
 
 	void init(int initialValue) {
 		defineObsProperty("count", initialValue);
 		Graph.startGraph(null);
-		avgTime = new ArrayList<>();
 	}
 
 	@OPERATION
@@ -54,8 +45,7 @@ public class Counter extends Artifact {
 		Double res2 = Double.parseDouble(parts[1]);
 		avg_time.set(res2);
 		action.set(res1);
-		avgTime.add(res2);
-		Graph.updateData(avgTime);
+		Graph.updateData(res2);
 	}
 
 	@OPERATION
