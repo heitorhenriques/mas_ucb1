@@ -42,7 +42,7 @@ public class Graph extends JFrame {
     chart = ChartFactory.createXYLineChart(
         title, // Título
         "Iteration", // X-Axis Label
-        "Average Time", // Y-Axis Label
+        "Average Time (ms)", // Y-Axis Label
         dataset,
         PlotOrientation.VERTICAL,
         true, true, false);

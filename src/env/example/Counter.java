@@ -10,6 +10,9 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class Counter extends Artifact {
+	Double avgTime = 0.0;
+	Double totalTime = 0.0;
+	int iterations = 0;
 
 	void init(int initialValue) {
 		defineObsProperty("count", initialValue);
@@ -43,9 +46,14 @@ public class Counter extends Artifact {
 		String[] parts = response.body().split(",");
 		String res1 = parts[0];
 		Double res2 = Double.parseDouble(parts[1]);
+
+		totalTime = totalTime + res2;
+		iterations++;
+		avgTime = totalTime/iterations;
+
 		avg_time.set(res2);
 		action.set(res1);
-		Graph.updateData(res2);
+		Graph.updateData(avgTime);
 	}
 
 	@OPERATION
