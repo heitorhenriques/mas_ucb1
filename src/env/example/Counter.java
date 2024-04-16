@@ -16,7 +16,7 @@ public class Counter extends Artifact {
 
 	void init(int initialValue) {
 		defineObsProperty("count", initialValue);
-		Graph.startGraph(null);
+		Graph.startGraph();
 	}
 
 	@OPERATION
@@ -53,7 +53,7 @@ public class Counter extends Artifact {
 
 		avg_time.set(res2);
 		action.set(res1);
-		Graph.updateData(avgTime);
+		Graph.updateData(avgTime, res2);
 	}
 
 	@OPERATION
