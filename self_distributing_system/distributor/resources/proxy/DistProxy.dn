@@ -1,0 +1,3 @@
+ interface DistProxy {
+	void start(int port) 
+ }

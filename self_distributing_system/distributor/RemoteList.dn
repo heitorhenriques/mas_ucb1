@@ -1,0 +1,19 @@
+const int DEFAULT_PORT = 2010
+
+component provides App requires io.Output out, data.IntUtil iu, proxy.DistProxy list {
+
+	int port = 0
+
+	int App:main(AppParam params[]) {
+
+		if (params.arrayLength == 1) {
+			port = iu.intFromString(params[0].string)
+		} else {
+			port = DEFAULT_PORT
+		}
+
+		list.start(port)
+
+		return 0
+	}
+}
