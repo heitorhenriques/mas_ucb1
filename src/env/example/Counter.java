@@ -49,7 +49,7 @@ public class Counter extends Artifact {
 
 		totalTime = totalTime + res2;
 		iterations++;
-		avgTime = totalTime/iterations;
+		avgTime = totalTime / iterations;
 
 		avg_time.set(res2);
 		action.set(res1);
@@ -58,6 +58,7 @@ public class Counter extends Artifact {
 
 	@OPERATION
 	void send_operation(String composition) throws IOException, InterruptedException {
+		Graph.saveGraph();
 
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder()
