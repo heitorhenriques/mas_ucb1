@@ -13,10 +13,11 @@ public class Counter extends Artifact {
 	Double avgTime = 0.0;
 	Double totalTime = 0.0;
 	int iterations = 0;
+	String csvName;
 
-	void init(int initialValue) {
-		defineObsProperty("count", initialValue);
+	@OPERATION public void init(String csvname) {
 		Graph.startGraph();
+		csvName = csvname;
 	}
 
 	@OPERATION
@@ -39,7 +40,7 @@ public class Counter extends Artifact {
 			throws IOException, InterruptedException {
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create("http://localhost:3500/ucb/perception-data"))
+				.uri(URI.create("http://192.168.169.219:3500/ucb/perception-data"))
 				.build();
 
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -53,16 +54,16 @@ public class Counter extends Artifact {
 
 		avg_time.set(res2);
 		action.set(res1);
-		Graph.updateData(avgTime, res2);
+		Graph.updateData(avgTime, res2, csvName);
 	}
 
 	@OPERATION
-	void send_operation(String composition) throws IOException, InterruptedException {
+	public void send_operation(String composition) throws IOException, InterruptedException {
 		Graph.saveGraph();
 
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create("http://localhost:3500/ucb/composition"))
+				.uri(URI.create("http://192.168.169.219:3500/ucb/composition"))
 				.POST(HttpRequest.BodyPublishers.ofString(composition))
 				.build();
 

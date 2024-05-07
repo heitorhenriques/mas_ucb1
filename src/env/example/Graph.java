@@ -65,7 +65,7 @@ public class Graph extends JFrame {
     setContentPane(chartPanel);
   }
 
-  public static void updateData(Double newAvg, Double newValue) {
+  public static void updateData(Double newAvg, Double newValue, String csvName) {
     // Adiciona o novo valor à série
     seriesTotal.add(seriesTotal.getItemCount() + 1, newAvg);
     seriesActions.add(seriesActions.getItemCount() + 1, newValue);
@@ -73,7 +73,7 @@ public class Graph extends JFrame {
     addToCSVData("Total Average Time", seriesTotal.getItemCount(), newAvg);
     addToCSVData("Current Action Time", seriesActions.getItemCount(), newValue);
 
-    File csvFile = new File("./results/dataset.csv");
+    File csvFile = new File("./results/" + csvName + ".csv");
     writeCSVDataToFile(csvFile);
     // Atualiza o gráfico no painel
     chartPanel.repaint();

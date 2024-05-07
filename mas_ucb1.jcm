@@ -14,14 +14,12 @@
 
 mas mas_ucb1 {
 
-    agent bob: sample_agent.asl {
-      focus: w.c1 
+    agent bob: local.asl{
+      //focus : c1
     }
 
     workspace w {
-      artifact c1: example.Counter(3) 
+      //artifact c1: example.Counter("local") 
     }
-
-    
 
 }
