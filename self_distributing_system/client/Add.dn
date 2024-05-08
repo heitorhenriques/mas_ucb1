@@ -3,7 +3,6 @@ component provides App requires io.Output out, net.http.HTTPRequest http {
 
 	int App:main(AppParam params[]) {
 		
-
 		HTTPResponse resp = http.post(new char[]("http://", server, ":8080/add"), null, new char[]("1"))
 		out.println("$(resp.content)")
 		

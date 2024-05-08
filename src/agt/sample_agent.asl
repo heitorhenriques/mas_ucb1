@@ -17,13 +17,13 @@ iterations(0).
     for (.member(K,L)){
         .print("Testing action ",K);
         !set_composition(K);
-        .wait(5000);
+        .wait(7500);
         !create_reward;
     };
     !ucb.
 
 +!ucb : true
-<-  .wait(5000);
+<-  .wait(7500);
     .print("Choosing the composition");
     !update_reward;
     !update_confidence_level;
@@ -72,6 +72,10 @@ iterations(0).
 +!get_avg(Action,Avg_time) : true
 <-  get_avg_time(Action,Avg_time);
     .print("The avarege time is ",Avg_time).
+
+-get_avg(Action,Avg_time) : true
+<-  .wait(1000);
+    !get_avg(Action,Avg_time).
 
 { include("$jacamo/templates/common-cartago.asl") }
 { include("$jacamo/templates/common-moise.asl") }
