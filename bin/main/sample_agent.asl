@@ -39,7 +39,7 @@ iterations(0).
     for ( .member(r(Action,S,Times_chosen,Confidence_level),L)){
         -composition(Action,S,Times_chosen,Confidence_level);
         confidence_level(S,Times_chosen,N,New_confidence);
-        .print("The new confidence level for the action ",Action," is ",New_confidence);
+        .print("The new confidence level for the action ",Action," is ",New_confidence,". This action was chosen ", Times_chosen, " times.");
         +composition(Action,S,Times_chosen,New_confidence);
     }.
 
@@ -48,7 +48,7 @@ iterations(0).
     !get_avg(Action,Avg_time);
     ?composition(Action,S,Times_chosen,Confidence_level);
     -composition(Action,S,Times_chosen,Confidence_level);
-    Reward = 100/Avg_time;
+    Reward = 1000/Avg_time;
     +composition(Action,S+Reward,Times_chosen+1,Confidence_level);
     .print("Reward = ",Reward,", Confindence Level = ",Confidence_level,", Times chosen = ",Times_chosen+1," for action ", Action," with average response time ",Avg_time);
     !update_system.
