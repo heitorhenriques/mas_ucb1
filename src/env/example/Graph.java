@@ -98,13 +98,15 @@ public class Graph extends JFrame {
   }
 
   public static void saveGraph() {
-    try {
-      File imageFile = new File("./results/UCB1.png");
+    if (chart != null) {
+      try {
+        File imageFile = new File("./results/UCB1.png");
 
-      ChartUtils.saveChartAsPNG(imageFile, chart, 600, 400);
-      System.out.println("Chart saved as image successfully!");
-    } catch (IOException e) {
-      System.err.println("Error saving chart as image: " + e.getMessage());
+        ChartUtils.saveChartAsPNG(imageFile, chart, 600, 400);
+        System.out.println("Chart saved as image successfully!");
+      } catch (IOException e) {
+        System.err.println("Error saving chart as image: " + e.getMessage());
+      }
     }
   }
 

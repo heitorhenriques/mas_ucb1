@@ -1,19 +1,19 @@
-action("local").
+iterations(0).
 !start.
 
-+!start: action(A)
-<- makeArtifact("c0","example.Counter",[A],Id);
++!start: action(A,C)
+<- makeArtifact("c0","example.Counter",[C],Id);
     focus(Id);
-   !set_composition("0");
+    send_operation(A);
     !run.
 
-+!run : true
++!run : iterations(N) & N < 50
 <- .wait(5000);
     get_avg_time(Action,Avg_time);
+    -iterations(N);
+    +iterations(N+1);
     !run.
 
-+!set_composition(S) : true
-<- send_operation(S).
 
 { include("$jacamo/templates/common-cartago.asl") }
 { include("$jacamo/templates/common-moise.asl") }

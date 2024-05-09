@@ -22,7 +22,7 @@ iterations(0).
     };
     !ucb.
 
-+!ucb : true
++!ucb : iterations(N) & N < 50
 <-  .wait(7500);
     .print("Choosing the composition");
     !update_reward;

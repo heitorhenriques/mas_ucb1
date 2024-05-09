@@ -15,9 +15,10 @@ public class Counter extends Artifact {
 	int iterations = 0;
 	String csvName;
 
-	@OPERATION public void init(String csvname) {
+	void init(String csvname, int initialValue) {
 		Graph.startGraph();
-		csvName = csvname;
+		this.csvName = csvname;
+		defineObsProperty("count", initialValue);
 	}
 
 	@OPERATION
@@ -63,7 +64,7 @@ public class Counter extends Artifact {
 
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create("http://192.168.169.219:3500/ucb/composition"))
+				.uri(URI.create("http://localhost:3500/ucb/composition"))
 				.POST(HttpRequest.BodyPublishers.ofString(composition))
 				.build();
 

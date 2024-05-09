@@ -14,13 +14,16 @@
 
 mas mas_ucb1 {
 
-    agent bob: sample_agent.asl {
-      focus: w.c1 
+    agent bob: local.asl {
+        beliefs: action("0","local")
+                 //action("1","propagate")
+                 //action("2","alternate")
+                 //action("3","sharding")
     }
 
-    workspace w {
-      artifact c1: example.Counter(3) 
-    }
+    // workspace w {
+    //   artifact c1: example.Counter(3) 
+    // }
 
     
 
