@@ -14,16 +14,20 @@
 
 mas mas_ucb1 {
 
-    agent bob: local.asl {
-        beliefs: action("0","local")
-                 //action("1","propagate")
-                 //action("2","alternate")
-                 //action("3","sharding")
-    }
-
-    // workspace w {
-    //   artifact c1: example.Counter(3) 
+    // agent bob: onecomposition.asl {
+    //     beliefs: action("3","sharding")
+    //              //action("0","local")
+    //              //action("1","propagate")
+    //              //action("2","alternate")
     // }
+
+    agent bob: sample_agent.asl {
+        focus: c1
+    }
+    
+    workspace w {
+      artifact c1: example.Counter(ucb) 
+    }
 
     
 
