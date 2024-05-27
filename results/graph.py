@@ -3,11 +3,11 @@ import matplotlib.pyplot as plt
 import os
 
 csv_files = [
-    'alternate (lista 1 add).csv',
-    'local (lista 1 add).csv',
-    'propagate (lista 1 add).csv',
-    'sharding (lista 1 add).csv',
-    'ucb (lista 1 add).csv'
+    'alternate (lista 6 add).csv',
+    'local (lista 6 add).csv',
+    'propagate (lista 6 add).csv',
+    'sharding (lista 6 add).csv',
+    'ucb (lista 6 add).csv'
 ]
 
 plt.figure(figsize=(10, 6))
