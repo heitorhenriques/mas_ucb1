@@ -40,7 +40,7 @@ public class Counter extends Artifact {
 			throws IOException, InterruptedException {
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create("http://192.168.169.219:3500/ucb/perception-data"))
+				.uri(URI.create("http://192.168.0.103:3500/ucb/perception-data"))
 				.build();
 
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -63,7 +63,7 @@ public class Counter extends Artifact {
 
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create("http://192.168.169.219:3500/ucb/composition"))
+				.uri(URI.create("http://192.168.0.103:3500/ucb/composition"))
 				.POST(HttpRequest.BodyPublishers.ofString(composition))
 				.build();
 

@@ -1,5 +1,5 @@
 component provides App requires io.Output out, net.http.HTTPRequest http, time.Timer t {
-	char server[] = "192.168.169.219"
+	char server[] = "192.168.0.103"
 
 	int App:main(AppParam params[]) {
 
