@@ -15,6 +15,9 @@ public class Counter extends Artifact {
 	int iterations = 0;
 	String csvName;
 
+	private double min = 200;
+    private double max = 1200;
+
 	void init(String csvname) {
 		Graph.startGraph();
 		this.csvName = csvname;
@@ -74,8 +77,17 @@ public class Counter extends Artifact {
 	@OPERATION
 	void confidence_level(double reward, double times_chosen, double iterations,
 			OpFeedbackParam<Double> confidence_level) {
+		
 		double result = (reward / times_chosen) + Math.sqrt((2 * Math.log(iterations)) / (1 + times_chosen));
 		confidence_level.set(result);
+	}
+
+	@OPERATION
+	void get_reward(double avg_time,
+			OpFeedbackParam<Double> reward) {
+		
+		double result = (max - avg_time) / (max - min);
+		reward.set(result);
 	}
 
 }

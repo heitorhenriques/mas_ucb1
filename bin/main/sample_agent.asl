@@ -4,8 +4,8 @@
 
 /* Initial goals */
 action("0").
-action("1").
-action("2").
+// action("1").
+// action("2").
 action("3").
 iterations(0).
 !start.
@@ -48,14 +48,14 @@ iterations(0).
     !get_avg(Action,Avg_time);
     ?composition(Action,S,Times_chosen,Confidence_level);
     -composition(Action,S,Times_chosen,Confidence_level);
-    Reward = 100/Avg_time;
+    get_reward(Avg_time, Reward);
     +composition(Action,S+Reward,Times_chosen+1,Confidence_level);
     .print("Reward = ",Reward,", Confindence Level = ",Confidence_level,", Times chosen = ",Times_chosen+1," for action ", Action," with average response time ",Avg_time);
     !update_system.
 
 +!create_reward : true
 <-  !get_avg(Action,Avg_time);
-    Reward = 100/Avg_time;
+    get_reward(Avg_time, Reward);
     +composition(Action,Reward,1,0);
     .print("Reward value ",Reward," for action ", Action," with average response time ",Avg_time);
     !update_system.
