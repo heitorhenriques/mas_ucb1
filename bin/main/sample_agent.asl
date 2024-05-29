@@ -17,13 +17,13 @@ iterations(0).
     for (.member(K,L)){
         .print("Testing action ",K);
         !set_composition(K);
-        .wait(7500);
+        .wait(5000);
         !create_reward;
     };
     !ucb.
 
 +!ucb : iterations(N) & N < 50
-<-  .wait(7500);
+<-  .wait(5000);
     .print("Choosing the composition");
     !update_reward;
     !update_confidence_level;

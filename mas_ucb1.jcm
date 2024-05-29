@@ -14,20 +14,25 @@
 
 mas mas_ucb1 {
 
-    // agent bob: onecomposition.asl {
-    //     beliefs: action("3","sharding")
-    //              //action("0","local")
-    //              //action("1","propagate")
-    //              //action("2","alternate")
-    // }
+    // PRA RODAR UM MÉTODO ESPECÍFICO
+    // DEIXAR SÓ O MÉTODO A SER TESTADO DESCOMENTADO 
+    agent bob: onecomposition.asl {
+        // beliefs: action("0","local")
+        // beliefs: action("1","propagate")
+        beliefs: action("2","alternate")
+        // beliefs: action("3","sharding")
+    }
 
-    agent bob: sample_agent.asl {
-        focus: c1
-    }
+
+
+    // PRA RODAR O UCB:
+    // agent bob: sample_agent.asl {
+    //     focus: c1
+    // }
     
-    workspace w {
-      artifact c1: example.Counter(ucb) 
-    }
+    // workspace w {
+    //   artifact c1: example.Counter(ucb) 
+    // }
 
     
 
