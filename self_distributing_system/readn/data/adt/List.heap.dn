@@ -2,7 +2,9 @@ data Node {
 	int key
 }
 
-component provides data.adt.List:heap(Destructor, AdaptEvents) requires io.Output out, data.IntUtil iu {
+const int READ_FACTOR = 2
+
+component provides data.adt.List:heap(Destructor, AdaptEvents) requires io.Output out, data.IntUtil iu, utils.MathUtils mu {
 	Node heap[] = null
 	int length = 0
 	Mutex heapLock = new Mutex()
@@ -60,9 +62,27 @@ component provides data.adt.List:heap(Destructor, AdaptEvents) requires io.Outpu
 	 */
 	Data List:getFirst() {
 		mutex(heapLock) {
+			if (heap == null || length == 0) { 
+				return null
+			}
+			for (int i = 0; i < length; i++) {
+				mu.numberOfPrimesLessThan((i + 1) * READ_FACTOR)
+			}
 			Data item = heap[0]
+			remove(heap[0])
+			printHeap()
 			return item
+		
 		}
+	}
+
+	void printHeap() {
+		char result[] = new char[]("[")
+		for (int i = 0; i < length; i++) {
+			result = new char[](result, " ", iu.intToString(heap[i].key))
+		}
+		result = new char[](result, " ]")
+		out.println("$(result)")
 	}
 
 	Data List:getNext() {
@@ -104,7 +124,10 @@ component provides data.adt.List:heap(Destructor, AdaptEvents) requires io.Outpu
 			if (heap == null) { 
 				return new Data[] 
 			}
-			Node sortedHeapCopy[] = heapsort(heap, length)
+			for (int i = 0; i < length; i++) {
+				mu.numberOfPrimesLessThan((i + 1) * READ_FACTOR)
+			}
+
 			Data items[]
 			if (isset t) {
 				items = new Data[length] from t
@@ -112,7 +135,7 @@ component provides data.adt.List:heap(Destructor, AdaptEvents) requires io.Outpu
 				items = new Data[length]
 			}
 			for (int i = 0; i < length; i++) {
-				items[i] = sortedHeapCopy[i]
+				items[i] = heap[i]
 			}
 			return items
 		}

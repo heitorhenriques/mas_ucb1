@@ -1,0 +1,4 @@
+interface MathUtils {
+	int MathUtils:numberOfPrimesLessThan(int n)
+	bool MathUtils:isPrime(int n)
+}

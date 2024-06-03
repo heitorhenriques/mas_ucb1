@@ -1,0 +1,25 @@
+component provides MathUtils requires util.Math math {
+
+    int MathUtils:numberOfPrimesLessThan(int n) {
+        int result = 0
+        for (int j = 0; j < n; j++) {
+            if (isPrime(n)) { 
+                result++ 
+            }
+        }
+        return result
+    }
+
+    bool MathUtils:isPrime(int n) {
+        if (n <= 1) {
+            return false
+        }
+ 
+        for (int i = 2; i <= math.sqrt(n); i++) {
+           if (n % i == 0) {
+                return false
+           }
+        }
+        return true
+    }
+}
