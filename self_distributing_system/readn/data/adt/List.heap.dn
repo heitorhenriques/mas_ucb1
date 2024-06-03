@@ -4,7 +4,7 @@ data Node {
 
 const int READ_FACTOR = 2
 
-component provides data.adt.List:heap(Destructor, AdaptEvents) requires io.Output out, data.IntUtil iu, utils.MathUtils mu {
+component provides data.adt.List:heap(Destructor, AdaptEvents) requires io.Output out, data.IntUtil iu, util.Math math {
 	Node heap[] = null
 	int length = 0
 	Mutex heapLock = new Mutex()
@@ -66,7 +66,7 @@ component provides data.adt.List:heap(Destructor, AdaptEvents) requires io.Outpu
 				return null
 			}
 			for (int i = 0; i < length; i++) {
-				mu.numberOfPrimesLessThan((i + 1) * READ_FACTOR)
+				numberOfPrimesLessThan((i + 1) * READ_FACTOR)
 			}
 			Data item = heap[0]
 			remove(heap[0])
@@ -104,6 +104,29 @@ component provides data.adt.List:heap(Destructor, AdaptEvents) requires io.Outpu
 		//TODO
 	}
 
+	int numberOfPrimesLessThan(int n) {
+        int result = 0
+        for (int j = 0; j < n; j++) {
+            if (isPrime(n)) { 
+                result++ 
+            }
+        }
+        return result
+    }
+
+    bool isPrime(int n) {
+        if (n <= 1) {
+            return false
+        }
+ 
+        for (int i = 2; i <= math.sqrt(n); i++) {
+           if (n % i == 0) {
+                return false
+           }
+        }
+        return true
+    }
+
 	/*
 	 * Return the heap length.
 	 */
@@ -125,7 +148,7 @@ component provides data.adt.List:heap(Destructor, AdaptEvents) requires io.Outpu
 				return new Data[] 
 			}
 			for (int i = 0; i < length; i++) {
-				mu.numberOfPrimesLessThan((i + 1) * READ_FACTOR)
+				numberOfPrimesLessThan((i + 1) * READ_FACTOR)
 			}
 
 			Data items[]
