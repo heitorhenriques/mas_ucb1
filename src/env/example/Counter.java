@@ -15,8 +15,8 @@ public class Counter extends Artifact {
 	int iterations = 0;
 	String csvName;
 
-	private double min = 200;
-    private double max = 1200;
+	private double min = 2000;
+    private double max = 7500;
 
 	void init(String csvname) {
 		Graph.startGraph();
@@ -31,7 +31,7 @@ public class Counter extends Artifact {
 	}
 
 	@OPERATION
-	void inc_get(int inc, OpFeedbackParam<Integer> newValueArg) {
+	void incGet(int inc, OpFeedbackParam<Integer> newValueArg) {
 		ObsProperty prop = getObsProperty("count");
 		int newValue = prop.intValue() + inc;
 		prop.updateValue(newValue);
@@ -39,7 +39,7 @@ public class Counter extends Artifact {
 	}
 
 	@OPERATION
-	void get_avg_time(OpFeedbackParam<String> action, OpFeedbackParam<Double> avg_time)
+	void getAvgTime(OpFeedbackParam<String> action, OpFeedbackParam<Double> avg_time)
 			throws IOException, InterruptedException {
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder()
@@ -61,7 +61,7 @@ public class Counter extends Artifact {
 	}
 
 	@OPERATION
-	public void send_operation(String composition) throws IOException, InterruptedException {
+	public void sendOperation(String composition) throws IOException, InterruptedException {
 		Graph.saveGraph();
 
 		HttpClient client = HttpClient.newHttpClient();
@@ -75,7 +75,7 @@ public class Counter extends Artifact {
 	}
 
 	@OPERATION
-	void confidence_level(double reward, double times_chosen, double iterations,
+	void confidenceLevel(double reward, double times_chosen, double iterations,
 			OpFeedbackParam<Double> confidence_level) {
 		
 		double result = (reward / times_chosen) + Math.sqrt((2 * Math.log(iterations)) / (1 + times_chosen));
@@ -83,7 +83,7 @@ public class Counter extends Artifact {
 	}
 
 	@OPERATION
-	void get_reward(double avg_time,
+	void getReward(double avg_time,
 			OpFeedbackParam<Double> reward) {
 		
 		double result = (max - avg_time) / (max - min);
