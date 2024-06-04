@@ -24,14 +24,25 @@ mas mas_ucb1 {
     // }
 
     // PRA RODAR O UCB:
-    agent bob: sample_agent.asl {
+    // agent bob: sample_agent.asl {
+    //     focus: c1
+    // }
+    
+
+    agent bob: generic_agent.asl {
         focus: c1
+        beliefs:    avg_time(0)
+                    number(0)
+                    
     }
+    agent maria: generic_agent.asl {
+        focus: c1
+        beliefs:    avg_time(0)
+                    number(1)
+    }               
     
     workspace w {
-      artifact c1: example.Counter(ucb) 
+      artifact c1: example.Actions()
     }
 
-    // agent bob: test.asl {
-    // }
 }

@@ -48,10 +48,10 @@ component provides List:heap(Destructor, AdaptEvents) requires data.json.JSONEnc
 		if (remoteDistsIps == null) {
 			remoteDistsIps = new IPAddr[2]
 			remoteDistsIps[0] = new IPAddr()
-			remoteDistsIps[0].ip = new char[]("192.168.169.196")
+			remoteDistsIps[0].ip = new char[]("192.168.0.102")
 			remoteDistsIps[0].port = 8081
 			remoteDistsIps[1] = new IPAddr()
-			remoteDistsIps[1].ip = new char[]("192.168.169.29")
+			remoteDistsIps[1].ip = new char[]("192.168.0.101")
 			remoteDistsIps[1].port = 8082
 		}
 	}
@@ -60,10 +60,10 @@ component provides List:heap(Destructor, AdaptEvents) requires data.json.JSONEnc
 		if (remoteListsIps == null) {
 			remoteListsIps = new IPAddr[2]
 			remoteListsIps[0] = new IPAddr()
-			remoteListsIps[0].ip = new char[]("192.168.169.196")
+			remoteListsIps[0].ip = new char[]("192.168.0.102")
 			remoteListsIps[0].port = 2010
 			remoteListsIps[1] = new IPAddr()
-			remoteListsIps[1].ip = new char[]("192.168.169.29")
+			remoteListsIps[1].ip = new char[]("192.168.0.101")
 			remoteListsIps[1].port = 2011
 		}
 	}
