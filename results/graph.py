@@ -3,11 +3,9 @@ import matplotlib.pyplot as plt
 import os
 
 csv_files = [
-    'alternate (lista 6 add).csv',
-    'local (lista 6 add).csv',
-    'propagate (lista 6 add).csv',
-    'sharding (lista 6 add).csv',
-    'ucb (lista 6 add).csv'
+    './datasets/local (lista 1).csv',
+    './datasets/sharding (lista 1).csv',
+    './datasets/ucb (lista 1).csv'
 ]
 
 plt.figure(figsize=(10, 6))
@@ -36,7 +34,7 @@ plt.legend()
 # Add a grid for better readability
 plt.grid(True)
 
-plt.savefig('current_action_time_plot.png')  # You can change the filename and format as needed
+plt.savefig('./images/current_action_time_plot.png')  # You can change the filename and format as needed
 
 # Show the plot
 plt.show()

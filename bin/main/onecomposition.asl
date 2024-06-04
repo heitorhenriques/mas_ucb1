@@ -4,12 +4,13 @@ iterations(0).
 +!start: action(A,C)
 <- makeArtifact("c0","example.Counter",[C],Id);
     focus(Id);
-    send_operation(A);
+    sendOperation(A);
     !run.
 
 +!run : iterations(N) & N < 50
 <- .wait(5000);
-    get_avg_time(Action,Avg_time);
+    getAvgTime(Action,Avg_time);
+    .print("[ Action ", Action," - Iteration ", N," ] Response Time: ", Avg_time);
     -iterations(N);
     +iterations(N+1);
     !run.
