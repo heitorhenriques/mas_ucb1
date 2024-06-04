@@ -24,12 +24,12 @@ component provides data.adt.List:heap(Destructor, AdaptEvents) requires io.Outpu
 			Node node = item
 			heap = new Node[](heap, node)
 			length++
-			char result[] = new char[]("[")
-			for (int i = 0; i < length; i++) {
-				result = new char[](result, " ", iu.intToString(heap[i].key))
-			}
-			result = new char[](result, " ]")
-			out.println("$(result)")
+			// char result[] = new char[]("[")
+			// for (int i = 0; i < length; i++) {
+			// 	result = new char[](result, " ", iu.intToString(heap[i].key))
+			// }
+			// result = new char[](result, " ]")
+			// out.println("$(result)")
 		}
 	}
 
@@ -65,12 +65,12 @@ component provides data.adt.List:heap(Destructor, AdaptEvents) requires io.Outpu
 			if (heap == null || length == 0) { 
 				return null
 			}
-			for (int i = 0; i < length; i++) {
-				numberOfPrimesLessThan((i + 1) * READ_FACTOR)
-			}
+			// for (int i = 0; i < length; i++) {
+			// 	numberOfPrimesLessThan((i + 1) * READ_FACTOR)
+			// }
 			Data item = heap[0]
 			remove(heap[0])
-			printHeap()
+			// printHeap()
 			return item
 		
 		}
@@ -82,7 +82,7 @@ component provides data.adt.List:heap(Destructor, AdaptEvents) requires io.Outpu
 			result = new char[](result, " ", iu.intToString(heap[i].key))
 		}
 		result = new char[](result, " ]")
-		out.println("$(result)")
+		// out.println("$(result)")
 	}
 
 	Data List:getNext() {

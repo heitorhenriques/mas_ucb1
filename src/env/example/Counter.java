@@ -16,7 +16,7 @@ public class Counter extends Artifact {
 	String csvName;
 
 	private double min = 2000;
-    private double max = 7500;
+	private double max = 7500;
 
 	void init(String csvname) {
 		Graph.startGraph();
@@ -51,6 +51,9 @@ public class Counter extends Artifact {
 		String res1 = parts[0];
 		Double res2 = Double.parseDouble(parts[1]);
 
+		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+		System.out.println("Resultado: " + res2);
+
 		totalTime = totalTime + res2;
 		iterations++;
 		avgTime = totalTime / iterations;
@@ -58,6 +61,22 @@ public class Counter extends Artifact {
 		avg_time.set(res2);
 		action.set(res1);
 		Graph.updateData(avgTime, res2, csvName);
+	}
+
+	@OPERATION
+	void ignoreAvgTime()
+			throws IOException, InterruptedException {
+		HttpClient client = HttpClient.newHttpClient();
+		HttpRequest request = HttpRequest.newBuilder()
+				.uri(URI.create("http://192.168.0.103:3500/ucb/perception-data"))
+				.build();
+
+		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+		
+		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+		System.out.println("IGNORANDO RESULTADOOOOO" + response.body());
+
+		return;
 	}
 
 	@OPERATION
@@ -77,7 +96,7 @@ public class Counter extends Artifact {
 	@OPERATION
 	void confidenceLevel(double reward, double times_chosen, double iterations,
 			OpFeedbackParam<Double> confidence_level) {
-		
+
 		double result = (reward / times_chosen) + Math.sqrt((2 * Math.log(iterations)) / (1 + times_chosen));
 		confidence_level.set(result);
 	}
@@ -85,7 +104,7 @@ public class Counter extends Artifact {
 	@OPERATION
 	void getReward(double avg_time,
 			OpFeedbackParam<Double> reward) {
-		
+
 		double result = (max - avg_time) / (max - min);
 		reward.set(result);
 	}

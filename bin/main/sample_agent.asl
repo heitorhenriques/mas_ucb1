@@ -17,22 +17,28 @@ iterations(0).
     for (.member(K,L)){
         .print("\n[ Action ", K, " ] Testing action...");
         !set_composition(K);
-        .wait(5000);
+        .wait(10000);
+        ignoreAvgTime;
+        .wait(10000);
         !create_reward;
     };
+    !update_confidence_level;
     !ucb.
 
 +!ucb : iterations(N) & N < 50
-<-  .wait(5000);
+<-  !composition(Action);
+    !set_composition(Action);
+    .wait(10000);
     .print("Choosing the composition...");
+    ignoreAvgTime;
+    .wait(10000);
     !update_reward;
     !update_confidence_level;
-    !composition(Action);
-    !set_composition(Action);
+    .print("Average time ignored...");
     !ucb.
 
 +!composition(Action) : composition(Action,_,_,Confidence_level) & not(composition(A1,_,_,C1) & Confidence_level < C1 & A1 \== Action)
-<- .print("New composition set to action", Action, ".").
+<- .print("New composition set to action ", Action, ".").
 
 +!update_confidence_level : iterations(N)
 <-  .findall(r(Action,S,Times_chosen,Confidence_level),composition(Action,S,Times_chosen,Confidence_level),L);
@@ -44,7 +50,7 @@ iterations(0).
     }.
 
 +!update_reward : true
-<-  print("updating reward");
+<-  print("Updating reward...");
     !get_avg(Action,Avg_time);
     ?composition(Action,S,Times_chosen,Confidence_level);
     -composition(Action,S,Times_chosen,Confidence_level);
