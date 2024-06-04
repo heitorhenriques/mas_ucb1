@@ -33,19 +33,15 @@ mas mas_ucb1 {
         focus: c1
         beliefs:    avg_time(0)
                     number(0)
+                    action("0")
                     
     }
     agent maria: generic_agent.asl {
         focus: c1
         beliefs:    avg_time(10)
                     number(1)
-    }               
-    
-    agent cleber: generic_agent.asl {
-        focus: c1
-        beliefs:    avg_time(20)
-                    number(2)
-    }     
+                    action("3")
+    }                  
  
     workspace w {
       artifact c1: example.Actions()
