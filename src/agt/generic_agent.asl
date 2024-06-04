@@ -1,14 +1,6 @@
 tempo_espera(5000).
-melhor(Nome):- svg_time(T)[source(Nome)] & not(avg_time(Outro)[source(Ag)] & Outro < T).
+melhor(Nome):- avg_time(T)[source(Nome)] & not(avg_time(Outro)[source(Ag)] & Outro < T).
 !minha_vez.
-
-+avg_time(N)[source(S)]: S \== self & avg_time(M)[source(self)] & M < N
-<-  .print("Minha vez");
-    +minha_vez.
-
-+avg_time(N)[source(S)]: S \== self & avg_time(M)[source(self)] & M > N
-<-  .print("Não é minha vez");
-    .broadcast(tell,avg_time(M)).
 
 +minha_vez: action(A) & tempo_espera(Tempo)
 <-  -minha_vez;
@@ -20,18 +12,34 @@ melhor(Nome):- svg_time(T)[source(Nome)] & not(avg_time(Outro)[source(Ag)] & Out
     .broadcast(tell,avg_time(N));
     inc.
 
-+!minha_vez: .allagents(L) & .count(L,SizeL) & .count(avg_time(_),SizeA) & SizeL == SizeA <- !verificar_melhor.
-+!minha_vez: .allagents(L) & .count(L,SizeL) & .count(avg_time(_),SizeA) & SizeL > SizeA <- !verificar_vez.
++!minha_vez: .all_names(L) & .length(L,SizeL) & .findall(S,avg_time(_)[source(S)],X) & .length(X,SizeA) & SizeL == SizeA <- !verificar_melhor.
++!minha_vez: .all_names(L) & .length(L,SizeL) & .findall(S,avg_time(_)[source(S)],X) & .length(X,SizeA) & SizeL > SizeA
+<-  .print(SizeA);
+    !verificar_vez.
 
 +!verificar_vez: vez(N) & number(M) & M == N
-<-  +minha_vez.
+<-  .print("Assumir");
+    inc;
+    ?avg_time(A);
+    .broadcast(tell,avg_time(A));
+    !minha_vez.
+
++!verificar_vez: vez(N) & number(M) & M \== N
+<-  .print("Não é minha vez");
+    !minha_vez.
 
 +!verificar_melhor: 
        melhor(self) 
     <- 
+        ?avg_time(N)[source(self)];
+        .broadcast(tell,avg_time(N));
         .print("Assumir").  
 
 +!verificar_melhor: 
        melhor(Nome) 
     <- 
         .print("Vai Assumir ", Nome).  
+
+
+{ include("$jacamo/templates/common-cartago.asl") }
+{ include("$jacamo/templates/common-moise.asl") }

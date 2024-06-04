@@ -37,10 +37,16 @@ mas mas_ucb1 {
     }
     agent maria: generic_agent.asl {
         focus: c1
-        beliefs:    avg_time(0)
+        beliefs:    avg_time(10)
                     number(1)
     }               
     
+    agent cleber: generic_agent.asl {
+        focus: c1
+        beliefs:    avg_time(20)
+                    number(2)
+    }     
+ 
     workspace w {
       artifact c1: example.Actions()
     }
