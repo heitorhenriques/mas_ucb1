@@ -20,7 +20,7 @@ mas mas_ucb1 {
         // beliefs: action("0","local")
         // beliefs: action("1","propagate")
         // beliefs: action("2","alternate")
-    //     beliefs: action("3","sharding")
+        // beliefs: action("3","sharding")
     // }
 
     // PRA RODAR O UCB:

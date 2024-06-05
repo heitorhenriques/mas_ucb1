@@ -3,9 +3,9 @@ import matplotlib.pyplot as plt
 import os
 
 csv_files = [
-    './datasets/local (6 add).csv',
-    './datasets/sharding (6 add).csv',
-    './datasets/ucb (6 add).csv'
+    './datasets/local (2 itens).csv',
+    './datasets/sharding (2 itens).csv',
+    './datasets/ucb (2 itens).csv'
 ]
 
 plt.figure(figsize=(10, 6))
@@ -26,7 +26,7 @@ for file in csv_files:
 # Set the title and labels
 plt.title('Current Action Time vs Iteration')
 plt.xlabel('Iteration')
-plt.ylabel('Average Time (ms)')
+plt.ylabel('Response Time (ms)')
 
 # Add a legend
 plt.legend()

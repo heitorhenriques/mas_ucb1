@@ -19,8 +19,8 @@ public class Counter extends Artifact {
 	int iterations = 0;
 	String csvName;
 
-	private double min = 1300;
-	private double max = 3000;
+	private double min = 360;
+	private double max = 605;
 
 	void init(String csvname) {
 		Graph.startGraph();

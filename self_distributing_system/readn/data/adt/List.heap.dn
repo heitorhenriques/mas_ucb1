@@ -2,7 +2,7 @@ data Node {
 	int key
 }
 
-const int READ_FACTOR = 2
+const int READ_FACTOR = 5
 
 component provides data.adt.List:heap(Destructor, AdaptEvents) requires io.Output out, data.IntUtil iu, util.Math math {
 	Node heap[] = null

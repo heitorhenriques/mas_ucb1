@@ -9,25 +9,36 @@ component provides App requires io.Output out, net.http.HTTPRequest http {
 		resp = http.post(new char[]("http://", server, ":8080/add"), null, new char[]("2"))
 		out.println("$(resp.content)")
 		
-		// resp = http.post(new char[]("http://", server, ":8080/add"), null, new char[]("3"))
-		// out.println("$(resp.content)")
+		resp = http.post(new char[]("http://", server, ":8080/add"), null, new char[]("3"))
+		out.println("$(resp.content)")
 		
-		// resp = http.post(new char[]("http://", server, ":8080/add"), null, new char[]("4"))
-		// out.println("$(resp.content)")
+		resp = http.post(new char[]("http://", server, ":8080/add"), null, new char[]("4"))
+		out.println("$(resp.content)")
 		
-		// resp = http.post(new char[]("http://", server, ":8080/add"), null, new char[]("5"))
-		// out.println("$(resp.content)")
+		resp = http.post(new char[]("http://", server, ":8080/add"), null, new char[]("5"))
+		out.println("$(resp.content)")
 		
-		// resp = http.post(new char[]("http://", server, ":8080/add"), null, new char[]("6"))
-		// out.println("$(resp.content)")
+		resp = http.post(new char[]("http://", server, ":8080/add"), null, new char[]("6"))
+		out.println("$(resp.content)")
 		
-		// resp = http.post(new char[]("http://", server, ":8080/add"), null, new char[]("7"))
-		// out.println("$(resp.content)")
+		resp = http.post(new char[]("http://", server, ":8080/add"), null, new char[]("7"))
+		out.println("$(resp.content)")
 		
-		// resp = http.post(new char[]("http://", server, ":8080/add"), null, new char[]("8"))
-		// out.println("$(resp.content)")
+		resp = http.post(new char[]("http://", server, ":8080/add"), null, new char[]("8"))
+		out.println("$(resp.content)")
 
-		
+		resp = http.post(new char[]("http://", server, ":8080/add"), null, new char[]("9"))
+		out.println("$(resp.content)")
+
+		resp = http.post(new char[]("http://", server, ":8080/add"), null, new char[]("1"))
+		out.println("$(resp.content)")
+
+		resp = http.post(new char[]("http://", server, ":8080/add"), null, new char[]("2"))
+		out.println("$(resp.content)")
+
+		resp = http.post(new char[]("http://", server, ":8080/add"), null, new char[]("3"))
+		out.println("$(resp.content)")
+
 		return 0
 	}
 }

@@ -42,3 +42,13 @@ Caso seja a primeira vez que você esteja rodando o projeto, talvez seja necess�
 ```bash
 chmod +x gradlew
 ```
+
+## Resultados 2 itens na lista READ_FACTOR 2:
+Min = 1
+Max = 160
+Janela de observação = 5000
+
+## Resultados 12 itens na lista READ_FACTOR 5:
+Min = 360
+Max = 605
+Janela de observação = 5000

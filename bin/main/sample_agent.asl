@@ -17,7 +17,7 @@ iterations(0).
         !set_composition(K);
         .wait(5000);
         ignoreAvgTime;
-        log("Average time ignored...", "");
+        log("Average time ignored...", K);
         .wait(5000);
         !create_reward;
     };
@@ -28,9 +28,9 @@ iterations(0).
 <-  !composition(Action);
     !set_composition(Action);
     .wait(5000);
-    log("Choosing the composition...", "");
+    log("Choosing the composition...", Action);
     ignoreAvgTime;
-    log("Average time ignored...", "");
+    log("Average time ignored...", Action);
     .wait(5000);
     !update_reward;
     !update_confidence_level;
@@ -45,7 +45,7 @@ iterations(0).
     for ( .member(r(Action,S,Times_chosen,Confidence_level),L)){
         -composition(Action,S,Times_chosen,Confidence_level);
         confidenceLevel(S,Times_chosen,N,New_confidence);
-        .concat("The new confidence level is ", New_confidence, ".", "Action ", Action, " was chosen ", Times_chosen, " times.", Message);
+        .concat("The new confidence level is ", New_confidence, ".", " Action ", Action, " was chosen ", Times_chosen, " times.", Message);
         log(Message, Action);
         +composition(Action,S,Times_chosen,New_confidence);
     }.
