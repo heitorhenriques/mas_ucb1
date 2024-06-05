@@ -10,7 +10,8 @@ iterations(0).
 +!run : iterations(N) & N < 50
 <- .wait(5000);
     getAvgTime(Action,Avg_time);
-    .print("[ Action ", Action," - Iteration ", N," ] Response Time: ", Avg_time);
+    .concat("Iteration ", N, ": ", Avg_time, " ms", Message);
+    log(Message, Action);
     -iterations(N);
     +iterations(N+1);
     !run.

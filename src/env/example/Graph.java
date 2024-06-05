@@ -91,7 +91,6 @@ public class Graph extends JFrame {
         writer.append(String.join(",", row))
             .append("\n");
       }
-      System.out.println("CSV data written to file successfully!");
     } catch (IOException e) {
       System.err.println("Error writing CSV data to file: " + e.getMessage());
     }
@@ -103,7 +102,6 @@ public class Graph extends JFrame {
         File imageFile = new File("./results/UCB1.png");
 
         ChartUtils.saveChartAsPNG(imageFile, chart, 600, 400);
-        System.out.println("Chart saved as image successfully!");
       } catch (IOException e) {
         System.err.println("Error saving chart as image: " + e.getMessage());
       }

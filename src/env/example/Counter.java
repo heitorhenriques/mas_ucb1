@@ -8,20 +8,34 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class Counter extends Artifact {
+	DateTimeFormatter TIME_FORMATTER = 	DateTimeFormatter.ofPattern("HH:mm:ss");
+
 	Double avgTime = 0.0;
 	Double totalTime = 0.0;
 	int iterations = 0;
 	String csvName;
 
-	private double min = 2000;
-	private double max = 7500;
+	private double min = 1300;
+	private double max = 3000;
 
 	void init(String csvname) {
 		Graph.startGraph();
 		this.csvName = csvname;
 	}
+
+	@OPERATION
+	public void log(String message, String action) {
+		String currentTime = LocalTime.now().format(TIME_FORMATTER);
+		if(action != "") {
+			System.out.println("[" + currentTime + " - Action " + action +"] " + message);
+		} else {
+			System.out.println("[" + currentTime + "] " + message);
+		}
+    }
 
 	@OPERATION
 	void inc() {
@@ -51,8 +65,8 @@ public class Counter extends Artifact {
 		String res1 = parts[0];
 		Double res2 = Double.parseDouble(parts[1]);
 
-		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-		System.out.println("Resultado: " + res2);
+		// System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+		// System.out.println("Resultado: " + res2);
 
 		totalTime = totalTime + res2;
 		iterations++;
@@ -73,8 +87,8 @@ public class Counter extends Artifact {
 
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 		
-		System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-		System.out.println("IGNORANDO RESULTADOOOOO" + response.body());
+		// System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+		// System.out.println("IGNORANDO RESULTADOOOOO" + response.body());
 
 		return;
 	}

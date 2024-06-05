@@ -49,7 +49,9 @@ component provides data.adt.List:heap(Destructor, AdaptEvents) requires io.Outpu
 					break
 				}
 			}
-			length--
+			if(length > 0) {
+				length--
+			}
 		}
 	}
 

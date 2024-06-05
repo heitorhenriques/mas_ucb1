@@ -10,16 +10,15 @@ action("3").
 iterations(0).
 !start.
 
-/* Plans */
-
 +!start : true
 <- .findall(S,action(S),L);
     for (.member(K,L)){
-        .print("\n[ Action ", K, " ] Testing action...");
+        log("Testing action...", K);
         !set_composition(K);
-        .wait(10000);
+        .wait(5000);
         ignoreAvgTime;
-        .wait(10000);
+        log("Average time ignored...", "");
+        .wait(5000);
         !create_reward;
     };
     !update_confidence_level;
@@ -28,46 +27,58 @@ iterations(0).
 +!ucb : iterations(N) & N < 50
 <-  !composition(Action);
     !set_composition(Action);
-    .wait(10000);
-    .print("Choosing the composition...");
+    .wait(5000);
+    log("Choosing the composition...", "");
     ignoreAvgTime;
-    .wait(10000);
+    log("Average time ignored...", "");
+    .wait(5000);
     !update_reward;
     !update_confidence_level;
-    .print("Average time ignored...");
     !ucb.
 
 +!composition(Action) : composition(Action,_,_,Confidence_level) & not(composition(A1,_,_,C1) & Confidence_level < C1 & A1 \== Action)
-<- .print("New composition set to action ", Action, ".").
+<-  .concat("New composition set to action ", Action, ".", Message);
+    log(Message, "").
 
 +!update_confidence_level : iterations(N)
 <-  .findall(r(Action,S,Times_chosen,Confidence_level),composition(Action,S,Times_chosen,Confidence_level),L);
     for ( .member(r(Action,S,Times_chosen,Confidence_level),L)){
         -composition(Action,S,Times_chosen,Confidence_level);
         confidenceLevel(S,Times_chosen,N,New_confidence);
-        .print("\n[ Action ", Action, " ] The new confidence level is ",New_confidence,". \n[ Action ", Action, " ] Was chosen ", Times_chosen, " times.");
+        .concat("The new confidence level is ", New_confidence, ".", "Action ", Action, " was chosen ", Times_chosen, " times.", Message);
+        log(Message, Action);
         +composition(Action,S,Times_chosen,New_confidence);
     }.
 
 +!update_reward : true
-<-  print("Updating reward...");
+<-  log("Updating reward...", "");
     !get_avg(Action,Avg_time);
     ?composition(Action,S,Times_chosen,Confidence_level);
     -composition(Action,S,Times_chosen,Confidence_level);
     getReward(Avg_time, Reward);
     +composition(Action,S+Reward,Times_chosen+1,Confidence_level);
-    .print("\n[ Action ", Action, " ] Reward: ",Reward,"\n[ Action ", Action, " ] Confidence Level: ", Confidence_level,"\n[ Action ", Action, " ] Times Chosen: ", Times_chosen+1,"\n[ Action ", Action, " ] Average Response Time: ", Avg_time);
+    .concat("Reward: ", Reward, Message);
+    log(Message, Action);
+    .concat("Confidence Level: ", Confidence_level, Message1);
+    log(Message1, Action);
+    .concat("Times Chosen: ", Times_chosen + 1, Message2);
+    log(Message2, Action);
+    .concat("Average Response Time: ", Avg_time, " ms", Message3);
+    log(Message3, Action);
     !update_system.
 
 +!create_reward : true
 <-  !get_avg(Action,Avg_time);
     getReward(Avg_time, Reward);
     +composition(Action,Reward,1,0);
-    .print("\n[ Action ", Action, " ] Reward: ",Reward,"\n[ Action ", Action, " ] Response Time: ", Avg_time);
+    .concat("Reward: ", Reward, Message);
+    log(Message, Action);
+    .concat("Response Time: ", Avg_time, " ms", Message1);
+    log(Message1, Action);
     !update_system.
 
 +!update_system : true
-<-  .print("Updating System...");
+<-  log("Updating system...", "");
     ?iterations(N);
     -iterations(N);
     +iterations(N+1).
@@ -76,8 +87,7 @@ iterations(0).
 <- sendOperation(S).
 
 +!get_avg(Action,Avg_time) : true
-<-  getAvgTime(Action,Avg_time);
-    .print("\n[ Action ", Action, " ] Response Time: ", Avg_time).
+<-  getAvgTime(Action,Avg_time).
 
 -get_avg(Action,Avg_time) : true
 <-  .wait(1000);

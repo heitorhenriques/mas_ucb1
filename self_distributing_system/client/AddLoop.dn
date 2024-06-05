@@ -4,10 +4,11 @@ component provides App requires io.Output out, net.http.HTTPRequest http, time.T
 	int App:main(AppParam params[]) {
 
 		while(true){
-			HTTPResponse resp = http.get(new char[]("http://", server, ":8080/get"), null)
+			HTTPResponse resp = http.post(new char[]("http://", server, ":8080/add"), null, new char[]("1"))
 			out.println("$(resp.content)")
-			t.sleep(500)
+			t.sleep(2500)
 		}
+		
 		return 0
 	}
 }
