@@ -3,9 +3,10 @@ import matplotlib.pyplot as plt
 import os
 
 csv_files = [
-    './datasets/local (2 itens).csv',
-    './datasets/sharding (2 itens).csv',
-    './datasets/ucb (2 itens).csv'
+    './datasets/local (loop add).csv',
+    './datasets/sharding (loop add).csv',
+    './datasets/ucb (loop add).csv',
+    './datasets/agents (loop add).csv'
 ]
 
 plt.figure(figsize=(10, 6))

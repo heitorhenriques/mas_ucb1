@@ -40,7 +40,9 @@ component provides server.Server, monitoring.BeingMonitored requires io.Output o
 			metric.finish()
 			int result = metric.result()
 			monitor.addMetric("response_time", result, false)
-			monitor.addEvent(msg.command, 1)
+			if (msg.command == "GET") {
+				monitor.addEvent(msg.command, 1)
+			}
 		}
 	}
 }

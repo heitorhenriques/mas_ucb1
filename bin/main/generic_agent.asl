@@ -1,42 +1,47 @@
-tempo_espera(5000).
-melhor(Nome):- avg_time(T)[source(Nome)] & not(avg_time(Outro)[source(Ag)] & Outro < T).
-!minha_vez.
+observation_window(5000).
+best(Name):- avg_time(T)[source(Name)] & not(avg_time(Other)[source(Ag)] & Other < T).
+!my_turn.
 
-+!executar: action(A) & tempo_espera(Tempo)
++!clear[source(S)] : true
+<-  .abolish(avg_time(_)[source(S)]).
+
++avg_time(_)[source(S)]: S \== self
+<-  !my_turn.
+
++!execute: action(A) & observation_window(Window)
 <-  send_operation(A);
-    .wait(Tempo);
+    .wait(Window);
+    ignoreAvgTime;
+    log("Ignored response", A);
+    .wait(Window);
     get_avg_time(X,N);
     -avg_time(_);
     +avg_time(N);
+    .concat("Response time: ", N, Message);
+    log(Message, A);
+    .broadcast(achieve,clear);
     .broadcast(tell,avg_time(N)).
 
-+!minha_vez: .all_names(L) & .length(L,SizeL) & .findall(S,avg_time(_)[source(S)],X) & .length(X,SizeA) & SizeL == SizeA <- !verificar_melhor.
-+!minha_vez: .all_names(L) & .length(L,SizeL) & .findall(S,avg_time(_)[source(S)],X) & .length(X,SizeA) & SizeL > SizeA
-<-  .print(SizeA);
-    !verificar_vez.
++!my_turn: .all_names(L) & .length(L,SizeL) & .findall(S,avg_time(_)[source(S)],X) & .length(X,SizeA) & SizeL == SizeA <- !verify_best.
++!my_turn: .all_names(L) & .length(L,SizeL) & .findall(S,avg_time(_)[source(S)],X) & .length(X,SizeA) & SizeL > SizeA
+<-  !verify_turn.
 
-+!verificar_vez: vez(N) & number(M) & M == N
-<-  .print("Assumir");
-    !executar;
++!verify_turn: turn(N) & number(M) & M == N
+<-  !execute;
     inc;
-    !minha_vez.
+    !my_turn.
 
-+!verificar_vez: vez(N) & number(M) & M \== N
-<-  .print("Não é minha vez");
-    !minha_vez.
++!verify_turn: turn(N) & number(M) & M \== N
+<-  log("Not my turn!", "").
 
-+!verificar_melhor: 
-       melhor(self) 
-    <- 
-        .print("Assumir");
-        !executar;
-        !minha_vez.
 
-+!verificar_melhor: 
-       melhor(Nome) 
-    <- 
-        .print("Vai Assumir ", Nome);
-        !minha_vez.
++!verify_best: best(self) 
+<-  !execute;
+    !verify_best.
+
++!verify_best: best(Name) 
+<-  .concat(Name, " is assuming!", Message);
+    log(Message, "")
 
 
 { include("$jacamo/templates/common-cartago.asl") }

@@ -19,8 +19,8 @@ public class Counter extends Artifact {
 	int iterations = 0;
 	String csvName;
 
-	private double min = 360;
-	private double max = 605;
+	private double min = 3;
+	private double max = 3500;
 
 	void init(String csvname) {
 		Graph.startGraph();
@@ -31,9 +31,9 @@ public class Counter extends Artifact {
 	public void log(String message, String action) {
 		String currentTime = LocalTime.now().format(TIME_FORMATTER);
 		if(action != "") {
-			System.out.println("[" + currentTime + " - Action " + action +"] " + message);
+			System.out.println("("+ iterations + ") [" + currentTime + " - Action " + action +"] " + message);
 		} else {
-			System.out.println("[" + currentTime + "] " + message);
+			System.out.println("("+ iterations + ") [" + currentTime + "] " + message);
 		}
     }
 

@@ -24,32 +24,30 @@ mas mas_ucb1 {
     // }
 
     // PRA RODAR O UCB:
-    agent bob: sample_agent.asl {
-        focus: c1
-    }
+    // agent bob: sample_agent.asl {
+    //     focus: c1
+    // }
 
-    workspace w {
-      artifact c1: example.Counter("ucb")
-    }
+    // workspace w {
+    //   artifact c1: example.Counter("ucb")
+    // }
     
 
     // PRA RODAR OS AGENTES DE CADA COMPOSIÇÃO
-    // agent bob: generic_agent.asl {
-    //     focus: c1
-    //     beliefs:    avg_time(0)
-    //                 number(0)
-    //                 action("0")
+    agent bob: generic_agent.asl {
+        focus: c1
+        beliefs:    number(0)
+                    action("0")
                     
-    // }
-    // agent maria: generic_agent.asl {
-    //     focus: c1
-    //     beliefs:    avg_time(10)
-    //                 number(1)
-    //                 action("3")
-    // }                  
+    }
+    agent maria: generic_agent.asl {
+        focus: c1
+        beliefs:    number(1)
+                    action("3")
+    }                  
  
-    // workspace w {
-    //   artifact c1: example.Actions()
-    // }
+    workspace w {
+      artifact c1: example.Actions("agents")
+    }
 
 }

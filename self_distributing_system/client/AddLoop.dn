@@ -1,12 +1,20 @@
 component provides App requires io.Output out, net.http.HTTPRequest http, time.Timer t {
 	char server[] = "192.168.0.103"
+	int i = 1
 
 	int App:main(AppParam params[]) {
 
 		while(true){
-			HTTPResponse resp = http.post(new char[]("http://", server, ":8080/add"), null, new char[]("1"))
-			out.println("$(resp.content)")
-			t.sleep(2500)
+			if (i==1) {
+				HTTPResponse resp = http.post(new char[]("http://", server, ":8080/add"), null, new char[]("1"))
+				i = 2
+				out.println("$(resp.content)")
+			} else {
+				HTTPResponse resp = http.post(new char[]("http://", server, ":8080/add"), null, new char[]("2"))
+				i = 1
+				out.println("$(resp.content)")
+			}
+			t.sleep(6000)
 		}
 		
 		return 0
