@@ -5,14 +5,18 @@ best(Name):- avg_time(T)[source(Name)] & not(avg_time(Other)[source(Ag)] & Other
 +!clear[source(S)] : true
 <-  .abolish(avg_time(_)[source(S)]).
 
-+avg_time(_)[source(S)]: S \== self
++avg_time(V)[source(S)]: S \== self & avg_time(X)[source(S)] & X \== V
+<-  -avg_time(X)[source(S)];
+    !my_turn.
+
++avg_time(V)[source(S)]: S \== self & not(avg_time(X)[source(S)] & X \== V)
 <-  !my_turn.
 
 +!execute: action(A) & observation_window(Window)
 <-  send_operation(A);
     .wait(Window);
     ignoreAvgTime;
-    log("Ignored response", A);
+    log("Response Ignored", A);
     .wait(Window);
     get_avg_time(X,N);
     -avg_time(_);
@@ -41,7 +45,7 @@ best(Name):- avg_time(T)[source(Name)] & not(avg_time(Other)[source(Ag)] & Other
 
 +!verify_best: best(Name) 
 <-  .concat(Name, " is assuming!", Message);
-    log(Message, "")
+    log(Message, "").
 
 
 { include("$jacamo/templates/common-cartago.asl") }

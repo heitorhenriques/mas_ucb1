@@ -5,18 +5,20 @@ component provides App requires io.Output out, net.http.HTTPRequest http, time.T
 	int App:main(AppParam params[]) {
 
 		while(true){
-			if (i==1) {
+			if (i==10) {
 				HTTPResponse resp = http.post(new char[]("http://", server, ":8080/add"), null, new char[]("1"))
-				i = 2
 				out.println("$(resp.content)")
-			} else {
+			} else if (i==20) {
 				HTTPResponse resp = http.post(new char[]("http://", server, ":8080/add"), null, new char[]("2"))
-				i = 1
 				out.println("$(resp.content)")
+				i = 0
+			} else {
+				HTTPResponse resp = http.get(new char[]("http://", server, ":8080/get"), null)
+				out.println("$(resp.content)")
+				t.sleep(500)
 			}
-			t.sleep(2500)
+			i++
 		}
-		
 		return 0
 	}
 }

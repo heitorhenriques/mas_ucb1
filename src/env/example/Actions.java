@@ -19,7 +19,7 @@ public class Actions extends Artifact {
 	int iterations = 0;
 
 	void init(String csvname) {
-		defineObsProperty("vez",0);
+		defineObsProperty("turn",0);
 		Graph.startGraph();
 		this.csvName = csvname;
 	}
@@ -35,7 +35,7 @@ public class Actions extends Artifact {
     }
 
 	@OPERATION void inc(){
-		ObsProperty prop = getObsProperty("vez");
+		ObsProperty prop = getObsProperty("turn");
 		prop.updateValue(prop.intValue()+1);
 	}
 
