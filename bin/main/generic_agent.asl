@@ -16,7 +16,6 @@ best(Name):- avg_time(T)[source(Name)] & not(avg_time(Other)[source(Ag)] & Other
 <-  send_operation(A);
     .wait(Window);
     ignoreAvgTime;
-    log("Response Ignored", A);
     .wait(Window);
     get_avg_time(X,N);
     -avg_time(_);
