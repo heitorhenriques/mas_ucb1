@@ -24,13 +24,12 @@ iterations(0).
     !update_confidence_level;
     !ucb.
 
-+!ucb : iterations(N) & N < 50
++!ucb : iterations(N)
 <-  !composition(Action);
     !set_composition(Action);
     .wait(5000);
     log("Choosing the composition...", Action);
     ignoreAvgTime;
-    log("Average time ignored...", Action);
     .wait(5000);
     !update_reward;
     !update_confidence_level;

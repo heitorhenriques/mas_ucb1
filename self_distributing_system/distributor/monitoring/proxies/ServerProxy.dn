@@ -34,15 +34,24 @@ component provides server.Server, monitoring.BeingMonitored requires io.Output o
 				monitor = new Container()
 				monitor.turnMonitorOn()
 			}
+<<<<<<< HEAD
 			if (msg.command == "GET"){
 				ResponseTime metric = new ResponseTime()
+=======
+			ResponseTime metric = new ResponseTime()	
+			if (msg.command == "GET") {
+>>>>>>> ca7c910d9d73d77fe379579f2f6073170744595f
 				metric.start()
 				server.process(msg)
 				metric.finish()
 				int result = metric.result()
 				monitor.addMetric("response_time", result, false)
 				monitor.addEvent(msg.command, 1)
+<<<<<<< HEAD
 			}else{
+=======
+			}else {
+>>>>>>> ca7c910d9d73d77fe379579f2f6073170744595f
 				server.process(msg)
 			}
 		}

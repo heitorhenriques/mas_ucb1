@@ -12,32 +12,49 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class Actions extends Artifact {
-	DateTimeFormatter TIME_FORMATTER = 	DateTimeFormatter.ofPattern("HH:mm:ss");
+	DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
 	String csvName;
 	Double avgTime = 0.0;
 	Double totalTime = 0.0;
 	int iterations = 0;
+<<<<<<< HEAD
 	int numberOfAgents = 2;
 
 	void init(String csvname) {
 		defineObsProperty("turn",0);
 		Graph.startGraph();
+=======
+	boolean addLoopEnabled = false;
+	boolean addEven = true;
+
+	void init(String csvname, boolean addLoop) {
+		defineObsProperty("turn", 0);
+		Graph.startGraph(csvname);
+>>>>>>> ca7c910d9d73d77fe379579f2f6073170744595f
 		this.csvName = csvname;
+		this.addLoopEnabled = addLoop;
 	}
 
 	@OPERATION
 	public void log(String message, String action) {
 		String currentTime = LocalTime.now().format(TIME_FORMATTER);
-		if(action != "") {
-			System.out.println("("+ iterations + ") [" + currentTime + " - Action " + action +"] " + message);
+		if (action != "") {
+			System.out.println("(" + iterations + ") [" + currentTime + " - Action " + action + "] " + message);
 		} else {
-			System.out.println("("+ iterations + ") [" + currentTime + "] " + message);
+			System.out.println("(" + iterations + ") [" + currentTime + "] " + message);
 		}
-    }
+	}
 
+<<<<<<< HEAD
 	@OPERATION void inc(){
 		ObsProperty prop = getObsProperty("turn");
 		prop.updateValue(((prop.intValue()+1)%numberOfAgents));
+=======
+	@OPERATION
+	void inc() {
+		ObsProperty prop = getObsProperty("turn");
+		prop.updateValue(prop.intValue() + 1);
+>>>>>>> ca7c910d9d73d77fe379579f2f6073170744595f
 	}
 
 	@OPERATION
@@ -49,9 +66,8 @@ public class Actions extends Artifact {
 				.build();
 
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-		
-		// System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-		// System.out.println("IGNORANDO RESULTADOOOOO" + response.body());
+
+		log("Ignoring result: " + response.body().split(",")[1], response.body().split(",")[0]);
 
 		return;
 	}
@@ -69,9 +85,6 @@ public class Actions extends Artifact {
 		String res1 = parts[0];
 		Double res2 = Double.parseDouble(parts[1]);
 
-		// System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-		// System.out.println("Resultado: " + res2);
-
 		totalTime = totalTime + res2;
 		iterations++;
 		avgTime = totalTime / iterations;
@@ -79,6 +92,30 @@ public class Actions extends Artifact {
 		avg_time.set(res2);
 		action.set(res1);
 		Graph.updateData(avgTime, res2, csvName);
+
+		if (addLoopEnabled) {
+			log("Adding new element to the list...", "");
+
+			String charToAdd;
+
+			if (addEven) {
+				charToAdd = "2";
+				addEven = false;
+
+			} else {
+				charToAdd = "1";
+				addEven = true;
+			}
+
+			HttpClient addClient = HttpClient.newHttpClient();
+			HttpRequest addRequest = HttpRequest.newBuilder()
+					.uri(URI.create("http://192.168.0.103:8080/add"))
+					.POST(HttpRequest.BodyPublishers.ofString(charToAdd))
+					.build();
+
+			HttpResponse<String> responseAdd = client.send(addRequest,
+					HttpResponse.BodyHandlers.ofString());
+		}
 	}
 
 	@OPERATION
