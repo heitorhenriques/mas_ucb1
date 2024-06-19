@@ -8,7 +8,6 @@ erro(0.1).
 +difference(_,_)[source(S)]: S \== self & .findall(A,difference(_,_)[source(A)],L) & .all_names(M) & .length(L,X) & .length(M,Y) & X == Y
 <-  .print("Got the difference from ", S); !calc_res.
 
-<<<<<<< HEAD
 +difference(Nova,Antiga)[source(S)]: S == self & erro(Erro) & Antiga + (Antiga * Erro) > Nova & Antiga - (Antiga * Erro) < Nova
 <-  !execute.
 
@@ -20,14 +19,6 @@ erro(0.1).
 
 +result(_)[source(S)]: S \== self & .findall(A,result(_)[source(A)],L) & .all_names(M) & .length(L,X) & .length(M,Y) & X == Y
 <- !verify_best.
-=======
-+avg_time(V)[source(S)]: S \== self & avg_time(X)[source(S)] & X \== V
-<-  -avg_time(X)[source(S)];
-    !my_turn.
-
-+avg_time(V)[source(S)]: S \== self & not(avg_time(X)[source(S)] & X \== V)
-<-  !my_turn.
->>>>>>> ca7c910d9d73d77fe379579f2f6073170744595f
 
 +!execute: action(A) & observation_window(Window)
 <-  send_operation(A);
