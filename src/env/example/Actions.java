@@ -17,20 +17,13 @@ public class Actions extends Artifact {
 	Double avgTime = 0.0;
 	Double totalTime = 0.0;
 	int iterations = 0;
-<<<<<<< HEAD
 	int numberOfAgents = 2;
-
-	void init(String csvname) {
-		defineObsProperty("turn",0);
-		Graph.startGraph();
-=======
 	boolean addLoopEnabled = false;
 	boolean addEven = true;
 
 	void init(String csvname, boolean addLoop) {
-		defineObsProperty("turn", 0);
+		defineObsProperty("turn",0);
 		Graph.startGraph(csvname);
->>>>>>> ca7c910d9d73d77fe379579f2f6073170744595f
 		this.csvName = csvname;
 		this.addLoopEnabled = addLoop;
 	}
@@ -45,16 +38,9 @@ public class Actions extends Artifact {
 		}
 	}
 
-<<<<<<< HEAD
 	@OPERATION void inc(){
 		ObsProperty prop = getObsProperty("turn");
 		prop.updateValue(((prop.intValue()+1)%numberOfAgents));
-=======
-	@OPERATION
-	void inc() {
-		ObsProperty prop = getObsProperty("turn");
-		prop.updateValue(prop.intValue() + 1);
->>>>>>> ca7c910d9d73d77fe379579f2f6073170744595f
 	}
 
 	@OPERATION
