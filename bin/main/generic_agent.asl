@@ -1,12 +1,24 @@
 observation_window(5000).
-best(Name):- avg_time(T)[source(Name)] & not(avg_time(Other)[source(Ag)] & Other < T).
+best(Name):- result(T)[source(Name)] & not(result(Other)[source(Ag)] & Other < T).
+best_difference(D):- difference(D,_)[source(Name)] & not(difference(Other,_)[source(Ag)] & Other < D).
+sensibility(1).
+erro(0.1).
 !my_turn.
 
-+!clear[source(S)] : true
-<-  .abolish(avg_time(_)[source(S)]).
++difference(_,_)[source(S)]: S \== self & .findall(A,difference(_,_)[source(A)],L) & .all_names(M) & .length(L,X) & .length(M,Y) & X == Y
+<-  .print("Got the difference from ", S); !calc_res.
 
-+avg_time(_)[source(S)]: S \== self
-<-  !my_turn.
++difference(Nova,Antiga)[source(S)]: S == self & erro(Erro) & Antiga + (Antiga * Erro) > Nova & Antiga - (Antiga * Erro) < Nova
+<-  !execute.
+
++difference(Nova,Antiga)[source(S)]: S == self & erro(Erro) & Antiga + (Antiga * Erro) < Nova & Antiga - (Antiga * Erro) > Nova
+<-  !calc_res.
+
++!calc_res: best_difference(D) & sensibility(Se) & difference(L,Antiga)[source(self)]
+<- ?avg_time(A,_); X = L - D; .print(X); Y = L + D; B = Y/2; Z = X/B; V = A + (A * Z * Se); .print("Sending my result ", V); +result(V); .broadcast(tell,result(V)).
+
++result(_)[source(S)]: S \== self & .findall(A,result(_)[source(A)],L) & .all_names(M) & .length(L,X) & .length(M,Y) & X == Y
+<- !verify_best.
 
 +!execute: action(A) & observation_window(Window)
 <-  send_operation(A);
@@ -15,33 +27,43 @@ best(Name):- avg_time(T)[source(Name)] & not(avg_time(Other)[source(Ag)] & Other
     log("Ignored response", A);
     .wait(Window);
     get_avg_time(X,N);
-    -avg_time(_);
-    +avg_time(N);
+    ?avg_time(_,Z);
+    +avg_time(N,Z+1);
+    !update_diff;
     .concat("Response time: ", N, Message);
-    log(Message, A);
-    .broadcast(achieve,clear);
-    .broadcast(tell,avg_time(N)).
+    log(Message, A).
 
-+!my_turn: .all_names(L) & .length(L,SizeL) & .findall(S,avg_time(_)[source(S)],X) & .length(X,SizeA) & SizeL == SizeA <- !verify_best.
-+!my_turn: .all_names(L) & .length(L,SizeL) & .findall(S,avg_time(_)[source(S)],X) & .length(X,SizeA) & SizeL > SizeA
-<-  !verify_turn.
++!update_diff: avg_time(A,N) & avg_time(A1,N-1) & difference(Nova,Antiga) & N-1 \== 0
+<-  -difference(Nova,Antiga);
+    X = ((A-A1) + Nova)/(N-1);
+    +difference(X,Nova).
+
++!update_diff: avg_time(A,N) & avg_time(A1,N-1) & N-1 \== 0
+<-  Nova = (A-A1)/(N-1);
+    +difference(Nova,0);
+    .broadcast(tell,difference(Nova,_)).
+
++!my_turn: avg_time(A,N) & avg_time(A1,N-1) & N-1 \== 0 <- .print("Exploration finished"); !update_diff; !calc_res.
++!my_turn: true
+<-   !verify_turn.
 
 +!verify_turn: turn(N) & number(M) & M == N
 <-  !execute;
     inc;
     !my_turn.
 
-+!verify_turn: turn(N) & number(M) & M \== N
-<-  log("Not my turn!", "").
++!verify_turn: turn(N) & number(M) & M \== N & action(A)
+<-  log("Not my turn!", A).
 
 
 +!verify_best: best(self) 
-<-  !execute;
-    !verify_best.
+<-  .print("I am assuming");
+    !execute.
+    
 
 +!verify_best: best(Name) 
 <-  .concat(Name, " is assuming!", Message);
-    log(Message, "")
+    log(Message, "").
 
 
 { include("$jacamo/templates/common-cartago.asl") }
