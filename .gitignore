@@ -7,4 +7,8 @@
 *.iml
 self_distributing_system/.DS_Store
 build.gradle
-*.class
+bin/
+build/
+gradle/
+log/
+.stop___MAS
