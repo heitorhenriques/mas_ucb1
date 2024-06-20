@@ -43,7 +43,6 @@ public class Actions extends Artifact {
 	@OPERATION void inc(){
 		ObsProperty prop = getObsProperty("turn");
 		prop.updateValue(((prop.intValue()+1)%numberOfAgents));
-		signal("check_turn");
 	}
 
 	@OPERATION
