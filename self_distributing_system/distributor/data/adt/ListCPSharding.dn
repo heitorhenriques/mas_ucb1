@@ -30,6 +30,7 @@ data ShardState {
 
 /* Available list operations */
 const char ADD[]          = "add"
+const char REMOVE[]       = "remove"
 const char GET_LENGTH[]   = "getLength"
 const char GET_CONTENTS[] = "getContents"
 const char CLEAR_LIST[]   = "clearList"
@@ -141,7 +142,20 @@ component provides List:heap(Destructor, AdaptEvents) requires data.json.JSONEnc
 	}
 
 	void List:remove(Data item) {
-		// TODO
+		// build request
+		out.println("entrei no remove sharding")
+		Request request = new Request()
+		request.functionName = REMOVE
+		request.numParams = 1
+		char requestStr[] = parser.jsonFromData(request, null)
+		char param[] = parser.jsonFromData(item, null)
+		char content2[] = new char[](requestStr, "!", param, "\r\r\r\r")
+		// get the replica IP based on the item hash
+		setupRemoteListsIPs()
+		Int num = item
+		IPAddr addr = remoteListsIps[hash.h(num.i, remoteListsIps.arrayLength)]
+		// send to remote list
+		makeRequest(addr, content2, false)
 	}
 
 	void List:update(Data item, Data newVersion) {

@@ -2,7 +2,7 @@ data Int {
 	int i
 }
 
-component provides server.Server requires io.Output out, data.adt.List:heap list,
+component provides server.Server requires io.Output out, data.adt.List:heap list, data.StringUtil strUtil,
 	http.HTTPUtil httpUtil, data.IntUtil iu {
 
 	void Server:process(HTTPMessage msg) {
@@ -20,8 +20,17 @@ component provides server.Server requires io.Output out, data.adt.List:heap list
 				sendResponse(msg, result)
 			}
 		} else if (msg.command == "POST") {
+			String helper[] = strUtil.explode(msg.resource, "/")
+			char method[] = helper[helper.arrayLength-1].string
+			out.println(method)
 			Int num = new Int(iu.intFromString(msg.postData))
-			list.add(num)
+
+			if (method == "add") {
+				list.add(num)
+			} else if (method == "remove") {
+				list.remove(num)
+			}
+
 			sendResponse(msg, "OK")
 		}
 	}

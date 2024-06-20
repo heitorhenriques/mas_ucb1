@@ -21,6 +21,7 @@ data Int {
 
 /* Available list operations */
 const char ADD[]          = "add"
+const char REMOVE[]          = "remove"
 const char GET_LENGTH[]   = "getLength"
 const char GET_CONTENTS[] = "getContents"
 
@@ -35,6 +36,18 @@ component provides proxy.DistProxy requires io.Output out, data.IntUtil iu, net.
 
 		Int item = parser.jsonToData(request.params[0].value, typeof(Int), null)
 		list.add(item)
+
+		response.status = 1
+		response.value = ""
+
+		return response
+	}
+
+	Response removeRequest(Request request) {
+		Response response = new Response()
+
+		Int item = parser.jsonToData(request.params[0].value, typeof(Int), null)
+		list.remove(item)
 
 		response.status = 1
 		response.value = ""
@@ -74,6 +87,9 @@ component provides proxy.DistProxy requires io.Output out, data.IntUtil iu, net.
 
 		} else if (request.functionName == GET_CONTENTS) {
 			return getContentsRequest(request)
+
+		} else if (request.functionName == REMOVE) {
+			return removeRequest(request)
 
 		} else {
 			Response response = new Response()
