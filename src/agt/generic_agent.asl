@@ -5,19 +5,20 @@ sensibility(1).
 erro(0.1).
 !my_turn.
 
-+difference(_,_)[source(S)]: S \== self & .findall(A,difference(_,_)[source(A)],L) & .all_names(M) & .length(L,X) & .length(M,Y) & X == Y
++difference(C,D)[source(S)]: S \== self & difference(E,F)[source(S)] & E \== C & .findall(A,difference(_,_)[source(A)],L) & .all_names(M) & .length(L,X) & .length(M,Y) & X == Y
 <-  .concat("Got the difference from ", S, Message);
+    -difference(E,F);
     log(Message, "");
     !calc_res.
 
 +!check: difference(Nova,Antiga)[source(self)] & erro(Erro) & Antiga + (Antiga * Erro) >= Nova & Antiga - (Antiga * Erro) <= Nova
 <-  !execute.
 
-+!check: true
++!check: difference(Nova,Antiga)[source(self)] & erro(Erro) & Antiga + (Antiga * Erro) < Nova || Antiga - (Antiga * Erro) > Nova
 <-  !calc_res;
     !verify_best.
 
-+!calc_res: best_difference(D) & sensibility(Se) & difference(L,_)[source(self)] & result(C)[source(self)]
++!calc_res: best_difference(D) & sensibility(Se) & difference(L,_)[source(self)] & result(C)[source(self)] & .findall(A,difference(_,_)[source(A)],L) & .all_names(M) & .length(L,X) & .length(M,Y) & X == Y
     <- ?avg_time(A,_);
     X = L - D;
     Y = L + D;
@@ -30,7 +31,7 @@ erro(0.1).
     +result(V);
     .broadcast(tell,result(V)).
 
-+!calc_res: best_difference(D) & sensibility(Se) & difference(L,_)[source(self)]
++!calc_res: best_difference(D) & sensibility(Se) & difference(L,_)[source(self)] & .findall(A,difference(_,_)[source(A)],L) & .all_names(M) & .length(L,X) & .length(M,Y) & X == Y
     <- ?avg_time(A,_);
     X = L - D;
     Y = L + D;
@@ -42,7 +43,7 @@ erro(0.1).
     +result(V);
     .broadcast(tell,result(V)).
 
-+result(V)[source(S)]: S \== self & result(C)[source(S)]
++result(V)[source(S)]: S \== self & result(C)[source(S)] & C \== V
 <-  .print("Atualizando result. Recebi um ", V, " vou retirar um ", C);
     -result(C);
     !verify_best.
@@ -61,7 +62,7 @@ erro(0.1).
     .concat("Response time: ", N, Message);
     log(Message, A).
 
-+!update_diff: avg_time(A,N) & avg_time(A1,N-1) & difference(Nova,Antiga)[source(S)] & S == self & N-1 \== 0
++!update_diff: avg_time(A,N) & avg_time(A1,N-1) & difference(Nova,Antiga)[source(self)] & N-1 \== 0
 <-  -difference(Nova,Antiga);
     X = ((A-A1) + Nova)/(N-1);
     +difference(X,Nova).
