@@ -24,13 +24,13 @@ mas mas_ucb1 {
     // }
 
     // PRA RODAR O UCB:
-    agent bob: sample_agent.asl {
-        focus: c1
-    }
+    // agent bob: sample_agent.asl {
+    //     focus: c1
+    // }
 
-    workspace w {
-      artifact c1: example.Counter("ucb", "false")
-    }
+    // workspace w {
+    //   artifact c1: example.Counter("ucb", "false")
+    // }
     
 
     // PRA RODAR OS AGENTES DE CADA COMPOSIÇÃO
@@ -38,16 +38,18 @@ mas mas_ucb1 {
         focus: c1
         beliefs:    number(0)
                     action("0")
+                    avg_time(0,0)
                     
     }
     agent maria: generic_agent.asl {
         focus: c1
         beliefs:    number(1)
                     action("3")
+                    avg_time(0,0)
     }                  
  
-    // workspace w {
-    //   artifact c1: example.Actions("agents", "true")
-    // }
+    workspace w {
+      artifact c1: example.Actions("agents", "true")
+    }
 
 }

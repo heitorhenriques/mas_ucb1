@@ -60,7 +60,7 @@ public class Counter extends Artifact {
 			throws IOException, InterruptedException {
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create("http://192.168.0.103:3500/ucb/perception-data"))
+				.uri(URI.create("http://192.168.0.100:3500/ucb/perception-data"))
 				.build();
 
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -76,7 +76,7 @@ public class Counter extends Artifact {
 		action.set(res1);
 		Graph.updateData(avgTime, res2, csvName);
 
-		if (addLoopEnabled) {
+		if (addLoopEnabled && iterations % 2 == 0) {
 			log("Adding new element to the list...", "");
 
 			String charToAdd;
@@ -92,7 +92,7 @@ public class Counter extends Artifact {
 
 			HttpClient addClient = HttpClient.newHttpClient();
 			HttpRequest addRequest = HttpRequest.newBuilder()
-					.uri(URI.create("http://192.168.0.103:8080/add"))
+					.uri(URI.create("http://192.168.0.100:8080/add"))
 					.POST(HttpRequest.BodyPublishers.ofString(charToAdd))
 					.build();
 
@@ -106,7 +106,7 @@ public class Counter extends Artifact {
 			throws IOException, InterruptedException {
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create("http://192.168.0.103:3500/ucb/perception-data"))
+				.uri(URI.create("http://192.168.0.100:3500/ucb/perception-data"))
 				.build();
 
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -122,7 +122,7 @@ public class Counter extends Artifact {
 
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create("http://192.168.0.103:3500/ucb/composition"))
+				.uri(URI.create("http://192.168.0.100:3500/ucb/composition"))
 				.POST(HttpRequest.BodyPublishers.ofString(composition))
 				.build();
 

@@ -3,6 +3,8 @@
 package example;
 
 import cartago.*;
+import jason.stdlib.signal;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -41,6 +43,7 @@ public class Actions extends Artifact {
 	@OPERATION void inc(){
 		ObsProperty prop = getObsProperty("turn");
 		prop.updateValue(((prop.intValue()+1)%numberOfAgents));
+		signal("check_turn");
 	}
 
 	@OPERATION
@@ -48,7 +51,7 @@ public class Actions extends Artifact {
 			throws IOException, InterruptedException {
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create("http://192.168.0.103:3500/ucb/perception-data"))
+				.uri(URI.create("http://192.168.0.100:3500/ucb/perception-data"))
 				.build();
 
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -63,7 +66,7 @@ public class Actions extends Artifact {
 			throws IOException, InterruptedException {
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create("http://192.168.0.103:3500/ucb/perception-data"))
+				.uri(URI.create("http://192.168.0.100:3500/ucb/perception-data"))
 				.build();
 
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -79,7 +82,7 @@ public class Actions extends Artifact {
 		action.set(res1);
 		Graph.updateData(avgTime, res2, csvName);
 
-		if (addLoopEnabled) {
+		if (addLoopEnabled && iterations % 2 == 0) {
 			log("Adding new element to the list...", "");
 
 			String charToAdd;
@@ -95,7 +98,7 @@ public class Actions extends Artifact {
 
 			HttpClient addClient = HttpClient.newHttpClient();
 			HttpRequest addRequest = HttpRequest.newBuilder()
-					.uri(URI.create("http://192.168.0.103:8080/add"))
+					.uri(URI.create("http://192.168.0.100:8080/add"))
 					.POST(HttpRequest.BodyPublishers.ofString(charToAdd))
 					.build();
 
@@ -109,7 +112,7 @@ public class Actions extends Artifact {
 
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create("http://192.168.0.103:3500/ucb/composition"))
+				.uri(URI.create("http://192.168.0.100:3500/ucb/composition"))
 				.POST(HttpRequest.BodyPublishers.ofString(composition))
 				.build();
 
