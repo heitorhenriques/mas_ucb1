@@ -2,44 +2,48 @@ observation_window(5000).
 best(Name):- result(T)[source(Name)] & not(result(Other)[source(Ag)] & Other < T).
 best_difference(D):- difference(D,_)[source(Name)] & not(difference(Other,_)[source(Ag)] & Other < D).
 sensibility(1).
-erro(0.1).
+erro(0.15).
+sum_difference(0).
 !my_turn.
 
 +difference(C,D)[source(S)]: S \== self & difference(E,F)[source(S)] & E \== C 
-<-  .print("Atualizando difference. Recebi um ", C, " vou retirar um ", E);
-    -difference(E,F)[source(S)].
+<-  -difference(E,F)[source(S)].
 
-+!check: difference(Nova,Antiga)[source(self)] & erro(Erro) & Antiga + (Antiga * Erro) >= Nova & Antiga - (Antiga * Erro) <= Nova
-<-  !verify_best.
++!check: difference(Nova,Antiga)[source(self)] & not(difference(ONova,_)[source(Ag)] & Nova > ONova * 2) & result(Resultado)[source(self)] & result(Resultados)[source(S)] & S \== self
+<-  .concat("I'm still the best. This is my average difference time is ", Nova, ". The other average difference time is ", ONova, Message);
+    ?action(A);
+    log(Message, A);
+    !verify_best.
 
-+!check: difference(Nova,Antiga)[source(self)] & erro(Erro) & Antiga + (Antiga * Erro) < Nova | Antiga - (Antiga * Erro) > Nova
-<-  .print("Starting exploration")
++!check: true
+<-  ?action(A);
+    log("Starting exploration", A);
     .broadcast(achieve,exploration);
     !exploration.
 
-+!calc_res: best_difference(D) & sensibility(Se) & difference(L,_)[source(self)] & result(F)[source(self)] & .findall(A,difference(_,_)[source(A)],G) & .all_names(M) & .length(G,C) & .length(M,E) & C == E
++!calc_res: best_difference(D) & sensibility(Se) & difference(L,_)[source(self)] & result(F)[source(self)] & .findall(A,difference(_,_)[source(A)],G) & .all_names(M) & .length(G,C) & .length(M,E) & C == E & action(Acao)
 <-  ?avg_time(A,_);
     X = L - D;
     Y = L + D;
     B = Y/2;
     Z = X/B;
     V = A + (A * Z * Se);
-    .concat("Sending my result ", V, Message);
-    log(Message, "");
     -result(F);
     +result(V);
+    .concat("New result calculated: ", V, Message);
+    log(Message, Acao);
     .broadcast(tell,result(V)).
 
-+!calc_res: best_difference(D) & sensibility(Se) & difference(L,_)[source(self)] & .findall(A,difference(_,_)[source(A)],F) & .all_names(M) & .length(F,C) & .length(M,E) & C == E
++!calc_res: best_difference(D) & sensibility(Se) & difference(L,_)[source(self)] & .findall(A,difference(_,_)[source(A)],F) & .all_names(M) & .length(F,C) & .length(M,E) & C == E & action(Acao)
 <- ?avg_time(A,_);
     X = L - D;
     Y = L + D;
     B = Y/2;
     Z = X/B;
     V = A + (A * Z * Se);
-    .concat("Sending my result ", V, Message);
-    log(Message, "");
     +result(V);
+    .concat("New result calculated: ", V, Message);
+    log(Message, Acao);
     .broadcast(tell,result(V)).
 
 -!calc_res: true
@@ -47,12 +51,12 @@ erro(0.1).
     !calc_res.
 
 +result(V)[source(S)]: S \== self & result(A)[source(S)] & A \== V
-<-  .print("Atualizando result. Recebi um ", V, " vou retirar um ", A);
-    -result(A)[source(S)];
+<-  -result(A)[source(S)];
     !verify_best.
 
-+!execute: action(A) & observation_window(Window)
-<-  send_operation(A);
++!execute: action(A) & observation_window(Window) & mutex(S) & S == 0
+<-  inc_mutex;
+    send_operation(A);
     .wait(Window);
     ignoreAvgTime;
     .wait(Window);
@@ -60,38 +64,49 @@ erro(0.1).
     ?avg_time(_,Z);
     +avg_time(N,Z+1);
     .concat("Response time: ", N, Message);
-    log(Message, A).
+    log(Message, A);
+    inc_mutex.
 
-+!update_diff: avg_time(A,N) & avg_time(A1,N-1) & difference(Nova,Antiga)[source(self)] & N-1 \== 0
-<-  -difference(Nova,Antiga);
-    X = ((A-A1) + Nova)/(N-1);
++!update_diff: avg_time(A,N) & avg_time(A1,N-1) & difference(Nova,Antiga)[source(self)] & N-1 \== 0 & sum_difference(S) & action(Acao)
+<-  -sum_difference(S);
+    Y = S+(A-A1);
+    +sum_difference(Y);
+    -difference(Nova,Antiga);
+    X = (Y)/(N-1);
+    .concat("New difference: ", X, ". Old Difference: ", Nova, " Sum of differences: ", Y, Message);
+    log(Message, Acao);
     +difference(X,Nova);
     .broadcast(tell,difference(X,Nova)).
 
-+!update_diff: avg_time(A,N) & avg_time(A1,N-1) & N-1 \== 0
-<-  Nova = (A-A1)/(N-1);
++!update_diff: avg_time(A,N) & avg_time(A1,N-1) & N-1 \== 0 & sum_difference(S) & action(Acao)
+<-  -sum_difference(S);
+    X = S+(A-A1);
+    +sum_difference(X);
+    Nova = X/(N-1);
     +difference(Nova,0);
-    log("Broadcasting my difference!!", "");
+    .concat("New difference: ", Nova, Message);
+    log(Message, Acao);
     .broadcast(tell,difference(Nova,0)).
 
-+!my_turn: avg_time(A,N) & avg_time(A1,N-1) & N-1 \== 0 & difference(_,_)[source(self)]
-<-  log("Exploration finished", "");
++!my_exploration: avg_time(A,N) & avg_time(A1,N-1) & N-1 \== 0 & difference(_,_)[source(self)] & finished
+<-  -finished[source(_)];
     !update_diff;
-    !calc_res;
-    !verify_best.
+    !calc_res.
+
+-!my_exploration: true
+<-  .wait(1000);
+    !my_exploration.
 
 +!my_turn: avg_time(A,N) & avg_time(A1,N-1) & N-1 \== 0 & not(difference(_,_)[source(self)])
-<-  log("Exploration finished", "");
-    !update_diff;
+<-  !update_diff;
     !calc_res;
     !verify_best.
 
 +!my_turn: not(difference(_,_)[source(self)])
-<-   !verify_turn.
+<-  !verify_turn.
 
 +!verify_turn: turn(N) & number(M) & M == N & action(A)
 <-  !execute;
-    log("Incrementing turn...", A);
     inc;
     .broadcast(achieve,my_turn);
     !my_turn.
@@ -101,14 +116,13 @@ erro(0.1).
 
 
 +!verify_best: .findall(A,result(_)[source(A)],Z) & .all_names(M) & .length(Z,C) & .length(M,E) & C == E & best(self) 
-<-  log("I am assuming", "");
-    !execute;
+<-  !execute;
     !update_diff;
     !check.
     
-+!verify_best: .findall(A,result(_)[source(A)],Z) & .all_names(M) & .length(Z,C) & .length(M,E) & C == E & best(Name) 
++!verify_best: .findall(A,result(_)[source(A)],Z) & .all_names(M) & .length(Z,C) & .length(M,E) & C == E & best(Name) & action(Acao)
 <-  .concat(Name, " is assuming!", Message);
-    log(Message, "").
+    log(Message, Acao).
 
 -!verify_best: true
 <-  .wait(1000);
@@ -116,28 +130,27 @@ erro(0.1).
 
 -!my_turn.
 
-+!exploration: turn(N) & number(M) & M == N & action(A)
-<-  +exploring(1);
-    !execute;
-    log("Incrementing turn...", A);
-    inc;
-    .broadcast(achieve,exploration).
-
-+!exploration: turn(N) & number(M) & M == N & action(A) & exploring(Number) & Number < 1
++!exploration: turn(N) & number(M) & M == N & action(A) & exploring(Number) & Number < 2
 <-  -exploring(Number);
     !execute;
     +exploring(Number+1);
-    log("Incrementing turn...", A);
+    log("Second step of exploration", A);
     inc;
     .broadcast(achieve,exploration).
 
-+!exploration: exploring(Number) & Number > 1
-<- !my_turn.
++!exploration: exploring(Number) & Number > 1 & action(A)
+<-  -exploring(Number);
+    .broadcast(tell,finished);
+    .broadcast(achieve,exploration);
+    log("Finishing exploration", A);
+    !my_exploration.
 
--!exploration: true
-<- .print("Not my turn")
-
-
++!exploration: turn(N) & number(M) & M == N & action(A) & not(finished)
+<-  +exploring(1);
+    log("First step of exploration", A);
+    !execute;
+    inc;
+    .broadcast(achieve,exploration).
 
 { include("$jacamo/templates/common-cartago.asl") }
 { include("$jacamo/templates/common-moise.asl") }

@@ -25,6 +25,7 @@ public class Actions extends Artifact {
 
 	void init(String csvname, boolean addLoop) {
 		defineObsProperty("turn",0);
+		defineObsProperty("mutex",0);
 		Graph.startGraph(csvname);
 		this.csvName = csvname;
 		this.addLoopEnabled = addLoop;
@@ -43,6 +44,11 @@ public class Actions extends Artifact {
 	@OPERATION void inc(){
 		ObsProperty prop = getObsProperty("turn");
 		prop.updateValue(((prop.intValue()+1)%numberOfAgents));
+	}
+
+	@OPERATION void inc_mutex(){
+		ObsProperty prop = getObsProperty("mutex");
+		prop.updateValue(((prop.intValue()+1)%2));
 	}
 
 	@OPERATION
@@ -81,7 +87,7 @@ public class Actions extends Artifact {
 		action.set(res1);
 		Graph.updateData(avgTime, res2, csvName);
 
-		if (addLoopEnabled && iterations % 2 == 0) {
+		if (addLoopEnabled) {
 			log("Adding new element to the list...", "");
 
 			String charToAdd;
