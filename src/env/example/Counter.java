@@ -18,16 +18,16 @@ public class Counter extends Artifact {
 	Double totalTime = 0.0;
 	int iterations = 0;
 	String csvName;
-	boolean addLoopEnabled = false;
-	boolean addEven = true;
+	int performOnLoop = 0;
+	boolean isEven = true;
 
-	private double min = 3100;
-	private double max = 4500;
+	private double min = 2700;
+	private double max = 3700;
 
-	void init(String csvname, boolean addLoop) {
+	void init(String csvname, int performOnLoopInt) {
 		Graph.startGraph(csvname);
 		this.csvName = csvname;
-		this.addLoopEnabled = addLoop;
+		this.performOnLoop = performOnLoopInt;
 	}
 
 	@OPERATION
@@ -76,18 +76,34 @@ public class Counter extends Artifact {
 		action.set(res1);
 		Graph.updateData(avgTime, res2, csvName);
 
-		if (addLoopEnabled && iterations % 2 == 0) {
+		switch (performOnLoop) {
+			case 1:
+				addToList();
+				break;
+			case 2:
+				removeFromList();
+				break;
+
+			default:
+				break;
+		}
+	}
+
+	void addToList() throws IOException, InterruptedException {
+		// if (iterations % 2 == 0) {
+			HttpClient client = HttpClient.newHttpClient();
+
 			log("Adding new element to the list...", "");
 
 			String charToAdd;
 
-			if (addEven) {
+			if (isEven) {
 				charToAdd = "2";
-				addEven = false;
+				isEven = false;
 
 			} else {
 				charToAdd = "1";
-				addEven = true;
+				isEven = true;
 			}
 
 			HttpClient addClient = HttpClient.newHttpClient();
@@ -98,7 +114,36 @@ public class Counter extends Artifact {
 
 			HttpResponse<String> responseAdd = client.send(addRequest,
 					HttpResponse.BodyHandlers.ofString());
-		}
+		// }
+	}
+
+	void removeFromList() throws IOException, InterruptedException {
+		// if (iterations % 2 == 0) {
+			HttpClient client = HttpClient.newHttpClient();
+
+			
+			String charToRemove;
+			
+			if (isEven) {
+				charToRemove = "2";
+				isEven = false;
+				
+			} else {
+				charToRemove = "1";
+				isEven = true;
+			}
+			
+			log("Removing element " + charToRemove + " from the list...", "");
+
+			HttpClient removeClient = HttpClient.newHttpClient();
+			HttpRequest removeRequest = HttpRequest.newBuilder()
+					.uri(URI.create("http://192.168.0.100:8080/remove"))
+					.POST(HttpRequest.BodyPublishers.ofString(charToRemove))
+					.build();
+
+			HttpResponse<String> responseRemove = client.send(removeRequest,
+					HttpResponse.BodyHandlers.ofString());
+		// }
 	}
 
 	@OPERATION

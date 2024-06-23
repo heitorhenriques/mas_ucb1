@@ -3,10 +3,10 @@ import matplotlib.pyplot as plt
 import os
 
 csv_files = [
-    './datasets/local.csv',
-    './datasets/sharding.csv',
-    './datasets/agents.csv',
-    # './datasets/case3/ucb.csv',
+    './datasets/case2/local.csv',
+    './datasets/case2/sharding.csv',
+    './datasets/case2/agents.csv',
+    # './datasets/case2/ucb.csv',
     # './datasets/local (add loop).csv',
     # './datasets/sharding (add loop).csv',
     # './datasets/agents (add loop).csv'
@@ -22,7 +22,7 @@ for file in csv_files:
     df = pd.read_csv(file)
     
     # Filter the data for 'Current Action Time'
-    current_action_df = df[df['Series'] == 'Current Action Time']
+    current_action_df = df[(df['Series'] == 'Current Action Time') & ( df['Iteration'] <= 150)]
     
     # Plot the data
     plt.plot(current_action_df['Iteration'], current_action_df['Average Time (ms)'], marker='.', label=file_name)
@@ -38,7 +38,7 @@ plt.legend()
 # Add a grid for better readability
 plt.grid(True)
 
-plt.savefig('./images/current_action_time_plot.png')  # You can change the filename and format as needed
+plt.savefig('./images/current_action_time_plot.pdf', format="pdf")  # You can change the filename and format as needed
 
 # Show the plot
 plt.show()

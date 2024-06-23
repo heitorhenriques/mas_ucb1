@@ -2,15 +2,15 @@ observation_window(5000).
 best(Name):- result(T)[source(Name)] & not(result(Other)[source(Ag)] & Other < T).
 best_difference(D):- difference(D,_)[source(Name)] & not(difference(Other,_)[source(Ag)] & Other < D).
 sensibility(1).
-erro(0.15).
+erro(1.3).
 sum_difference(0).
 !my_turn.
 
 +difference(C,D)[source(S)]: S \== self & difference(E,F)[source(S)] & E \== C 
 <-  -difference(E,F)[source(S)].
 
-+!check: difference(Nova,Antiga)[source(self)] & not(difference(ONova,_)[source(Ag)] & Nova > ONova * 2) & result(Resultado)[source(self)] & result(Resultados)[source(S)] & S \== self
-<-  .concat("I'm still the best. This is my average difference time is ", Nova, ". The other average difference time is ", ONova, Message);
++!check: difference(Nova,Antiga)[source(self)] & erro(E) & not(difference(ONova,_)[source(Ag)] & math.abs(Nova) > math.abs(ONova) * E) & result(Resultado)[source(self)] & result(Resultados)[source(S)] & S \== self
+<-  .concat("I'm still the best. This is my average difference time is ", Nova, Message);
     ?action(A);
     log(Message, A);
     !verify_best.
@@ -27,7 +27,7 @@ sum_difference(0).
     Y = L + D;
     B = Y/2;
     Z = X/B;
-    V = A + (A * Z * Se);
+    V = A + (A * math.abs(Z) * Se);
     -result(F);
     +result(V);
     .concat("New result calculated: ", V, Message);
@@ -40,7 +40,7 @@ sum_difference(0).
     Y = L + D;
     B = Y/2;
     Z = X/B;
-    V = A + (A * Z * Se);
+    V = A + (A * math.abs(Z) * Se);
     +result(V);
     .concat("New result calculated: ", V, Message);
     log(Message, Acao);

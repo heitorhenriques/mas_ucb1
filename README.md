@@ -100,6 +100,8 @@ Começando com 2 itens na lista;
 
 Para o UCB, Min = 3 ms e Max = 3500
 
+Para os agentes, ERRO = 1.3
+
 ## CASO 2
 READ_FACTOR: 2;
 
@@ -112,7 +114,16 @@ READ_FACTOR: 8;
 
 38 itens fixos na lista;
 
-Para o UCB, Min = 3100 ms e Max = 4500 ms
+Para o UCB, Min = 2700 ms e Max = 3700 ms
+
+## CASO 4
+READ_FACTOR: 2;
+
+90 itens na lista;
+
+1 elemento foi removido a cada iteração do programa;
+
+Para o UCB, Min = 2 ms e Max = 5000 ms
 
 <!-- 
 ## Resultados 2 itens na lista READ_FACTOR 2:
