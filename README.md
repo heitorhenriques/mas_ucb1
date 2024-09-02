@@ -124,23 +124,3 @@ READ_FACTOR: 2;
 1 elemento foi removido a cada iteração do programa;
 
 Para o UCB, Min = 2 ms e Max = 5000 ms
-
-<!-- 
-## Resultados 2 itens na lista READ_FACTOR 2:
-Min = 1
-Max = 160
-Janela de observação = 5000
-
-## Resultados 12 itens na lista READ_FACTOR 5:
-Min = 360
-Max = 605
-Janela de observação = 5000
-
-## Resultados adicionando 1 item a cada 6500 ms na lista com READ_FACTOR 2:
-Iniciamos os agentes com 2 itens na lista ao invés de 0 pq o sharding dava erro.
-
-Min = 3
-Max = 3500
-Janela de observação = 5000
-
-Para o UCB, como utilizamos dois waits de 5000 ms para ignorar um dos resultados, precisamos alterar a adição dos itens no loop de Adds para 6000. -->

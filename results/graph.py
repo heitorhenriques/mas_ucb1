@@ -3,33 +3,32 @@ import matplotlib.pyplot as plt
 import os
 
 csv_files = [
-    './datasets/case2/local.csv',
-    './datasets/case2/sharding.csv',
-    './datasets/case2/agents.csv',
-    # './datasets/case2/ucb.csv',
-    # './datasets/local (add loop).csv',
-    # './datasets/sharding (add loop).csv',
-    # './datasets/agents (add loop).csv'
+    './datasets/case1/Local.csv',
+    './datasets/case1/Sharding.csv',
+    # './datasets/case1/Agents.csv',
+    './datasets/case1/UCB.csv',
 ]
+
+plt.rcParams.update({'font.size': 18})  # Update the default font size for all elements
 
 plt.figure(figsize=(10, 6))
 
 for file in csv_files:
     # Extract the file name without the path and get the first word
-    file_name = os.path.basename(file).split(' ')[0]
+    file_name = os.path.basename(file).replace('.csv', '')
     
     # Read the CSV data into a DataFrame
     df = pd.read_csv(file)
     
     # Filter the data for 'Current Action Time'
-    current_action_df = df[(df['Series'] == 'Current Action Time') & ( df['Iteration'] <= 150)]
+    current_action_df = df[(df['Series'] == 'Current Action Time') & ( df['Iteration'] <= 85)]
     
     # Plot the data
     plt.plot(current_action_df['Iteration'], current_action_df['Average Time (ms)'], marker='.', label=file_name)
 
 # Set the title and labels
-plt.title('Current Action Time vs Iteration')
-plt.xlabel('Iteration')
+# plt.title('Current Action Time vs Iteration')
+plt.xlabel('Step')
 plt.ylabel('Response Time (ms)')
 
 # Add a legend

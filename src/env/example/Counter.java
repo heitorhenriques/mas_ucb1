@@ -21,8 +21,8 @@ public class Counter extends Artifact {
 	int performOnLoop = 0;
 	boolean isEven = true;
 
-	private double min = 2700;
-	private double max = 3700;
+	private double min = 1;
+	private double max = 5000;
 
 	void init(String csvname, int performOnLoopInt) {
 		Graph.startGraph(csvname);
@@ -76,17 +76,6 @@ public class Counter extends Artifact {
 		action.set(res1);
 		Graph.updateData(avgTime, res2, csvName);
 
-		switch (performOnLoop) {
-			case 1:
-				addToList();
-				break;
-			case 2:
-				removeFromList();
-				break;
-
-			default:
-				break;
-		}
 	}
 
 	void addToList() throws IOException, InterruptedException {
@@ -120,18 +109,8 @@ public class Counter extends Artifact {
 	void removeFromList() throws IOException, InterruptedException {
 		// if (iterations % 2 == 0) {
 			HttpClient client = HttpClient.newHttpClient();
-
 			
-			String charToRemove;
-			
-			if (isEven) {
-				charToRemove = "2";
-				isEven = false;
-				
-			} else {
-				charToRemove = "1";
-				isEven = true;
-			}
+			String charToRemove = String.valueOf(iterations);
 			
 			log("Removing element " + charToRemove + " from the list...", "");
 
@@ -158,7 +137,17 @@ public class Counter extends Artifact {
 
 		log("Ignoring result: " + response.body().split(",")[1], response.body().split(",")[0]);
 
-		return;
+		switch (performOnLoop) {
+			case 1:
+				addToList();
+				break;
+			case 2:
+				removeFromList();
+				break;
+
+			default:
+				break;
+		}
 	}
 
 	@OPERATION

@@ -2,7 +2,7 @@ iterations(0).
 !start.
 
 +!start: action(A,C)
-<- makeArtifact("c0","example.Counter",[C, 0],Id);
+<- makeArtifact("c0","example.Counter",[C, 2],Id);
     focus(Id);
     sendOperation(A);
     !run.

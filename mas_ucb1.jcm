@@ -29,7 +29,7 @@ mas mas_ucb1 {
     }
 
     workspace w {
-      artifact c1: example.Counter("ucb", "0")
+      artifact c1: example.Counter("ucb", "2")
     }
     
 

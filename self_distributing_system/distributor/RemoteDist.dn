@@ -53,7 +53,7 @@ component provides App requires io.Output out, net.TCPSocket, net.TCPServerSocke
 		Object objects[] = remote[0].class.getObjects("data.adt.List:heap")
 		List list = objects[0]
 		while (list.getLength() > 0) {
-			list.remove(list.getFirst())
+			list.remove(list.getIndex(0))
 		}
 	}
 
