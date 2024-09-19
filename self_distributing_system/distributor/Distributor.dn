@@ -274,9 +274,9 @@ component provides App requires io.Output out, data.StringUtil strUtil, data.Int
 		asynch::startAPI()
 		/* command prompt */
 		char cmd[] = "start"
+		out.print("distributor> ")
 		while (cmd != "exit") {
 			if (cmd != "start") { commandInterpret(cmd)	}
-			out.print("distributor> ")
 			cmd = in.readln()
 		}
 		return 0

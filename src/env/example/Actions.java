@@ -3,7 +3,6 @@
 package example;
 
 import cartago.*;
-import jason.stdlib.signal;
 
 import java.io.IOException;
 import java.net.URI;
@@ -22,8 +21,12 @@ public class Actions extends Artifact {
 	int numberOfAgents = 2;
 	int performOnLoop = 0;
 	boolean isEven = true;
+	String DISTRIBUTOR_IP;
 
 	void init(String csvname, int performOnLoopInt) {
+		String myEnvVar = System.getenv("OBSERVATION_WINDOW");
+		DISTRIBUTOR_IP = System.getenv("DISTRIBUTOR_IP");
+		defineObsProperty("observation_window",Integer.parseInt(myEnvVar));
 		defineObsProperty("turn",0);
 		defineObsProperty("mutex",0);
 		Graph.startGraph(csvname);
@@ -56,7 +59,7 @@ public class Actions extends Artifact {
 			throws IOException, InterruptedException {
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create("http://192.168.0.100:3500/ucb/perception-data"))
+				.uri(URI.create("http://"+DISTRIBUTOR_IP+":3500/ucb/perception-data"))
 				.build();
 
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -71,7 +74,7 @@ public class Actions extends Artifact {
 			throws IOException, InterruptedException {
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create("http://192.168.0.100:3500/ucb/perception-data"))
+				.uri(URI.create("http://"+DISTRIBUTOR_IP+":3500/ucb/perception-data"))
 				.build();
 
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -119,7 +122,7 @@ public class Actions extends Artifact {
 
 			HttpClient addClient = HttpClient.newHttpClient();
 			HttpRequest addRequest = HttpRequest.newBuilder()
-					.uri(URI.create("http://192.168.0.100:8080/add"))
+					.uri(URI.create("http://"+DISTRIBUTOR_IP+":8080/add"))
 					.POST(HttpRequest.BodyPublishers.ofString(charToAdd))
 					.build();
 
@@ -147,7 +150,7 @@ public class Actions extends Artifact {
 
 			HttpClient removeClient = HttpClient.newHttpClient();
 			HttpRequest removeRequest = HttpRequest.newBuilder()
-					.uri(URI.create("http://192.168.0.100:8080/remove"))
+					.uri(URI.create("http://"+DISTRIBUTOR_IP+":8080/remove"))
 					.POST(HttpRequest.BodyPublishers.ofString(charToRemove))
 					.build();
 
@@ -161,7 +164,7 @@ public class Actions extends Artifact {
 
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create("http://192.168.0.100:3500/ucb/composition"))
+				.uri(URI.create("http://"+DISTRIBUTOR_IP+":3500/ucb/composition"))
 				.POST(HttpRequest.BodyPublishers.ofString(composition))
 				.build();
 

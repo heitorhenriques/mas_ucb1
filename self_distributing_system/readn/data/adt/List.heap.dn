@@ -4,7 +4,7 @@ data Node {
 
 const int READ_FACTOR = 2
 
-component provides data.adt.List:heap(Destructor, AdaptEvents) requires io.Output out, data.IntUtil iu, util.Math math {
+component provides data.adt.List:heap(Destructor, AdaptEvents) requires io.Output out, data.IntUtil iu, util.Math math, os.SystemInfo info {
 	Node heap[] = null
 	int length = 0
 	Mutex heapLock = new Mutex()
@@ -145,6 +145,7 @@ component provides data.adt.List:heap(Destructor, AdaptEvents) requires io.Outpu
 	 * heapsort. That means processing time on read operations.
 	 */
 	Data[] List:getContents(opt Type t) {
+		char distributor_ip[] = info.getVariable("READ_FACTOR")
 		mutex(heapLock) {
 			if (heap == null) { 
 				return new Data[] 

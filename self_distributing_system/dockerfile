@@ -1,0 +1,42 @@
+# Use a basic image with curl and unzip
+FROM ubuntu:latest
+
+USER root
+
+ARG SCRIPT_NAME
+
+# Install required packages: curl and unzip
+RUN apt-get update && apt-get install -y wget unzip dos2unix
+
+# Set working directory
+WORKDIR /app
+
+# Download and unzip the file
+RUN wget --no-check-certificate -O project.zip https://www.projectdana.com/download/ubu64/253 && \
+    unzip project.zip -d ./dana && \
+    rm project.zip
+
+    
+COPY . /app
+
+RUN chmod +x dana/dana dana/dnc 
+
+RUN find . -name "*.sh" -exec chmod +x {} \;
+
+RUN find /app -name "*.sh" -exec dos2unix {} \;
+
+ENV DANA_HOME=/app/dana
+ENV PATH="${PATH}:/app/dana/"
+
+RUN ./compile.sh
+
+EXPOSE 3500
+EXPOSE 8080
+EXPOSE 8081
+EXPOSE 8082
+EXPOSE 2010
+EXPOSE 2011
+
+
+# Default command to list the contents of the unzipped folder
+ENTRYPOINT [ "dana" ]

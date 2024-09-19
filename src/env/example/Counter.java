@@ -23,8 +23,14 @@ public class Counter extends Artifact {
 
 	private double min = 1;
 	private double max = 5000;
+	String DISTRIBUTOR_IP;
 
 	void init(String csvname, int performOnLoopInt) {
+		String myEnvVar = System.getenv("OBSERVATION_WINDOW");
+		System.out.println(myEnvVar);
+		//DISTRIBUTOR_IP = System.getenv("DISTRIBUTOR_IP");
+		DISTRIBUTOR_IP = "192.168.3.7";
+		defineObsProperty("observation_window",5000);
 		Graph.startGraph(csvname);
 		this.csvName = csvname;
 		this.performOnLoop = performOnLoopInt;
@@ -60,7 +66,7 @@ public class Counter extends Artifact {
 			throws IOException, InterruptedException {
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create("http://192.168.0.100:3500/ucb/perception-data"))
+				.uri(URI.create("http://"+DISTRIBUTOR_IP+":3500/ucb/perception-data"))
 				.build();
 
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -97,7 +103,7 @@ public class Counter extends Artifact {
 
 			HttpClient addClient = HttpClient.newHttpClient();
 			HttpRequest addRequest = HttpRequest.newBuilder()
-					.uri(URI.create("http://192.168.0.100:8080/add"))
+					.uri(URI.create("http://"+DISTRIBUTOR_IP+":8080/add"))
 					.POST(HttpRequest.BodyPublishers.ofString(charToAdd))
 					.build();
 
@@ -116,7 +122,7 @@ public class Counter extends Artifact {
 
 			HttpClient removeClient = HttpClient.newHttpClient();
 			HttpRequest removeRequest = HttpRequest.newBuilder()
-					.uri(URI.create("http://192.168.0.100:8080/remove"))
+					.uri(URI.create("http://"+DISTRIBUTOR_IP+":8080/remove"))
 					.POST(HttpRequest.BodyPublishers.ofString(charToRemove))
 					.build();
 
@@ -130,11 +136,11 @@ public class Counter extends Artifact {
 			throws IOException, InterruptedException {
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create("http://192.168.0.100:3500/ucb/perception-data"))
+				.uri(URI.create("http://"+DISTRIBUTOR_IP+":3500/ucb/perception-data"))
 				.build();
 
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
+		System.out.println(response.body());
 		log("Ignoring result: " + response.body().split(",")[1], response.body().split(",")[0]);
 
 		switch (performOnLoop) {
@@ -156,7 +162,7 @@ public class Counter extends Artifact {
 
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create("http://192.168.0.100:3500/ucb/composition"))
+				.uri(URI.create("http://"+DISTRIBUTOR_IP+":3500/ucb/composition"))
 				.POST(HttpRequest.BodyPublishers.ofString(composition))
 				.build();
 

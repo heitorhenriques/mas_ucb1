@@ -23,7 +23,6 @@ mas mas_ucb1 {
         // beliefs: action("3","sharding")
     // }
 
-    // PRA RODAR O UCB:
     agent bob: sample_agent.asl {
         focus: c1
     }
@@ -49,7 +48,7 @@ mas mas_ucb1 {
     // }                  
  
     // workspace w {
-    //   artifact c1: example.Actions("agents", "0")
+    //   artifact c1: example.Actions("agents", 2)
     // }
 
 }

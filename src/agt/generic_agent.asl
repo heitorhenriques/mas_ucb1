@@ -1,4 +1,3 @@
-observation_window(5000).
 best(Name):- result(T)[source(Name)] & not(result(Other)[source(Ag)] & Other < T).
 best_difference(D):- difference(D,_)[source(Name)] & not(difference(Other,_)[source(Ag)] & Other < D).
 sensibility(1).

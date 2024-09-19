@@ -1,0 +1,72 @@
+version: '3'
+services:
+  distributor:
+    build: 
+      context: /self_distributing_system
+      dockerfile: dockerfile.distributor
+    entrypoint: [ "/bin/bash" , "./compile_distributor.sh"]
+    networks:
+      - my_network
+    ports:
+      - 3500
+
+  remote1:
+    build: 
+      context: /self_distributing_system
+      dockerfile: dockerfile.remote1
+    entrypoint: [ "/bin/bash" , "./compile_remote1.sh"]
+    networks:
+      - my_network
+    ports:
+      - 8081
+      - 2010
+
+  remote2:
+    build: 
+      context: /self_distributing_system
+      dockerfile: dockerfile.remote2
+    entrypoint: [ "/bin/bash" , "./compile_remote2.sh"]
+    networks:
+      - my_network
+    ports:
+      - 8082
+      - 2011
+
+  client_add:
+    build: 
+      context: /self_distributing_system
+      dockerfile: dockerfile.clientadd
+    entrypoint: [ "/bin/bash" , "./compile_add.sh"]
+    depends_on:
+      - distributor
+      - remote1
+      - remote2
+    networks:
+      - my_network
+    environment:
+      - DISTRIBUTOR_IP=distributor
+
+  client_get:
+    build: 
+      context: /self_distributing_system
+      dockerfile: dockerfile.clientget
+    entrypoint: [ "/bin/bash" , "./compile_get.sh"]
+    depends_on:
+      - distributor
+      - remote1
+      - remote2
+    networks:
+      - my_network
+
+  agentes:
+    build: .
+    depends_on:
+      - distributor
+      - remote1
+      - remote2
+      - client_add
+      - client_get
+
+networks:
+  my_network:
+    driver: bridge

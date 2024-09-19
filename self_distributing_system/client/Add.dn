@@ -1,12 +1,12 @@
-component provides App requires io.Output out, net.http.HTTPRequest http {
-	char server[] = "192.168.0.100"
-
+component provides App requires io.Output out, net.http.HTTPRequest http, os.SystemInfo info {
+	char server[] = "localhost"
 	int App:main(AppParam params[]) {
+		char distributor_ip[] = info.getVariable("DISTRIBUTOR_IP")
 		
-		HTTPResponse resp = http.post(new char[]("http://", server, ":8080/add"), null, new char[]("1"))
+		HTTPResponse resp = http.post(new char[]("http://", distributor_ip, ":8080/add"), null, new char[]("1"))
 		out.println("$(resp.content)")
 		
-		resp = http.post(new char[]("http://", server, ":8080/add"), null, new char[]("2"))
+		resp = http.post(new char[]("http://", distributor_ip, ":8080/add"), null, new char[]("2"))
 		out.println("$(resp.content)")
 		
 		

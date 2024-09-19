@@ -10,27 +10,27 @@ action("3").
 iterations(0).
 !start.
 
-+!start : true
++!start : observation_window(Window)
 <- .findall(S,action(S),L);
     for (.member(K,L)){
         log("Testing action...", K);
         !set_composition(K);
-        .wait(5000);
+        .wait(Window);
         ignoreAvgTime;
         log("Average time ignored...", K);
-        .wait(5000);
+        .wait(Window);
         !create_reward;
     };
     !update_confidence_level;
     !ucb.
 
-+!ucb : iterations(N)
++!ucb : iterations(N) & observation_window(Window)
 <-  !composition(Action);
     !set_composition(Action);
-    .wait(5000);
+    .wait(Window);
     log("Choosing the composition...", Action);
     ignoreAvgTime;
-    .wait(5000);
+    .wait(Window);
     !update_reward;
     !update_confidence_level;
     !ucb.

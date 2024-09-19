@@ -34,7 +34,7 @@ const char CLEAR_LIST[]   = "clearList"
 const char LOCALHOST[] = "localhost"
 
 component provides List:heap(Destructor, AdaptEvents) requires data.json.JSONEncoder parser,
-net.TCPSocket, net.TCPServerSocket, data.StringUtil strUtil, io.Output out, data.IntUtil iu {
+net.TCPSocket, net.TCPServerSocket, data.StringUtil strUtil, io.Output out, data.IntUtil iu, os.SystemInfo info {
 
 	IPAddr remoteDistsIps[] = null
 	IPAddr remoteListsIps[] = null
@@ -42,13 +42,15 @@ net.TCPSocket, net.TCPServerSocket, data.StringUtil strUtil, io.Output out, data
 	int pointer = 0
 
 	void setupRemoteDistsIPs() {
+		char remote1_ip[] = info.getVariable("REMOTE1_IP")
+		char remote2_ip[] = info.getVariable("REMOTE2_IP")
 		if (remoteDistsIps == null) {
 			remoteDistsIps = new IPAddr[2]
 			remoteDistsIps[0] = new IPAddr()
-			remoteDistsIps[0].ip = new char[]("192.168.0.102")
+			remoteDistsIps[0].ip = new char[](remote1_ip)
 			remoteDistsIps[0].port = 8081
 			remoteDistsIps[1] = new IPAddr()
-			remoteDistsIps[1].ip = new char[]("192.168.0.101")
+			remoteDistsIps[1].ip = new char[](remote2_ip)
 			remoteDistsIps[1].port = 8082
 		}
 	}
