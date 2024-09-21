@@ -1,6 +1,5 @@
 package example;
 
-import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import java.io.File;
@@ -9,38 +8,33 @@ import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
 
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-public class Graph extends JFrame {
+public class Graph{
 
-    private static final long serialVersionUID = 1L;
     private static List<String[]> csvData; // Data structure to hold CSV data
     private static XYSeries seriesTotal;
     private static XYSeries seriesActions;
     private XYSeriesCollection dataset;
     private static JFreeChart chart;
-    private static ChartPanel chartPanel;
 
     // Função para iniciar o gráfico
     // Cria uma nova tela e printa o gráfico vazio
     public static void startGraph(String title) {
         SwingUtilities.invokeLater(() -> {
             Graph example = new Graph(title);
-            example.pack();
-            example.setSize(600, 400);
-            example.setVisible(true);
+            // example.pack();
+            // example.setSize(600, 400);
+            // example.setVisible(true);
         });
     }
 
     // Cria o gráfico
     public Graph(String title) {
-        super(title);
+        //super(title);
 
         csvData = new ArrayList<>();
         // Add header to CSV data
@@ -53,16 +47,16 @@ public class Graph extends JFrame {
         dataset.addSeries(seriesActions);
 
         // Cria o gráfico visual
-        chart = ChartFactory.createXYLineChart(
-                title, // Título
-                "Iteration", // X-Axis Label
-                "Average Time (ms)", // Y-Axis Label
-                dataset,
-                PlotOrientation.VERTICAL,
-                true, true, false);
+        // chart = ChartFactory.createXYLineChart(
+        //         title, // Título
+        //         "Iteration", // X-Axis Label
+        //         "Average Time (ms)", // Y-Axis Label
+        //         dataset,
+        //         PlotOrientation.VERTICAL,
+        //         true, true, false);
 
-        chartPanel = new ChartPanel(chart);
-        setContentPane(chartPanel);
+        // chartPanel = new ChartPanel(chart);
+        // setContentPane(chartPanel);
     }
 
     public static void updateData(Double newAvg, Double newValue, String csvName) {
@@ -76,7 +70,7 @@ public class Graph extends JFrame {
         File csvFile = new File("./results/datasets/" + csvName + ".csv");
         writeCSVDataToFile(csvFile);
         // Atualiza o gráfico no painel
-        chartPanel.repaint();
+        //chartPanel.repaint();
     }
 
     public static void addToCSVData(String seriesName, int iteration, double averageTime) {

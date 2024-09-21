@@ -28,8 +28,7 @@ public class Counter extends Artifact {
 	void init(String csvname, int performOnLoopInt) {
 		String myEnvVar = System.getenv("OBSERVATION_WINDOW");
 		System.out.println(myEnvVar);
-		//DISTRIBUTOR_IP = System.getenv("DISTRIBUTOR_IP");
-		DISTRIBUTOR_IP = "192.168.3.7";
+		DISTRIBUTOR_IP = System.getenv("DISTRIBUTOR_IP");
 		defineObsProperty("observation_window",5000);
 		Graph.startGraph(csvname);
 		this.csvName = csvname;
@@ -70,7 +69,7 @@ public class Counter extends Artifact {
 				.build();
 
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-		while(response.body().equals("NOT FOUND")){System.out.println("I'm not receive a response from distributor");response = client.send(request, HttpResponse.BodyHandlers.ofString());}
+		while(response.body().equals("NOT FOUND")){response = client.send(request, HttpResponse.BodyHandlers.ofString());}
 		String[] parts = response.body().split(",");
 		String res1 = parts[0];
 		Double res2 = Double.parseDouble(parts[1]);
@@ -81,7 +80,7 @@ public class Counter extends Artifact {
 
 		avg_time.set(res2);
 		action.set(res1);
-		//Graph.updateData(avgTime, res2, csvName);
+		Graph.updateData(avgTime, res2, csvName);
 
 	}
 
@@ -141,7 +140,7 @@ public class Counter extends Artifact {
 				.build();
 
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-		while(response.body().equals("NOT FOUND")){System.out.println("I'm not receive a response from distributor");response = client.send(request, HttpResponse.BodyHandlers.ofString());}
+		while(response.body().equals("NOT FOUND")){response = client.send(request, HttpResponse.BodyHandlers.ofString());}
 		if(!response.body().equals("NOT FOUND")){
 			log("Ignoring result: " + response.body().split(",")[1], response.body().split(",")[0]);
 		}
@@ -160,7 +159,7 @@ public class Counter extends Artifact {
 
 	@OPERATION
 	public void sendOperation(String composition) throws IOException, InterruptedException {
-		Graph.saveGraph();
+		//Graph.saveGraph();
 
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder()
