@@ -1,10 +1,10 @@
-component provides App requires io.Output out, net.http.HTTPRequest http, time.Timer t {
+component provides App requires io.Output out, net.http.HTTPRequest http, time.Timer t, os.SystemInfo info {
 	char server[] = "192.168.0.100"
 
 	int App:main(AppParam params[]) {
-
+		char distributor_ip[] = info.getVariable("DISTRIBUTOR_IP")
 		while(true){
-			HTTPResponse resp = http.get(new char[]("http://", server, ":8080/get"), null)
+			HTTPResponse resp = http.get(new char[]("http://", distributor_ip, ":8080/get"), null)
 			out.println("$(resp.content)")
 			t.sleep(500)
 		}

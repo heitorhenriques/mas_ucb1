@@ -112,6 +112,7 @@ component provides composition.Assembly requires io.Output out, data.IntUtil iu,
 				Component newCommonComps[] = commonComponents(configPointer, false)
 				Component oldCommonComps[] = commonComponents(configPointer, true)
 				transferStateBetweenConfigs(newCommonComps, oldCommonComps, configPointer)
+				out.println("entrei setConfig Assembly")
 				// newly added components are the ones that are not in the common list of comps
 				// i.e. the comps that is not in the current config -- we use newCommonComps to identify newly added ones
 				bindNewlyAddedComps(newCommonComps, configPointer)
@@ -419,6 +420,7 @@ component provides composition.Assembly requires io.Output out, data.IntUtil iu,
 	// this is not the state of the running components, this is the state of the data structure that is used
 	// to perform adaptation...
 	void transferStateBetweenConfigs(Component newCommonComps[], Component oldCommonComps[], int configPointer) {
+		out.println("entrei transfer Assembly")
 		for (int commonPointer = 0; commonPointer < newCommonComps.arrayLength; commonPointer++) {
 			if (newCommonComps[commonPointer].name == oldCommonComps[commonPointer].name) {
 				// transfer state (class and connected) from old comps to new comps

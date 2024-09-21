@@ -51,24 +51,17 @@ done
 
 # Use the parameter in an if clause
 if [ "$PARAM" == "distributor" ]; then
-  cd self_distributing_system
-  docker run -it --rm -e REMOTE1_IP="localhost" -e REMOTE2_IP="localhost" -e READ_FACTOR="2" -w "/app/distributor" dana -sp "../server;../readn" Distributor.o 
+  docker run -it --rm -e REMOTE1_IP="$remote1_ip" -e REMOTE2_IP="$remote2_ip" -e READ_FACTOR="$read_factor" -p 8080:8080 -p 3500:3500 -w "/app/distributor" dana -sp "../server;../readn" Distributor.o 
 elif [ "$PARAM" == "remote1" ]; then
-  cd self_distributing_system
-  docker run -it --rm -e DISTRIBUTOR_IP="192.168.3.7" -w "/app/distributor" -p 2010:2010 -p 8081:8081 dana -sp ../readn RemoteDist.o
+  docker run -it --rm -e DISTRIBUTOR_IP="$distributor_ip" -w "/app/distributor" -p 2010:2010 -p 8081:8081 dana -sp ../readn RemoteDist.o
 elif [ "$PARAM" == "remote2" ]; then
-  cd self_distributing_system
-  docker run -it --rm -e DISTRIBUTOR_IP="192.168.3.7" -w "/app/distributor" -p 2011:2011 -p 8082:8082 dana -sp ../readn RemoteDist.o 8082 2011
+  docker run -it --rm -e DISTRIBUTOR_IP="$distributor_ip" -w "/app/distributor" -p 2011:2011 -p 8082:8082 dana -sp ../readn RemoteDist.o 8082 2011
 elif [ "$PARAM" == "clientadd" ]; then
-  cd self_distributing_system
-  docker run -it --rm -e DISTRIBUTOR_IP="192.168.3.7" -w "/app/client" dana Add.o
+  docker run -it --rm -e DISTRIBUTOR_IP="$distributor_ip" -w "/app/client" dana Add.o
 elif [ "$PARAM" == "clientget" ]; then
-  cd self_distributing_system
-  docker build -f dockerfile.clientget -t clientget .
-  docker run -e DISTRIBUTOR_IP="$distributor_ip" clientget
+  docker run -it --rm -e DISTRIBUTOR_IP="$distributor_ip" -w "/app/client" dana Get.o
 elif [ "$PARAM" == "agentes" ]; then
-  docker build -t agentes .
-  docker run -e OBSERVATION_WINDOW="5000" -e DISTRIBUTOR_IP="192.168.3.7" -it --rm -v .:/app agentes
+  docker run -e OBSERVATION_WINDOW="$observation_window" -e DISTRIBUTOR_IP="$distributor_ip" -it --rm -v .:/app agentes
 else
   echo "Unknown parameter. Use 'start' or 'stop'."
   echo "You can enter the following parameters:"

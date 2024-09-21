@@ -93,7 +93,9 @@ component provides monitoring.Perception requires io.Output out, data.IntUtil iu
 			else {
 				int configPointer = 0
 				if ((configPointer = reducedVerifier(config)) != INT_MAX) {
+					out.println("entrei setConfig Perception")
 					if (assembly.setConfig(rule.configs[configPointer].proxyConfig)) {
+						out.println("entrei setConfig Perception")
 						// clean Proxy data ensures that the data in proxy is the data immediately gathered 
 						// after setConfig() function was called
 						cleanProxyData()
@@ -106,7 +108,7 @@ component provides monitoring.Perception requires io.Output out, data.IntUtil iu
 						return
 					}
 				} else {
-					//out.println("$(debugMSG) config $(config)")
+					out.println("$(debugMSG) config $(config)")
 					if (assembly.setConfig(config)) { setCurrentProxyConfigToFalse() }
 					else {
 						out.println("$(debugMSG) Something went wrong, adaptation was not completed.")
@@ -528,6 +530,7 @@ component provides monitoring.Perception requires io.Output out, data.IntUtil iu
 
 	// in case current config is a proxy config
 	void setCurrentProxyConfigToFalse() {
+		out.println("entrei setCurrentProxyConfigToFalse Perception")
 		for (int pointer = 0; pointer < rule.configs.arrayLength; pointer++) {
 			if (rule.configs[pointer].current) {
 				rule.configs[pointer].current = false
@@ -556,6 +559,7 @@ component provides monitoring.Perception requires io.Output out, data.IntUtil iu
 
 	// TODO: there is repeated code in here taken from getPerceptionData() ... polish it up
 	void cleanProxyData() {
+		out.println("entrei cleanProxyData")
 		IDCReference components[] = assembly.getComponents(availableProxies)
 		/* turn proxy off */
 		for (int compPointer = 0; compPointer < components.arrayLength; compPointer++) {

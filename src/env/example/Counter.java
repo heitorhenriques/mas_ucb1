@@ -70,6 +70,7 @@ public class Counter extends Artifact {
 				.build();
 
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+		while(response.body().equals("NOT FOUND")){System.out.println("I'm not receive a response from distributor");response = client.send(request, HttpResponse.BodyHandlers.ofString());}
 		String[] parts = response.body().split(",");
 		String res1 = parts[0];
 		Double res2 = Double.parseDouble(parts[1]);
@@ -80,7 +81,7 @@ public class Counter extends Artifact {
 
 		avg_time.set(res2);
 		action.set(res1);
-		Graph.updateData(avgTime, res2, csvName);
+		//Graph.updateData(avgTime, res2, csvName);
 
 	}
 
@@ -140,9 +141,10 @@ public class Counter extends Artifact {
 				.build();
 
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-		System.out.println(response.body());
-		log("Ignoring result: " + response.body().split(",")[1], response.body().split(",")[0]);
-
+		while(response.body().equals("NOT FOUND")){System.out.println("I'm not receive a response from distributor");response = client.send(request, HttpResponse.BodyHandlers.ofString());}
+		if(!response.body().equals("NOT FOUND")){
+			log("Ignoring result: " + response.body().split(",")[1], response.body().split(",")[0]);
+		}
 		switch (performOnLoop) {
 			case 1:
 				addToList();

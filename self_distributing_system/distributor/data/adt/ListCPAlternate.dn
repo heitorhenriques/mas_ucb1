@@ -56,13 +56,15 @@ net.TCPSocket, net.TCPServerSocket, data.StringUtil strUtil, io.Output out, data
 	}
 
 	void setupRemoteListsIPs() {
+		char remote1_ip[] = info.getVariable("REMOTE1_IP")
+		char remote2_ip[] = info.getVariable("REMOTE2_IP")
 		if (remoteListsIps == null) {
 			remoteListsIps = new IPAddr[2]
 			remoteListsIps[0] = new IPAddr()
-			remoteListsIps[0].ip = new char[]("192.168.0.102")
+			remoteListsIps[0].ip = new char[](remote1_ip)
 			remoteListsIps[0].port = 2010
 			remoteListsIps[1] = new IPAddr()
-			remoteListsIps[1].ip = new char[]("192.168.0.101")
+			remoteListsIps[1].ip = new char[](remote2_ip)
 			remoteListsIps[1].port = 2011
 		}
 	}

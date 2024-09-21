@@ -38,20 +38,18 @@ component provides data.adt.List:heap(Destructor, AdaptEvents) requires io.Outpu
 	 */
 	void List:remove(Data item) {
 		mutex(heapLock) {
+			if(item != null){
 			Node itemToRemove = item
-			for (int i = 0; i < length; i++) {
-				if (heap[i] == itemToRemove) {
-					int j = i
-					while (j < length - 1) {
-						heap[j] = heap[j+1]
-						j++
-					}
-					break
+			Node newArr[] = null
+			for (int i = 0; i < heap.arrayLength; i++) {
+				if (heap[i].key != itemToRemove.key) {
+					newArr = new Node[](newArr, heap[i])
+				} else {
+					length--
 				}
 			}
-			if(length > 0) {
-				length--
-			}
+			heap = newArr
+		}
 		}
 	}
 
@@ -98,8 +96,8 @@ component provides data.adt.List:heap(Destructor, AdaptEvents) requires io.Outpu
 	}
 
 	Data List:getIndex(int ndx) {
-		// TODO
-		return null
+		
+		return heap[ndx]
 	}
 
 	void List:setIndex(int ndx, Data d) {

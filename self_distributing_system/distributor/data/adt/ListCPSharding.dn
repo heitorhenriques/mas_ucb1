@@ -2,6 +2,10 @@ data Param {
 	char value[]
 }
 
+data Node {
+	int key
+}
+
 data Request {
 	char functionName[]
 	int numParams
@@ -60,13 +64,15 @@ component provides List:heap(Destructor, AdaptEvents) requires data.json.JSONEnc
 	}
 
 	void setupRemoteListsIPs() {
+		char remote1_ip[] = info.getVariable("REMOTE1_IP")
+		char remote2_ip[] = info.getVariable("REMOTE2_IP")
 		if (remoteListsIps == null) {
 			remoteListsIps = new IPAddr[2]
 			remoteListsIps[0] = new IPAddr()
-			remoteListsIps[0].ip = new char[]("192.168.0.102")
+			remoteListsIps[0].ip = new char[](remote1_ip)
 			remoteListsIps[0].port = 2010
 			remoteListsIps[1] = new IPAddr()
-			remoteListsIps[1].ip = new char[]("192.168.0.101")
+			remoteListsIps[1].ip = new char[](remote2_ip)
 			remoteListsIps[1].port = 2011
 		}
 	}
@@ -145,7 +151,6 @@ component provides List:heap(Destructor, AdaptEvents) requires data.json.JSONEnc
 
 	void List:remove(Data item) {
 		// build request
-		out.println("entrei no remove sharding")
 		Request request = new Request()
 		request.functionName = REMOVE
 		request.numParams = 1
@@ -240,10 +245,12 @@ component provides List:heap(Destructor, AdaptEvents) requires data.json.JSONEnc
 
 	void AdaptEvents:inactive() {
 		if (content != null) {
+			out.println("entrei inactive")
 			content = getContents()
 			char msg[] = new char[]("clearList!\r\r\r\r")
 			setupRemoteDistsIPs()
 			for (int i = 0; i < remoteDistsIps.arrayLength; i++) {
+				out.println("entrei for inactive")
 				makeRequest(remoteDistsIps[i], msg, true)
 			}
 		}

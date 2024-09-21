@@ -17,7 +17,7 @@ ENV PATH=$GRADLE_HOME/bin:$PATH
 WORKDIR /app
 
 # Copy project files
-COPY . .
+COPY . ./app
 
 EXPOSE 3271
 EXPOSE 3272
