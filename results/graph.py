@@ -3,10 +3,10 @@ import matplotlib.pyplot as plt
 import os
 
 csv_files = [
-    #'./datasets/Local.csv',
-    #'./datasets/Sharding.csv',
-    # './datasets/Agents.csv',
-    './datasets/ucb.csv',
+    './datasets/case4/Local.csv',
+    './datasets/case4/Sharding.csv',
+    './datasets/case4/agents3.csv',
+    # './datasets/case4/UCB.csv',
 ]
 
 plt.rcParams.update({'font.size': 18})  # Update the default font size for all elements

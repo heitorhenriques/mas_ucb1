@@ -1,8 +1,4 @@
 best(Name):- result(T)[source(Name)] & not(result(Other)[source(Ag)] & Other < T).
-best_difference(D):- difference(D,_)[source(Name)] & not(difference(Other,_)[source(Ag)] & Other < D).
-sensibility(1).
-erro(1.3).
-sum_difference(0).
 !my_turn.
 
 +difference(C,D)[source(S)]: S \== self & difference(E,F)[source(S)] & E \== C 

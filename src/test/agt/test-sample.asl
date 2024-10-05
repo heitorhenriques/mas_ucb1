@@ -1,7 +1,7 @@
-// Agent that tests 'sample_agent' in project mas_ucb1
+// Agent that tests 'ucb_agent.asl' in project mas_ucb1
 
 // includes target agent to tests
-{ include("sample_agent.asl") }
+{ include("ucb_agent.asl.asl") }
 
 // includes test library
 { include("tester_agent.asl") } // from JaCaMo
