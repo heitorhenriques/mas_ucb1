@@ -16,7 +16,7 @@ execute_in_a_row(0).
     log(Message, A);
     !verify_best.
 
-+!check: execute_in_a_row(Eir)
++!check: true
 <-  ?action(A);
     log("Starting exploration", A);
     .broadcast(achieve,exploration);
@@ -126,7 +126,7 @@ execute_in_a_row(0).
     !update_diff;
     !check.
     
-+!verify_best: .findall(A,result(_)[source(A)],Z) & .all_names(M) & .length(Z,C) & .length(M,E) & C == E & best(Name) & action(Acao)
++!verify_best: .findall(A,result(_)[source(A)],Z) & .all_names(M) & .length(Z,C) & .length(M,E) & C == E & best(Name) & action(Acao) & execute_in_a_row(Eir)
 <-  .concat(Name, " is assuming!", Message);
     // Reseta as vezes seguidas que a ação rodou
     -execute_in_a_row(Eir);
