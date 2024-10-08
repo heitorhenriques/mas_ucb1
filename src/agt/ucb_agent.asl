@@ -1,4 +1,4 @@
-// Agent sample_agent in project teste
+// Agent ucb_agent.asl in project teste
 
 /* Initial beliefs and rules */
 

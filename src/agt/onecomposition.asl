@@ -8,7 +8,7 @@ iterations(0).
     !run.
 
 +!run : iterations(N)
-<- .wait(5000);
+<- .wait(8000);
     getAvgTime(Action,Avg_time);
     .concat("Response time: ", Avg_time, " ms", Message);
     log(Message, Action);

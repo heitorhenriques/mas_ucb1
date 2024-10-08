@@ -19,13 +19,15 @@ public class Actions extends Artifact {
 	Double totalTime = 0.0;
 	int iterations = 0;
 	int numberOfAgents = 2;
-	int performOnLoop = 0;
+	int performOnLoop = 2;
 	boolean isEven = true;
 	String DISTRIBUTOR_IP;
 
 	void init(String csvname, int performOnLoopInt) {
-		String myEnvVar = System.getenv("OBSERVATION_WINDOW");
-		DISTRIBUTOR_IP = System.getenv("DISTRIBUTOR_IP");
+		// String myEnvVar = System.getenv("OBSERVATION_WINDOW");
+		String myEnvVar = "11000";
+		// DISTRIBUTOR_IP = System.getenv("DISTRIBUTOR_IP");
+		DISTRIBUTOR_IP = "192.168.0.102";
 		defineObsProperty("observation_window",Integer.parseInt(myEnvVar));
 		defineObsProperty("turn",0);
 		defineObsProperty("mutex",0);

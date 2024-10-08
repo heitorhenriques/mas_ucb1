@@ -3,18 +3,21 @@ best_difference(D):- difference(D,_)[source(Name)] & not(difference(Other,_)[sou
 sensibility(1).
 erro(1.8).
 sum_difference(0).
+execute_in_a_row(0).
+
 !my_turn.
 
 +difference(C,D)[source(S)]: S \== self & difference(E,F)[source(S)] & E \== C 
 <-  -difference(E,F)[source(S)].
 
-+!check: difference(Nova,Antiga)[source(self)] & erro(E) & not(difference(ONova,_)[source(Ag)] & math.abs(Nova) > math.abs(ONova) * E) & result(Resultado)[source(self)] & result(Resultados)[source(S)] & S \== self
-<-  .concat("I'm still the best. This is my average difference time is ", Nova, Message);
+// Ele explora quando chega em 22 pq o Eir conta as 2 iterações da exploração tb
++!check: difference(Nova,Antiga)[source(self)] & erro(E) & not(difference(ONova,_)[source(Ag)] & math.abs(Nova) > math.abs(ONova) * E) & result(Resultado)[source(self)] & result(Resultados)[source(S)] & S \== self & execute_in_a_row(Eir) & Eir < 22
+<-  .concat("I'm still the best. This is my average difference time is ", Nova, ". I ran ", Eir-2, " times in a row.", Message);
     ?action(A);
     log(Message, A);
     !verify_best.
 
-+!check: true
++!check: execute_in_a_row(Eir)
 <-  ?action(A);
     log("Starting exploration", A);
     .broadcast(achieve,exploration);
@@ -53,17 +56,23 @@ sum_difference(0).
 <-  -result(A)[source(S)];
     !verify_best.
 
-+!execute: action(A) & observation_window(Window) & mutex(S) & S == 0
++!execute: action(A) & mutex(S) & S == 0 & execute_in_a_row(Eir)
 <-  inc_mutex;
     send_operation(A);
-    .wait(Window);
+    .wait(11000);
     ignoreAvgTime;
-    .wait(Window);
+    .wait(11000);
     get_avg_time(X,N);
     ?avg_time(_,Z);
     +avg_time(N,Z+1);
-    .concat("Response time: ", N, Message);
+    // Atualizamos as vezes seguidas que rodamos um
+    NewEir = Eir + 1;
+    -execute_in_a_row(Eir);
+    +execute_in_a_row(NewEir);
+    .concat("I ran ", NewEir-2, " times in a row.", Message);
     log(Message, A);
+    .concat("Response time: ", N, Message2);
+    log(Message2, A);
     inc_mutex.
 
 +!update_diff: avg_time(A,N) & avg_time(A1,N-1) & difference(Nova,Antiga)[source(self)] & N-1 \== 0 & sum_difference(S) & action(Acao)
@@ -113,7 +122,6 @@ sum_difference(0).
 +!verify_turn: turn(N) & number(M) & M \== N & action(A)
 <-  log("Not my turn!", A).
 
-
 +!verify_best: .findall(A,result(_)[source(A)],Z) & .all_names(M) & .length(Z,C) & .length(M,E) & C == E & best(self) 
 <-  !execute;
     !update_diff;
@@ -137,11 +145,14 @@ sum_difference(0).
     inc;
     .broadcast(achieve,exploration).
 
-+!exploration: exploring(Number) & Number > 1 & action(A)
++!exploration: exploring(Number) & Number > 1 & action(A) & execute_in_a_row(Eir)
 <-  -exploring(Number);
     .broadcast(tell,finished);
     .broadcast(achieve,exploration);
     log("Finishing exploration", A);
+    // Reseta as vezes seguidas que a ação rodou
+    -execute_in_a_row(Eir)[source(_)];
+    +execute_in_a_row(0);
     !my_exploration.
 
 +!exploration: turn(N) & number(M) & M == N & action(A) & not(finished)

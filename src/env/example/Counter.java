@@ -18,7 +18,7 @@ public class Counter extends Artifact {
 	Double totalTime = 0.0;
 	int iterations = 0;
 	String csvName;
-	int performOnLoop = 0;
+	int performOnLoop = 2;
 	boolean isEven = true;
 
 	private double min = 1;
@@ -26,9 +26,8 @@ public class Counter extends Artifact {
 	String DISTRIBUTOR_IP;
 
 	void init(String csvname, int performOnLoopInt) {
-		String myEnvVar = System.getenv("OBSERVATION_WINDOW");
-		System.out.println(myEnvVar);
-		DISTRIBUTOR_IP = System.getenv("DISTRIBUTOR_IP");
+		// DISTRIBUTOR_IP = System.getenv("DISTRIBUTOR_IP");
+		DISTRIBUTOR_IP = "192.168.0.102";
 		defineObsProperty("observation_window",5000);
 		Graph.startGraph(csvname);
 		this.csvName = csvname;
@@ -81,6 +80,18 @@ public class Counter extends Artifact {
 		avg_time.set(res2);
 		action.set(res1);
 		Graph.updateData(avgTime, res2, csvName);
+		switch (performOnLoop) {
+			case 1:
+				addToList();
+				break;
+			case 2:
+				removeFromList();
+				break;
+
+			default:
+				break;
+		}
+
 		switch (performOnLoop) {
 			case 1:
 				addToList();
@@ -155,17 +166,17 @@ public class Counter extends Artifact {
 		if(!response.body().equals("NOT FOUND")){
 			log("Ignoring result: " + response.body().split(",")[1], response.body().split(",")[0]);
 		}
-		switch (performOnLoop) {
-			case 1:
-				addToList();
-				break;
-			case 2:
-				removeFromList();
-				break;
+		// switch (performOnLoop) {
+		// 	case 1:
+		// 		addToList();
+		// 		break;
+		// 	case 2:
+		// 		removeFromList();
+		// 		break;
 
-			default:
-				break;
-		}
+		// 	default:
+		// 		break;
+		// }
 	}
 
 	@OPERATION

@@ -48,7 +48,7 @@ Para selecionar qual algoritmo será usado, no arquivo `mas_ucb1.jcm` temos 3 op
 ### Rodando UCB1
 Para rodar o algoritmo UCB1, o bloco de código
 ```
-agent bob: sample_agent.asl {
+agent bob: ucb_agent.asl.asl {
     focus: c1
 }
 
@@ -73,13 +73,13 @@ precisa ser descomentado. Neste caso, descomente apenas a composição a ser tes
 ### Rodando os agentes
 Para rodar os agentes, o bloco de código
 ```
-agent bob: generic_agent.asl {
+agent bob: self_distributing_agent.asl {
     focus: c1
     beliefs:    number(0)
                 action("0")                    
 }
 
-agent maria: generic_agent.asl {
+agent maria: self_distributing_agent.asl {
     focus: c1
     beliefs:    number(1)
                 action("3")
@@ -123,4 +123,4 @@ READ_FACTOR: 2;
 
 1 elemento foi removido a cada iteração do programa;
 
-Para o UCB, Min = 2 ms e Max = 5000 ms
+Para o UCB, Min = 1 ms e Max = 5000 ms

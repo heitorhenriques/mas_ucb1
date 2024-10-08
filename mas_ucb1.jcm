@@ -16,39 +16,39 @@ mas mas_ucb1 {
 
     // PRA RODAR UM MÉTODO ESPECÍFICO
     // DEIXAR SÓ O MÉTODO A SER TESTADO DESCOMENTADO 
-    agent bob: onecomposition.asl {
-        // beliefs: action("0","local")
+    // agent bob: onecomposition.asl {
+    //     beliefs: action("0","local")
         // beliefs: action("1","propagate")
         // beliefs: action("2","alternate")
-        beliefs: action("3","sharding")
-    }
+        // beliefs: action("3","sharding")
+    // }
 
-    // agent bob: sample_agent.asl {
+    // agent bob: ucb_agent.asl.asl {
     //     focus: c1
     // }
 
-    workspace w {
-      artifact c1: example.Counter("sharding", "2")
-    }
+    // workspace w {
+    //   artifact c1: example.Counter("ucb", "2")
+    // }
     
 
     // PRA RODAR OS AGENTES DE CADA COMPOSIÇÃO
-    // agent bob: generic_agent.asl {
-    //     focus: c1
-    //     beliefs:    number(0)
-    //                 action("0")
-    //                 avg_time(0,0)
-                    
-    // }
-    // agent maria: generic_agent.asl {
-    //     focus: c1
-    //     beliefs:    number(1)
-    //                 action("3")
-    //                 avg_time(0,0)
-    // }                  
- 
-    // workspace w {
-    //   artifact c1: example.Actions("agents", 2)
-    // }
+    agent bob: self_distributing_agent.asl {
+        focus: c1
+        beliefs:    number(0)
+                    action("0")
+                    avg_time(0,0)
+    }
+
+    agent maria: self_distributing_agent.asl {
+        focus: c1
+        beliefs:    number(1)
+                    action("3")
+                    avg_time(0,0)
+    }
+
+    workspace w {
+      artifact c1: example.Actions("agents", 0)
+    }
 
 }
