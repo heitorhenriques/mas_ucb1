@@ -10,13 +10,14 @@ execute_in_a_row(0).
 +difference(C,D)[source(S)]: S \== self & difference(E,F)[source(S)] & E \== C 
 <-  -difference(E,F)[source(S)].
 
-+!check: difference(Nova,Antiga)[source(self)] & erro(E) & not(difference(ONova,_)[source(Ag)] & math.abs(Nova) > math.abs(ONova) * E) & result(Resultado)[source(self)] & result(Resultados)[source(S)] & S \== self & execute_in_a_row(Eir) & Eir < 20
-<-  .concat("I'm still the best. This is my average difference time is ", Nova, ". I ran ", Eir, " times in a row.", Message);
+// Ele explora quando chega em 22 pq o Eir conta as 2 iterações da exploração tb
++!check: difference(Nova,Antiga)[source(self)] & erro(E) & not(difference(ONova,_)[source(Ag)] & math.abs(Nova) > math.abs(ONova) * E) & result(Resultado)[source(self)] & result(Resultados)[source(S)] & S \== self & execute_in_a_row(Eir) & Eir < 22
+<-  .concat("I'm still the best. This is my average difference time is ", Nova, ". I ran ", Eir-2, " times in a row.", Message);
     ?action(A);
     log(Message, A);
     !verify_best.
 
-+!check: true
++!check: execute_in_a_row(Eir)
 <-  ?action(A);
     log("Starting exploration", A);
     .broadcast(achieve,exploration);
@@ -58,9 +59,9 @@ execute_in_a_row(0).
 +!execute: action(A) & mutex(S) & S == 0 & execute_in_a_row(Eir)
 <-  inc_mutex;
     send_operation(A);
-    .wait(2000);
+    .wait(11000);
     ignoreAvgTime;
-    .wait(2000);
+    .wait(11000);
     get_avg_time(X,N);
     ?avg_time(_,Z);
     +avg_time(N,Z+1);
@@ -68,7 +69,7 @@ execute_in_a_row(0).
     NewEir = Eir + 1;
     -execute_in_a_row(Eir);
     +execute_in_a_row(NewEir);
-    .concat("I ran ", NewEir, " times in a row.", Message);
+    .concat("I ran ", NewEir-2, " times in a row.", Message);
     log(Message, A);
     .concat("Response time: ", N, Message2);
     log(Message2, A);
@@ -126,11 +127,8 @@ execute_in_a_row(0).
     !update_diff;
     !check.
     
-+!verify_best: .findall(A,result(_)[source(A)],Z) & .all_names(M) & .length(Z,C) & .length(M,E) & C == E & best(Name) & action(Acao) & execute_in_a_row(Eir)
++!verify_best: .findall(A,result(_)[source(A)],Z) & .all_names(M) & .length(Z,C) & .length(M,E) & C == E & best(Name) & action(Acao)
 <-  .concat(Name, " is assuming!", Message);
-    // Reseta as vezes seguidas que a ação rodou
-    -execute_in_a_row(Eir);
-    +execute_in_a_row(0);
     log(Message, Acao).
 
 -!verify_best: true
@@ -147,11 +145,14 @@ execute_in_a_row(0).
     inc;
     .broadcast(achieve,exploration).
 
-+!exploration: exploring(Number) & Number > 1 & action(A)
++!exploration: exploring(Number) & Number > 1 & action(A) & execute_in_a_row(Eir)
 <-  -exploring(Number);
     .broadcast(tell,finished);
     .broadcast(achieve,exploration);
     log("Finishing exploration", A);
+    // Reseta as vezes seguidas que a ação rodou
+    -execute_in_a_row(Eir)[source(_)];
+    +execute_in_a_row(0);
     !my_exploration.
 
 +!exploration: turn(N) & number(M) & M == N & action(A) & not(finished)
