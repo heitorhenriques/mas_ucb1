@@ -63,7 +63,7 @@ public class Actions extends Artifact {
 				.build();
 
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
+		while(response.body().equals("NOT FOUND")){response = client.send(request, HttpResponse.BodyHandlers.ofString());}
 		log("Ignoring result: " + response.body().split(",")[1], response.body().split(",")[0]);
 
 		return;
@@ -78,6 +78,7 @@ public class Actions extends Artifact {
 				.build();
 
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+		while(response.body().equals("NOT FOUND")){response = client.send(request, HttpResponse.BodyHandlers.ofString());}
 		String[] parts = response.body().split(",");
 		String res1 = parts[0];
 		Double res2 = Double.parseDouble(parts[1]);

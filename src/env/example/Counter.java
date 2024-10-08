@@ -81,6 +81,17 @@ public class Counter extends Artifact {
 		avg_time.set(res2);
 		action.set(res1);
 		Graph.updateData(avgTime, res2, csvName);
+		switch (performOnLoop) {
+			case 1:
+				addToList();
+				break;
+			case 2:
+				removeFromList();
+				break;
+
+			default:
+				break;
+		}
 
 	}
 

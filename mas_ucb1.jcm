@@ -16,19 +16,19 @@ mas mas_ucb1 {
 
     // PRA RODAR UM MÉTODO ESPECÍFICO
     // DEIXAR SÓ O MÉTODO A SER TESTADO DESCOMENTADO 
-    // agent bob: onecomposition.asl {
+    agent bob: onecomposition.asl {
         // beliefs: action("0","local")
         // beliefs: action("1","propagate")
         // beliefs: action("2","alternate")
-        // beliefs: action("3","sharding")
-    // }
-
-    agent bob: sample_agent.asl {
-        focus: c1
+        beliefs: action("3","sharding")
     }
 
+    // agent bob: sample_agent.asl {
+    //     focus: c1
+    // }
+
     workspace w {
-      artifact c1: example.Counter("ucb", "2")
+      artifact c1: example.Counter("sharding", "2")
     }
     
 
