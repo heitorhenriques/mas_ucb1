@@ -99,7 +99,8 @@ execute_in_a_row(0).
 +!my_exploration: avg_time(A,N) & avg_time(A1,N-1) & N-1 \== 0 & difference(_,_)[source(self)] & finished
 <-  -finished[source(_)];
     !update_diff;
-    !calc_res.
+    !calc_res;
+    !verify_best.
 
 -!my_exploration: true
 <-  .wait(1000);
