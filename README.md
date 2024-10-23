@@ -169,7 +169,7 @@ precisa ser descomentado. Para selecionar entre manter a lista constante, increm
 ## Casos analisados
 | Caso  | READ_FACTOR | Itens na Lista         | Modificação na Lista                  | UCB (Min) | UCB (Max) | ERRO Agentes |
 |-------|-------------|------------------------|---------------------------------------|-----------|-----------|--------------|
-| Caso 1| 2           | Começa com 2, +1 por iteração | 1 elemento adicionado por iteração    | 3 ms      | 3500 ms   | 1.3          |
-| Caso 2| 2           | 2 itens fixos           | Nenhuma                               | 3 ms      | 120 ms    | N/A          |
-| Caso 3| 8           | 38 itens fixos          | Nenhuma                               | 2700 ms   | 3700 ms   | N/A          |
-| Caso 4| 2           | 90, -1 por iteração     | 1 elemento removido por iteração      | 1 ms      | 5000 ms   | N/A          |
+| 1| 2           | Começa com 2, +1 por iteração | 1 elemento adicionado por iteração    | 3 ms      | 3500 ms   | 1.3          |
+| 2| 2           | 2 itens fixos           | Nenhuma                               | 3 ms      | 120 ms    | N/A          |
+| 3| 8           | 38 itens fixos          | Nenhuma                               | 2700 ms   | 3700 ms   | N/A          |
+| 4| 2           | 90, -1 por iteração     | 1 elemento removido por iteração      | 1 ms      | 5000 ms   | N/A          |
