@@ -19,7 +19,7 @@ public class Actions extends Artifact {
 	Double totalTime = 0.0;
 	int iterations = 0;
 	int numberOfAgents = 2;
-	int performOnLoop = 2;
+	int performOnLoop;
 	boolean isEven = true;
 	String DISTRIBUTOR_IP;
 
@@ -34,6 +34,14 @@ public class Actions extends Artifact {
 		Graph.startGraph(csvname);
 		this.csvName = csvname;
 		this.performOnLoop = performOnLoopInt;
+
+		if(performOnLoop == 0) {
+			log("Running with constant list.");
+		} else if (performOnLoop == 1) {
+			log("Running increasing the list.");
+		} else if (performOnLoop == 2) {
+			log("Running decreasing the list.");
+		}
 	}
 
 	@OPERATION
