@@ -1,7 +1,7 @@
 best(Name):- result(T)[source(Name)] & not(result(Other)[source(Ag)] & Other < T).
 best_difference(D):- difference(D,_)[source(Name)] & not(difference(Other,_)[source(Ag)] & Other < D).
 sensibility(1).
-erro(1.8).
+erro(1.3).
 sum_difference(0).
 execute_in_a_row(0).
 
