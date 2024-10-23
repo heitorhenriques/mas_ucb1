@@ -13,8 +13,8 @@ def read_csv_data(file_path):
 def simulate_combined_data(local_file, sharding_file):
     local_data = read_csv_data(local_file)
     sharding_data = read_csv_data(sharding_file)
-    #return sharding_data[:45] + local_data[45:90]
-    return sharding_data[:90]
+    return sharding_data[:45] + local_data[45:90]
+    #return sharding_data[:90]
 # Normalize the time series data using Min-Max scaling
 def normalize_data(data):
     min_val = np.min(data)
@@ -28,7 +28,7 @@ sharding_file = r"C:\Users\heiit\Documents\np1.2\mas_ucb1\results\datasets\case2
 sharding_file_big = r"C:\Users\heiit\Documents\np1.2\mas_ucb1\results\datasets\case3\Sharding.csv"
 
 # Step 1: Load and normalize the combined data
-combined_time_series = simulate_combined_data(local_file_big, local_file)
+combined_time_series = simulate_combined_data(sharding_file_big, sharding_file)
 normalized_time_series = normalize_data(combined_time_series)
 
 # Regenerate sample time series data
@@ -62,7 +62,7 @@ for i in range(len(windows) - window_size):
     graph_densities.append(density)
 
 # Detect change points where density drops sharply
-density_change_points = [i for i in range(1, len(graph_densities)) if abs(graph_densities[i] - graph_densities[i - 1]) > 0.3]
+density_change_points = [i for i in range(1, len(graph_densities)) if abs(graph_densities[i] - graph_densities[i - 1]) > 0.2]
 
 # Plotting the time series with graph density change points
 fig, ax = plt.subplots(2, 1, figsize=(12, 8))
@@ -84,5 +84,5 @@ ax[1].set_ylabel('Graph Density')
 ax[1].legend()
 
 plt.tight_layout()
-plt.savefig('density_graph.png')
+plt.savefig('sharding_workload.png')
 plt.show()
