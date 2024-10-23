@@ -74,7 +74,7 @@ cd ../constant
 dnc . -sp ../ -v
 cd ..
 ```
-### Execução
+### Execução (sem docker)
 Com os componentes de Dana compilados, podemos executar o projeto. Primeiramente, é preciso rodar os _distributors_ do projeto _self_distributing_system_. Para isso, abra três terminais no diretório _self_distributing_system/distributor_.
 
 No primeiro execute:
@@ -128,25 +128,25 @@ agent ucb: ucb_agent.asl.asl {
 }
 
 workspace w {
-   artifact c1: example.Counter("ucb", "0")
+   artifact c1: example.Counter("ucb", 0)
 }
 ```
-precisa ser descomentado. Dentro de `Counter()`, temos dois atributos: os nomes do gráfico e do csv que serão gerados, e um número que representa se o algoritmo irá alterar a lista durante a execução ou não. Se deixado em "0", a lista se manterá constante durante a execução. Em "1", a lista será incrementada em 1 valor para cada iteração. Em "2", o algoritmo irá reduzir o tamanho da lista em 1 elemento por iteração.
+precisa ser descomentado. Dentro de `Counter()`, temos dois atributos: os nomes do gráfico e do csv que serão gerados, e um número que representa se o algoritmo irá alterar a lista durante a execução ou não. Se deixado em 0, a lista se manterá constante durante a execução. Em 1, a lista será incrementada em 1 valor para cada iteração. Em 2, o algoritmo irá reduzir o tamanho da lista em 1 elemento por iteração.
 
 ### Rodando composição única
 Para testar apenas uma composição, o bloco de código
 ```
 agent onecomposition: onecomposition.asl {
-    beliefs: action("0","local")
-    // beliefs: action("1","propagate")
-    // beliefs: action("2","alternate")
-    // beliefs: action("3","sharding")
+    beliefs: action("0", "local", 0)
+    // beliefs: action("1","propagate", 0)
+    // beliefs: action("2","alternate", 0)
+    // beliefs: action("3","sharding", 0)
 }
 ```
 precisa ser descomentado. Neste caso, descomente apenas a composição a ser testada nos beliefs.
 
 ### Rodando os agentes 
-Para rodar os agentes, o bloco de código
+Para rodar os agentes inteligentes, o bloco de código
 ```
 agent bob: self_distributing_agent.asl {
     focus: c1
@@ -161,41 +161,15 @@ agent maria: self_distributing_agent.asl {
 }                  
  
 workspace w {
-   artifact c1: example.Actions("agents", "true")
+   artifact c1: example.Actions("agents", 0)
 }
 ```
-precisa ser descomentado.
+precisa ser descomentado. Para selecionar entre manter a lista constante, incrementar ou decrementar durante a execução, basta alterar o número entre 0, 1 e 2, respectivamente, na linha `artifact c1: example.Actions("agents", 0)`.
 
-## CASO 1
-READ_FACTOR: 2;
-
-Começando com 2 itens na lista;
-
-1 elemento foi adicionado a cada iteração do programa;
-
-Para o UCB, Min = 3 ms e Max = 3500
-
-Para os agentes, ERRO = 1.3
-
-## CASO 2
-READ_FACTOR: 2;
-
-2 itens fixos na lista;
-
-Para o UCB, Min = 3 ms e Max = 120 ms
-
-## CASO 3
-READ_FACTOR: 8;
-
-38 itens fixos na lista;
-
-Para o UCB, Min = 2700 ms e Max = 3700 ms
-
-## CASO 4
-READ_FACTOR: 2;
-
-90 itens na lista;
-
-1 elemento foi removido a cada iteração do programa;
-
-Para o UCB, Min = 1 ms e Max = 5000 ms
+## Casos analisados
+| Caso  | READ_FACTOR | Itens na Lista         | Modificação na Lista                  | UCB (Min) | UCB (Max) | ERRO Agentes |
+|-------|-------------|------------------------|---------------------------------------|-----------|-----------|--------------|
+| Caso 1| 2           | Começa com 2, +1 por iteração | 1 elemento adicionado por iteração    | 3 ms      | 3500 ms   | 1.3          |
+| Caso 2| 2           | 2 itens fixos           | Nenhuma                               | 3 ms      | 120 ms    | N/A          |
+| Caso 3| 8           | 38 itens fixos          | Nenhuma                               | 2700 ms   | 3700 ms   | N/A          |
+| Caso 4| 2           | 90, -1 por iteração     | 1 elemento removido por iteração      | 1 ms      | 5000 ms   | N/A          |

@@ -17,20 +17,20 @@ mas mas_ucb1 {
     // PRA RODAR UM MÉTODO ESPECÍFICO
     // DEIXAR SÓ O MÉTODO A SER TESTADO DESCOMENTADO 
     // agent onecomposition: onecomposition.asl {
-    //     beliefs: action("0","local")
-        // beliefs: action("1","propagate")
-        // beliefs: action("2","alternate")
-        // beliefs: action("3","sharding")
+        // beliefs: action("0", "local", 0)
+        // beliefs: action("1", "propagate", 0)
+        // beliefs: action("2", "alternate", 0)
+        // beliefs: action("3", "sharding", 0)
     // }
 
-    // agent ucb: ucb_agent.asl.asl {
-    //     focus: c1
+    // PARA RODAR O UCB
+    // agent ucb: ucb_agent.asl {
+    //    focus: c1
     // }
 
     // workspace w {
-    //   artifact c1: example.Counter("ucb", "2")
+    //    artifact c1: example.Counter("ucb", 1)
     // }
-    
 
     // PRA RODAR OS AGENTES DE CADA COMPOSIÇÃO
     agent bob: self_distributing_agent.asl {
@@ -48,7 +48,7 @@ mas mas_ucb1 {
     }
 
     workspace w {
-      artifact c1: example.Actions("agents", 0)
+        artifact c1: example.Actions("agents", 0)
     }
 
 }

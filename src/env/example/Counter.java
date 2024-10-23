@@ -18,7 +18,7 @@ public class Counter extends Artifact {
 	Double totalTime = 0.0;
 	int iterations = 0;
 	String csvName;
-	int performOnLoop = 2;
+	int performOnLoop;
 	boolean isEven = true;
 
 	private double min = 1;
@@ -32,6 +32,14 @@ public class Counter extends Artifact {
 		Graph.startGraph(csvname);
 		this.csvName = csvname;
 		this.performOnLoop = performOnLoopInt;
+
+		if(performOnLoop == 0) {
+			log("Running with constant list.");
+		} else if (performOnLoop == 1) {
+			log("Running increasing the list.");
+		} else if (performOnLoop == 2) {
+			log("Running decreasing the list.");
+		}
 	}
 
 	@OPERATION
