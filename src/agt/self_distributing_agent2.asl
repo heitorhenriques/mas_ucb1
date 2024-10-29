@@ -35,11 +35,11 @@ executed_in_a_row(0).
 <-  log("Starting initial exploration!", Action);
     !verify_turn.
 
-+difference(C,D)[source(AgentSource)]: AgentSource \== self & difference(E,F)[source(S)] & E \== C 
++difference(CurrentDifference,OldDifference)[source(AgentSource)]: AgentSource \== self & difference(OldCurrentDifference,OldOldDifference)[source(S)] & OldCurrentDifference \== CurrentDifference 
 /*
     Plano de quando o agente recebe uma nova diferença de outro agente. Ele remove a diferença antiga para a nova substituir.
 */
-<-  -difference(E,F)[source(S)].
+<-  -difference(OldCurrentDifference,OldOldDifference)[source(S)].
 
 +!verify_turn: turn(CurrentActionNumber) & number(ThisAction) & ThisAction == CurrentActionNumber & action(AgentName)
 /*
