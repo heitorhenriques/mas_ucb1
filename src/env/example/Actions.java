@@ -26,8 +26,8 @@ public class Actions extends Artifact {
 	void init(String csvname, int performOnLoopInt) {
 		// String myEnvVar = System.getenv("OBSERVATION_WINDOW");
 		String myEnvVar = "11000";
-		// DISTRIBUTOR_IP = System.getenv("DISTRIBUTOR_IP");
-		DISTRIBUTOR_IP = "192.168.0.102";
+		DISTRIBUTOR_IP = System.getenv("DISTRIBUTOR_IP");
+		// DISTRIBUTOR_IP = "localhost";
 		defineObsProperty("observation_window",Integer.parseInt(myEnvVar));
 		defineObsProperty("turn",0);
 		defineObsProperty("mutex",0);
@@ -74,7 +74,7 @@ public class Actions extends Artifact {
 
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 		while(response.body().equals("NOT FOUND")){response = client.send(request, HttpResponse.BodyHandlers.ofString());}
-		log("Ignoring result: " + response.body().split(",")[1], response.body().split(",")[0]);
+		log("Ignoring response time: " + response.body().split(",")[1], response.body().split(",")[0]);
 
 		return;
 	}
@@ -88,11 +88,15 @@ public class Actions extends Artifact {
 				.build();
 
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-		while(response.body().equals("NOT FOUND")){response = client.send(request, HttpResponse.BodyHandlers.ofString());}
+		while(response.body().equals("NOT FOUND")) {
+			response = client.send(request, HttpResponse.BodyHandlers.ofString());
+		}
 		String[] parts = response.body().split(",");
 		String res1 = parts[0];
 		Double res2 = Double.parseDouble(parts[1]);
 
+		log("Action being returned: " + res1);
+	
 		totalTime = totalTime + res2;
 		iterations++;
 		avgTime = totalTime / iterations;

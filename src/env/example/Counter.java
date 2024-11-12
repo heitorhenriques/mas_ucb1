@@ -26,8 +26,8 @@ public class Counter extends Artifact {
 	String DISTRIBUTOR_IP;
 
 	void init(String csvname, int performOnLoopInt) {
-		// DISTRIBUTOR_IP = System.getenv("DISTRIBUTOR_IP");
-		DISTRIBUTOR_IP = "192.168.0.102";
+		DISTRIBUTOR_IP = System.getenv("DISTRIBUTOR_IP");
+		// DISTRIBUTOR_IP = "localhost";
 		defineObsProperty("observation_window",5000);
 		Graph.startGraph(csvname);
 		this.csvName = csvname;
@@ -172,7 +172,7 @@ public class Counter extends Artifact {
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 		while(response.body().equals("NOT FOUND")){response = client.send(request, HttpResponse.BodyHandlers.ofString());}
 		if(!response.body().equals("NOT FOUND")){
-			log("Ignoring result: " + response.body().split(",")[1], response.body().split(",")[0]);
+			log("Ignoring response time: " + response.body().split(",")[1], response.body().split(",")[0]);
 		}
 		// switch (performOnLoop) {
 		// 	case 1:
