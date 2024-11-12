@@ -20,11 +20,11 @@ executed_in_a_row(0).
 // O algoritmo precisa iniciar fazendo uma exploração de todas as composições para adquirir os dados de cada uma e iniciar o processo de aprendizado:
 !start_turn.
 
-+difference(NewDifference, CurrentDifference)[source(AgentSource)]: AgentSource \== self & difference(OldDifference, OlderDifference)[source(Source)] & OldDifference \== NewDifference 
++difference(NewDifference, CurrentDifference)[source(AgentSource)]: AgentSource \== self & difference(OldDifference, OlderDifference)[source(AgentSource)] & OldDifference \== NewDifference 
 /*
     Plano de quando o agente recebe uma nova diferença de outro agente. Ele remove a crença da diferença antiga para substituir com a nova.
 */
-<-  -difference(OldDifference, OlderDifference)[source(Source)].
+<-  -difference(OldDifference, OlderDifference)[source(AgentSource)].
 
 +!check_if_still_best: difference(CurrentDifference, OldDifference)[source(self)] & error(Error) & not(difference(OtherAgentsCurrentDifference,_)[source(OtherAgent)] & math.abs(CurrentDifference) > math.abs(OtherAgentsCurrentDifference) * Error) & cost(CurrentCost)[source(self)] & cost(OtherAgentsCost)[source(Source)] & Source \== self & executed_in_a_row(ExecutedInARow) & ExecutedInARow < 22
 /*
@@ -187,7 +187,7 @@ executed_in_a_row(0).
 */
 <-  log("Not my turn!", AgentName).
 
-+!verify_best: .findall(Action, cost(_)[source(Action)], ActionsCosts) & .all_names(AgentsNames) & .length(ActionsCosts, CostsLength) & .length(AgentsNames, NamesLength) & CostsLength == NamesLength & best(self)
++!verify_best: .findall(Action, cost(_)[source(Action)], ActionsCosts) & .all_names(AgentsNames) & .length(ActionsCosts, CostsLength) & .length(AgentsNames, NamesLength) & CostsLength == NamesLength & best_agent(self)
 /*
     Verifica se o agente é o melhor. Ele executa, atualiza a diferença e checa se ainda é seu turno.
 */
@@ -195,7 +195,7 @@ executed_in_a_row(0).
     !update_diff;
     !check_if_still_best.
     
-+!verify_best: .findall(Action, cost(_)[source(Action)], ActionsCosts) & .all_names(AgentsNames) & .length(ActionsCosts, CostsLength) & .length(AgentsNames, NamesLength) & CostsLength == NamesLength & best(BestAgent) & action(ActionName)
++!verify_best: .findall(Action, cost(_)[source(Action)], ActionsCosts) & .all_names(AgentsNames) & .length(ActionsCosts, CostsLength) & .length(AgentsNames, NamesLength) & CostsLength == NamesLength & best_agent(BestAgent) & action(ActionName)
 /*
     Verifica que outro agente é o melhor. Printa que o outro agente vai assumir.
 */

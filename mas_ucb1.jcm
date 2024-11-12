@@ -33,14 +33,14 @@ mas mas_ucb1 {
     // }
 
     // PRA RODAR OS AGENTES DE CADA COMPOSIÇÃO
-    agent bob: self_distributing_agent.asl {
+    agent bob: self_distributing_agent2.asl {
         focus: c1
         beliefs:    number(0)
                     action("0")
                     avg_time(0,0)
     }
 
-    agent maria: self_distributing_agent.asl {
+    agent maria: self_distributing_agent2.asl {
         focus: c1
         beliefs:    number(1)
                     action("3")
