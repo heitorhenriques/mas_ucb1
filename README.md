@@ -1,6 +1,298 @@
 # Self Adaptive Systems: Multiagent Approach
 
-## Pré-Requisitos
+## Pré-Requisitos para Rodar com Docker
+Existem duas formas de executar o projeto. Uma delas envolve o *build* de containers para cada componente do programa.
+
+### Docker
+Para instalar o Docker na sua máquina, siga os passos abaixo referentes ao seu sistema operacional.
+#### Linux
+1. Atualize sua lista de pacotes:
+    ```bash
+    sudo apt update
+    ```
+2. Instale os pacotes pré-requisitados pelo Docker pelo comando abaixo:
+    ```bash
+    sudo apt install apt-transport-https ca-certificates curl software-properties-common
+    ```
+3. Adicione a chave GPG para o repositório oficial do Docker no seu sistema:
+    ```bash
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    ```
+4. Adicione o repositório do Docker às fontes do APT:
+    ```bash
+    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+    ```
+
+5. Em seguida, atualize o banco de dados do pacote com os pacotes do Docker do recém adicionado repositório:
+    ```bash
+    sudo apt update
+    ```
+
+6. Finalmente, instale o Docker:
+    ```bash
+    sudo apt install docker-ce
+    ```
+
+7. Para rodar os comandos do Docker sem usar `sudo`, rode o seguinte comando:
+    ```bash
+    sudo usermod -aG docker ${USER}
+    ```
+
+#### Windows
+1. **Baixe o instalador do Docker Desktop:**
+   - Acesse o site oficial do Docker e baixe o instalador do Docker Desktop para Windows:
+     [Link para Download](https://www.docker.com/products/docker-desktop/).
+
+3. **Execute o instalador:**
+   - Clique duas vezes no arquivo `.exe` baixado para iniciar a instalação.
+   - Marque a opção para ativar o **WSL 2** (Windows Subsystem for Linux 2) durante a instalação, se solicitado.
+
+4. **Habilite o WSL 2:**
+   - Se você ainda não tiver o WSL 2 instalado, abra o PowerShell como administrador e execute os comandos abaixo para habilitar o WSL e definir o WSL 2 como padrão:
+     ```powershell
+     dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+     dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+     wsl --set-default-version 2
+     ```
+
+5. **Reinicie seu computador:**
+   - É necessário reiniciar o sistema para aplicar as mudanças.
+
+6. **Finalize a instalação do Docker Desktop:**
+   - Após a reinicialização, abra o Docker Desktop. Ele pode pedir para você concluir a configuração do WSL 2.
+
+7. **Verifique a instalação:**
+   - Para verificar se o Docker está instalado corretamente, abra o PowerShell ou o Prompt de Comando e execute:
+     ```powershell
+     docker --version
+     ```
+
+8. **Configuração opcional - Executar Docker sem privilégios de administrador:**
+   - Abra o Docker Desktop e vá para **Settings** > **General** e habilite a opção **"Use the WSL 2 based engine"**.
+   - Certifique-se de que seu usuário faz parte do grupo `docker-users`. Para isso, abra o PowerShell como administrador e execute:
+     ```powershell
+     net localgroup docker-users "SEU_USUARIO" /add
+     ```
+## Como Executar com Docker
+O projeto utiliza o script `run.sh` para facilitar a execução dos contêineres necessários. Você pode executar diferentes serviços e clientes utilizando comandos específicos. Siga as instruções abaixo de acordo com seu sistema operacional.
+
+#### Linux
+1. **Dê permissão de execução ao script `run.sh`**:
+   ```bash
+   chmod +x run.sh
+   ```
+
+2. **Para executar o script, utilize o comando abaixo**:
+   ```bash
+   ./run.sh <comando> [opções]
+   ```
+
+3. **Comandos disponíveis**:
+    - `build`: Constrói as imagens Docker necessárias.
+        ```bash
+        ./run.sh build
+        ```
+   - `distributor`: Executa o contêiner do distribuidor.
+     ```bash
+     ./run.sh distributor -remote1_ip <ip> -remote2_ip <ip> -read_factor <valor>
+     ```
+   - `remote1`: Executa o contêiner `remote1`.
+     ```bash
+     ./run.sh remote1 -distributor_ip <ip>
+     ```
+   - `remote2`: Executa o contêiner `remote2`.
+     ```bash
+     ./run.sh remote2 -distributor_ip <ip>
+     ```
+   - `clientadd`: Executa o cliente que adiciona dois itens.
+     ```bash
+     ./run.sh clientadd -distributor_ip <ip>
+     ```
+   - `clientadd3`: Executa o cliente que adiciona trinta e oito itens.
+     ```bash
+     ./run.sh clientadd3 -distributor_ip <ip>
+     ```
+   - `clientadd4`: Executa o cliente que adiciona noventa itens.
+     ```bash
+     ./run.sh clientadd4 -distributor_ip <ip>
+     ```
+   - `clientget`: Executa o cliente que realiza uma leitura.
+     ```bash
+     ./run.sh clientget -distributor_ip <ip>
+     ```
+   - `agentes`: Executa o contêiner de agentes.
+     ```bash
+     ./run.sh agentes -distributor_ip <ip> -observation_window <valor> -add_remove <valor>
+     ```
+     Ótima explicação! Vou montar uma descrição detalhada para cada comando do `run.sh`, baseando-se nas informações fornecidas sobre o projeto e nos diferentes componentes.
+
+
+## Explicação dos Comandos do `run.sh`
+
+### 1. **distributor**
+O comando `distributor` inicia o contêiner que executa o **distribuidor principal**. Este é o servidor central, responsável por gerenciar todas as requisições feitas pelos clientes e distribuir o processamento para os distribuidores remotos (`remote1` e `remote2`), caso estejam configurados.
+
+- **Parâmetros**: 
+  - `-remote1_ip`: IP do distribuidor remoto `remote1`.
+  - `-remote2_ip`: IP do distribuidor remoto `remote2`.
+  - `-read_factor`: Fator de leitura, um valor inteiro que simula o processamento ao aplicar cálculos de números primos.
+
+> **Nota:** O `read_factor` controla a quantidade de processamento realizado para cada requisição, simulando uma carga maior ou menor dependendo do valor configurado. Quanto maior o `read_factor`, mais tempo leva para processar a requisição.
+
+**Exemplo**:
+```bash
+./run.sh distributor -remote1_ip 192.168.0.2 -remote2_ip 192.168.0.3 -read_factor 3
+```
+
+
+### 2. **remote1** e **remote2**
+Os comandos `remote1` e `remote2` iniciam os distribuidores remotos. Eles atuam como **auxiliares** do distribuidor principal para dividir a carga de processamento. Isso é útil para melhorar a escalabilidade do sistema, permitindo que o distribuidor principal delegue parte do trabalho para esses nós.
+
+- **Parâmetros**:
+  - `-distributor_ip`: IP do distribuidor principal.
+
+> **Nota:** Na implementação atual, você precisa rodar os dois distribuidores remotos para poder usar as configurações remotas do programa.
+
+**Exemplo**:
+```bash
+./run.sh remote1 -distributor_ip 192.168.0.1
+```
+
+### 3. **clientadd**, **clientadd3**, **clientadd4**
+Esses comandos executam diferentes clientes que fazem requisições de **adição de itens** ao sistema.
+
+- `clientadd`: Adiciona 2 itens.
+- `clientadd3`: Adiciona 38 itens.
+- `clientadd4`: Adiciona 90 itens.
+
+- **Parâmetros**:
+  - `-distributor_ip`: IP do distribuidor principal para onde as requisições serão enviadas.
+
+> **Nota:** Estes clientes realizam requisições POST, enviando novos itens para serem processados pelo distribuidor principal.
+
+**Exemplo**:
+```bash
+./run.sh clientadd -distributor_ip 192.168.0.1
+```
+
+### 4. **clientget**
+Este comando executa um cliente que faz **requisições GET** em loop ao sistema, solicitando a recuperação de itens já armazenados.
+
+- **Parâmetros**:
+  - `-distributor_ip`: IP do distribuidor principal.
+
+> **Nota:** Para rodar os agentes, este cliente deve estar rodando para os dados de tempo de resposta serem acessíveis.
+
+**Exemplo**:
+```bash
+./run.sh clientget -distributor_ip 192.168.0.1
+```
+
+### 5. **agentes**
+Os agentes são responsáveis por **monitorar e ajustar automaticamente o distribuidor principal** com base nos tempos de resposta. 
+
+- **Parâmetros**:
+  - `-distributor_ip`: IP do distribuidor principal.
+  - `-observation_window`: Janela de observação para medir o tempo de resposta (em milissegundos).
+  - `-add_remove`: Configuração para definir se os agentes irão adicionar (1) ou remover (2) itens da lista. Se for configurado como `0`, não realiza nenhuma dessas ações.
+
+> **Nota:** Os agentes monitoram o tempo de resposta das requisições e podem alterar a configuração do sistema para tentar melhorar o desempenho, ajustando automaticamente o comportamento do distribuidor.
+
+**Exemplo**:
+```bash
+./run.sh agentes -distributor_ip 192.168.0.1 -observation_window 5000 -add_remove 1
+```
+
+### 6. **build**
+O comando `build` constrói as imagens Docker necessárias para o projeto.
+
+- **Sem parâmetros adicionais**.
+
+> **Nota:** Utilize este comando sempre que fizer alterações no código ou na configuração Docker para garantir que as imagens estejam atualizadas.
+
+**Exemplo**:
+```bash
+./run.sh build
+```
+
+#### Windows
+No Windows, você precisará executar o script usando o **Git Bash**, **PowerShell**, ou **WSL** (caso esteja habilitado). Siga o passo a passo abaixo:
+
+1. **Abra o terminal (Git Bash, PowerShell ou WSL)**.
+2. **Navegue até o diretório onde o `run.sh` está localizado**:
+   ```powershell
+   cd caminho\para\o\mas_ucb1
+   ```
+
+3. **Execute o script utilizando o comando abaixo**:
+   ```bash
+   ./run.sh <comando> [opções]
+   ```
+
+4. **Comandos disponíveis**:
+   - `build`: Constrói as imagens Docker necessárias.
+     ```bash
+     ./run.sh build
+     ```
+   - `distributor`: Executa o contêiner do distribuidor.
+     ```bash
+     ./run.sh distributor -remote1_ip <ip> -remote2_ip <ip> -read_factor <valor>
+     ```
+   - `remote1`: Executa o contêiner `remote1`.
+     ```bash
+     ./run.sh remote1 -distributor_ip <ip>
+     ```
+   - `remote2`: Executa o contêiner `remote2`.
+     ```bash
+     ./run.sh remote2 -distributor_ip <ip>
+     ```
+   - `clientadd`: Executa o cliente que adiciona dois itens.
+     ```bash
+     ./run.sh clientadd -distributor_ip <ip>
+     ```
+   - `clientadd3`: Executa o cliente que adiciona trinta e oito itens.
+     ```bash
+     ./run.sh clientadd3 -distributor_ip <ip>
+     ```
+   - `clientadd4`: Executa o cliente que adiciona noventa itens.
+     ```bash
+     ./run.sh clientadd4 -distributor_ip <ip>
+     ```
+   - `clientget`: Executa o cliente que realiza uma leitura.
+     ```bash
+     ./run.sh clientget -distributor_ip <ip>
+     ```
+   - `agentes`: Executa o contêiner de agentes.
+     ```bash
+     ./run.sh agentes -distributor_ip <ip> -observation_window <valor> -add_remove <valor>
+     ```
+
+
+### Opções do Script
+- `-distributor_ip`: IP do distribuidor (padrão: `localhost`)
+- `-remote1_ip`: IP do `remote1` (padrão: `localhost`)
+- `-remote2_ip`: IP do `remote2` (padrão: `localhost`)
+- `-read_factor`: Fator de leitura (padrão: `2`)
+- `-observation_window`: Janela de observação para os agentes (padrão: `5000`)
+- `-add_remove`: Define se os agentes vão adicionar (1) ou remover (2) itens da lista (padrão: `0` - nenhum)
+
+### Exemplos
+- **Executando o distribuidor com IPs customizados**:
+  ```bash
+  ./run.sh distributor -remote1_ip 192.168.0.2 -remote2_ip 192.168.0.3 -read_factor 3
+  ```
+
+- **Executando o cliente que adiciona dois itens**:
+  ```bash
+  ./run.sh clientadd -distributor_ip 192.168.0.1
+  ```
+
+- **Construindo as imagens Docker**:
+  ```bash
+  ./run.sh build
+  ```
+
+## Pré-Requisitos para Rodar sem Docker
 ### Dana
 Para executar o projeto, é necessário instalar a linguagem de programação Dana, especificamente a versão 253.
 
@@ -74,7 +366,8 @@ cd ../constant
 dnc . -sp ../ -v
 cd ..
 ```
-### Execução (sem docker)
+
+### Execução (sem Docker)
 Com os componentes de Dana compilados, podemos executar o projeto. Primeiramente, é preciso rodar os _distributors_ do projeto _self_distributing_system_. Para isso, abra três terminais no diretório _self_distributing_system/distributor_.
 
 No primeiro execute:
