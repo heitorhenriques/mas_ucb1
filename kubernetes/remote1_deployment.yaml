@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: remote1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: remote1
+  template:
+    metadata:
+      labels:
+        app: remote1
+    spec:
+      containers:
+      - name: remote1-container
+        image: heitorhs/selfdistributordana:v1.0
+        args: ["-sp", "../readn", "RemoteDist.o"]
+        ports:
+        - containerPort: 2010
+        - containerPort: 8081
+        env:
+        - name: DISTRIBUTOR_IP
+          value: distributor-service
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: remote1-service
+spec:
+  type: ClusterIP
+  selector:
+    app: remote1
+  ports:
+    - protocol: TCP
+      port: 3500
+      targetPort: 3500
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

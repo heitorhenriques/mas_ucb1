@@ -124,7 +124,6 @@ O projeto utiliza o script `run.sh` para facilitar a execução dos contêineres
      ```bash
      ./run.sh agentes -distributor_ip <ip> -observation_window <valor> -add_remove <valor>
      ```
-     Ótima explicação! Vou montar uma descrição detalhada para cada comando do `run.sh`, baseando-se nas informações fornecidas sobre o projeto e nos diferentes componentes.
 
 
 ## Explicação dos Comandos do `run.sh`
