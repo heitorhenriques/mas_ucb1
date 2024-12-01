@@ -1,1 +1,0 @@
-# Detalhamento dos Proxies
