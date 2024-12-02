@@ -12,7 +12,7 @@ $$
 \Delta^t_i = \frac{1}{\mathcal{N}-1} \sum_{k=1}^{\mathcal{N}} \big(Avg_i^{(t-k-1)} - Avg_i^{(t-k)}\big)
 $$
 
-calcula a média das diferenças entre as observações do tempo médio de resposta para a composição $i $em intervalos de tempo consecutivos. Essa análise permite aos agentes compreender como o ambiente evolui e ajustar suas escolhas de composição de forma dinâmica.  
+calcula a média das diferenças entre as observações do tempo médio de resposta para a composição $i$ em intervalos de tempo consecutivos. Essa análise permite aos agentes compreender como o ambiente evolui e ajustar suas escolhas de composição de forma dinâmica.  
 
 Após a fase de exploração, o sistema pode determinar qual composição apresenta a melhor perspectiva de desempenho ao comparar os valores de $\Delta^t_i$ para todas as composições. Essa análise é feita utilizando a fórmula  
 
