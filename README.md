@@ -1,4 +1,4 @@
-# Self-Adaptive Systems: Multiagent Approach
+# A Multi-agent Approach to Self-Distributing Systems
 
 ## Introduction
 The design and management of distributed systems have been a focus of research in systems communities for many years. Deciding, during the design phase, how the different modules comprising these systems should interact to maintain high performance, reliability, and consistency is a challenge. This scenario becomes increasingly complex when considering the high levels of volatility found in large-scale distributed systems, requiring new ideas to handle these new levels of complexity.
