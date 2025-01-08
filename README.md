@@ -1,37 +1,37 @@
-# Self Adaptive Systems: Multiagent Approach
+# Self-Adaptive Systems: Multiagent Approach
 
-## Introdução
-O design e a gestão de sistemas distribuídos têm sido o foco de pesquisa nas comunidades de sistemas por muitos anos. Decidir, no momento do design, como os diferentes módulos que compõem os sistemas devem interagir para manter sistemas de alto desempenho, confiáveis e consistentes é um desafio. Esse cenário se agrava cada vez mais quando consideramos os altos níveis de volatilidade que encontramos em sistemas distribuídos de grande escala, exigindo novas ideias para lidar com os novos níveis de complexidade.
+## Introduction
+The design and management of distributed systems have been a focus of research in systems communities for many years. Deciding, during the design phase, how the different modules comprising these systems should interact to maintain high performance, reliability, and consistency is a challenge. This scenario becomes increasingly complex when considering the high levels of volatility found in large-scale distributed systems, requiring new ideas to handle these new levels of complexity.
 
-O conceito de Sistemas Auto-distribuídos (SDS) surgiu para enfrentar os desafios de transferir a responsabilidade de montar sistemas distribuídos para o próprio sistema em tempo de execução, ao contrário do que é feito atualmente na indústria, onde um grupo de engenheiros é responsável por considerar como o sistema deve operar em muitas condições distintas e muitas vezes inesperadas durante a fase de design. Em tempo de execução, os engenheiros monitoram o sistema para detectar mudanças e adaptá-lo manualmente de acordo com as necessidades.
+The concept of Self-Distributing Systems (SDS) emerged to address the challenge of shifting the responsibility for assembling distributed systems to the system itself at runtime. This contrasts with the current approach in the industry, where a group of engineers determines how the system should operate under many distinct and often unexpected conditions during the design phase. At runtime, engineers monitor the system to detect changes and manually adapt it as needed.
 
-Neste projeto, será desenvolvida uma abordagem multiagente para o aprendizado de composições distribuídas para SDS em tempo de execução, com o objetivo de comparar o desempenho e abordar as limitações dos algoritmos de multi-armed bandits ao lidar com problemas de aprendizado em SDS.
+This project aims to develop a multiagent approach for learning distributed compositions for SDS at runtime, with the goal of comparing performance and addressing the limitations of multi-armed bandit algorithms when dealing with learning problems in SDS.
 
-## Descrição da Proposta
+## Proposal Description
 
-A proposta é investigar a aplicação de sistemas multiagentes no contexto de sistemas distribuídos auto-adaptativos, com foco na formulação do problema como um Multi-Armed Bandit Multijogador (MMAB). Nessa abordagem, vários agentes colaboram para determinar a configuração ótima do sistema em resposta às solicitações dos clientes, adaptando o sistema em tempo real conforme as condições variam.
+The proposal is to investigate the application of multiagent systems in the context of self-adaptive distributed systems, focusing on formulating the problem as a Multiplayer Multi-Armed Bandit (MMAB). In this approach, multiple agents collaborate to determine the optimal system configuration in response to client requests, adapting the system in real time as conditions change.
 
-A solução proposta é baseada em software e utiliza uma abordagem multiagente para a configuração dinâmica de sistemas distribuídos. O sistema será modelado como um ambiente com múltiplos "braços" (possíveis configurações), onde cada agente representará uma estratégia de configuração específica. O sistema de agentes monitorará o desempenho do sistema em termos de tempo de resposta e adaptará a configuração do sistema em tempo de execução para otimizar o desempenho. Além disso, a solução será desenvolvida em um ambiente de simulação e testes que envolverá um cluster de três nós conectados em uma rede.
+The proposed solution is software-based and uses a multiagent approach for the dynamic configuration of distributed systems. The system will be modeled as an environment with multiple "arms" (possible configurations), where each agent represents a specific configuration strategy. The agent system will monitor the system's performance in terms of response time and adapt the system configuration at runtime to optimize performance. Additionally, the solution will be developed in a simulation and testing environment involving a cluster of three nodes connected over a network.
 
-## Principais funcionalidades
+## Key Features
 
-As principais funcionalidades incluem:
+The key features include:
 
-- **Agentes Multiagentes:** Cada agente tomará decisões de configuração de forma independente, mas colaborativa, utilizando o feedback de desempenho do sistema.
-- **Adaptação Dinâmica:** O sistema ajustará sua configuração com base em métricas de desempenho coletadas em tempo real, como o tempo de resposta ao lidar com requisições de clientes.
-- **Simulação e Testes:** O ambiente de simulação permitirá a criação de diferentes cenários de cargas de trabalho e condições do sistema para testar a eficácia da abordagem proposta.
+- **Multiagent Agents:** Each agent will make configuration decisions independently but collaboratively, using system performance feedback.
+- **Dynamic Adaptation:** The system will adjust its configuration based on real-time performance metrics, such as response time when handling client requests.
+- **Simulation and Testing:** The simulation environment will enable the creation of different workload scenarios and system conditions to test the effectiveness of the proposed approach.
 
-## Abordagem Utilizada para Implementação
+## Implementation Approach
 
-A implementação utilizará uma combinação de ferramentas e plataformas de simulação e desenvolvimento distribuído. A metodologia adotada será a modelagem de sistemas distribuídos como ambientes multiagentes, com a utilização do framework JaCaMo para o desenvolvimento. Para testes e avaliação, será utilizada uma plataforma de simulação em um cluster de nós locais, permitindo a experimentação com diferentes configurações e cargas de trabalho. Além disso, a implementação seguirá uma abordagem iterativa, onde os agentes usarão estratégias de *exploitation* e *exploration* para aprender qual configuração do sistema resulta no melhor desempenho ao longo do tempo.
+The implementation will use a combination of tools and platforms for simulation and distributed development. The adopted methodology will involve modeling distributed systems as multiagent environments using the JaCaMo framework for development. For testing and evaluation, a simulation platform with a local node cluster will be used, allowing experimentation with different configurations and workloads. Additionally, the implementation will follow an iterative approach, where agents will use *exploitation* and *exploration* strategies to learn which system configuration delivers the best performance over time.
 
-## Diagrama de Comunicação
+## Communication Diagram
 
-![alt text](드로잉.png)
+![alt text](drawing.png)
 
-Nos experimentos, todas as interações e comunicações entre o sistema são efetuadas com o protocolo HTTP. O cliente faz a requisição das listas para o Distributor; Os agentes fazem a requisição do *Perception* ao Distributor, que devolve o tempo de resposta médio das últimas requisições; e o Distributor distribui a lista entre os dois Remote Distributor.
+In the experiments, all interactions and communications within the system are conducted using the HTTP protocol. The client requests the lists from the Distributor; the agents request *Perception* from the Distributor, which returns the average response time of recent requests; and the Distributor distributes the list between the two Remote Distributors.
 
-## Mais Detalhes
-- <a href="/execute.md">Como executar o projeto</a>
-- <a href="/src/agents.md">Como funcionam os agentes</a>
-- <a href="/self_distributing_system/modules.md">Como funcionam os proxies</a>
+## More Details
+- <a href="/execute.md">How to run the project</a>
+- <a href="/src/agents.md">How the agents work</a>
+- <a href="/self_distributing_system/modules.md">How the proxies work</a>

@@ -1,242 +1,217 @@
-# Como Executar o Projeto
-## Pré-Requisitos
+# How to Run the Project
+
+## Prerequisites
 - <a href="/docker-installation.md">Docker</a>
 
-
-## Como Executar com Docker
-O projeto utiliza o script `run.sh` para facilitar a execução dos contêineres necessários. Você pode executar diferentes serviços e clientes utilizando comandos específicos. Siga as instruções abaixo de acordo com seu sistema operacional.
+## Running with Docker
+The project uses the `run.sh` script to simplify the execution of the required containers. You can run different services and clients using specific commands. Follow the instructions below based on your operating system.
 
 ### Linux
-1. **Dê permissão de execução ao script `run.sh`**:
+1. **Grant execution permission to the `run.sh` script**:
    ```bash
    chmod +x run.sh
    ```
 
-2. **Para executar o script, utilize o comando abaixo**:
+2. **Run the script with the following command**:
    ```bash
-   ./run.sh <comando> [opções]
+   ./run.sh <command> [options]
    ```
 
-3. **Comandos disponíveis**:
-    - `build`: Constrói as imagens Docker necessárias.
+3. **Available commands**:
+    - `build`: Builds the required Docker images.
         ```bash
         ./run.sh build
         ```
-   - `distributor`: Executa o contêiner do distribuidor.
-     ```bash
-     ./run.sh distributor -remote1_ip <ip> -remote2_ip <ip> -read_factor <valor>
-     ```
-   - `remote1`: Executa o contêiner `remote1`.
-     ```bash
-     ./run.sh remote1 -distributor_ip <ip>
-     ```
-   - `remote2`: Executa o contêiner `remote2`.
-     ```bash
-     ./run.sh remote2 -distributor_ip <ip>
-     ```
-   - `clientadd`: Executa o cliente que adiciona dois itens.
-     ```bash
-     ./run.sh clientadd -distributor_ip <ip>
-     ```
-   - `clientadd3`: Executa o cliente que adiciona trinta e oito itens.
-     ```bash
-     ./run.sh clientadd3 -distributor_ip <ip>
-     ```
-   - `clientadd4`: Executa o cliente que adiciona noventa itens.
-     ```bash
-     ./run.sh clientadd4 -distributor_ip <ip>
-     ```
-   - `clientget`: Executa o cliente que realiza uma leitura.
-     ```bash
-     ./run.sh clientget -distributor_ip <ip>
-     ```
-   - `agentes`: Executa o contêiner de agentes.
-     ```bash
-     ./run.sh agentes -distributor_ip <ip> -observation_window <valor> -add_remove <valor>
-     ```
+    - `distributor`: Runs the distributor container.
+        ```bash
+        ./run.sh distributor -remote1_ip <ip> -remote2_ip <ip> -read_factor <value>
+        ```
+    - `remote1`: Runs the `remote1` container.
+        ```bash
+        ./run.sh remote1 -distributor_ip <ip>
+        ```
+    - `remote2`: Runs the `remote2` container.
+        ```bash
+        ./run.sh remote2 -distributor_ip <ip>
+        ```
+    - `clientadd`: Executes the client that adds two items.
+        ```bash
+        ./run.sh clientadd -distributor_ip <ip>
+        ```
+    - `clientadd3`: Executes the client that adds thirty-eight items.
+        ```bash
+        ./run.sh clientadd3 -distributor_ip <ip>
+        ```
+    - `clientadd4`: Executes the client that adds ninety items.
+        ```bash
+        ./run.sh clientadd4 -distributor_ip <ip>
+        ```
+    - `clientget`: Executes the client that performs a read operation.
+        ```bash
+        ./run.sh clientget -distributor_ip <ip>
+        ```
+    - `agents`: Runs the agents container.
+        ```bash
+        ./run.sh agents -distributor_ip <ip> -observation_window <value> -add_remove <value>
+        ```
 
-
-## Explicação dos Comandos do `run.sh`
+## Explanation of `run.sh` Commands
 
 ### 1. **distributor**
-O comando `distributor` inicia o contêiner que executa o **distribuidor principal**. Este é o servidor central, responsável por gerenciar todas as requisições feitas pelos clientes e distribuir o processamento para os distribuidores remotos (`remote1` e `remote2`), caso estejam configurados.
+The `distributor` command starts the **main distributor** container. This is the central server responsible for managing all client requests and distributing the processing to remote distributors (`remote1` and `remote2`) if configured.
 
-- **Parâmetros**: 
-  - `-remote1_ip`: IP do distribuidor remoto `remote1`.
-  - `-remote2_ip`: IP do distribuidor remoto `remote2`.
-  - `-read_factor`: Fator de leitura, um valor inteiro que simula o processamento ao aplicar cálculos de números primos.
+- **Parameters**: 
+  - `-remote1_ip`: IP address of the `remote1` distributor.
+  - `-remote2_ip`: IP address of the `remote2` distributor.
+  - `-read_factor`: A read factor value that simulates processing by performing prime number calculations.
 
-> **Nota:** O `read_factor` controla a quantidade de processamento realizado para cada requisição, simulando uma carga maior ou menor dependendo do valor configurado. Quanto maior o `read_factor`, mais tempo leva para processar a requisição.
+> **Note:** The `read_factor` controls the amount of processing done for each request, simulating heavier or lighter loads depending on the configured value. The higher the `read_factor`, the longer it takes to process a request.
 
-**Exemplo**:
+**Example**:
 ```bash
 ./run.sh distributor -remote1_ip 192.168.0.2 -remote2_ip 192.168.0.3 -read_factor 3
 ```
 
+### 2. **remote1** and **remote2**
+The `remote1` and `remote2` commands start the remote distributors. These act as **helpers** to the main distributor, offloading part of the processing workload. This improves the system's scalability by allowing the main distributor to delegate tasks to these nodes.
 
-### 2. **remote1** e **remote2**
-Os comandos `remote1` e `remote2` iniciam os distribuidores remotos. Eles atuam como **auxiliares** do distribuidor principal para dividir a carga de processamento. Isso é útil para melhorar a escalabilidade do sistema, permitindo que o distribuidor principal delegue parte do trabalho para esses nós.
+- **Parameters**:
+  - `-distributor_ip`: IP address of the main distributor.
 
-- **Parâmetros**:
-  - `-distributor_ip`: IP do distribuidor principal.
+> **Note:** You need to run both remote distributors for the program's remote configuration to work.
 
-> **Nota:** Na implementação atual, você precisa rodar os dois distribuidores remotos para poder usar as configurações remotas do programa.
-
-**Exemplo**:
+**Example**:
 ```bash
 ./run.sh remote1 -distributor_ip 192.168.0.1
 ```
 
 ### 3. **clientadd**, **clientadd3**, **clientadd4**
-Esses comandos executam diferentes clientes que fazem requisições de **adição de itens** ao sistema.
+These commands run clients that **add items** to the system.
 
-- `clientadd`: Adiciona 2 itens.
-- `clientadd3`: Adiciona 38 itens.
-- `clientadd4`: Adiciona 90 itens.
+- `clientadd`: Adds 2 items.
+- `clientadd3`: Adds 38 items.
+- `clientadd4`: Adds 90 items.
 
-- **Parâmetros**:
-  - `-distributor_ip`: IP do distribuidor principal para onde as requisições serão enviadas.
+- **Parameters**:
+  - `-distributor_ip`: IP address of the main distributor to which the requests will be sent.
 
-> **Nota:** Estes clientes realizam requisições POST, enviando novos itens para serem processados pelo distribuidor principal.
+> **Note:** These clients send POST requests to the main distributor, adding new items to be processed.
 
-**Exemplo**:
+**Example**:
 ```bash
 ./run.sh clientadd -distributor_ip 192.168.0.1
 ```
 
 ### 4. **clientget**
-Este comando executa um cliente que faz **requisições GET** em loop ao sistema, solicitando a recuperação de itens já armazenados.
+This command runs a client that **performs GET requests** in a loop, retrieving already stored items.
 
-- **Parâmetros**:
-  - `-distributor_ip`: IP do distribuidor principal.
+- **Parameters**:
+  - `-distributor_ip`: IP address of the main distributor.
 
-> **Nota:** Para rodar os agentes, este cliente deve estar rodando para os dados de tempo de resposta serem acessíveis.
+> **Note:** This client must be running for response time data to be accessible when running the agents.
 
-**Exemplo**:
+**Example**:
 ```bash
 ./run.sh clientget -distributor_ip 192.168.0.1
 ```
 
-### 5. **agentes**
-Os agentes são responsáveis por **monitorar e ajustar automaticamente o distribuidor principal** com base nos tempos de resposta. 
+### 5. **agents**
+Agents are responsible for **monitoring and automatically adjusting the main distributor** based on response times.
 
-- **Parâmetros**:
-  - `-distributor_ip`: IP do distribuidor principal.
-  - `-observation_window`: Janela de observação para medir o tempo de resposta (em milissegundos).
-  - `-add_remove`: Configuração para definir se os agentes irão adicionar (1) ou remover (2) itens da lista. Se for configurado como `0`, não realiza nenhuma dessas ações.
+- **Parameters**:
+  - `-distributor_ip`: IP address of the main distributor.
+  - `-observation_window`: Observation window for measuring response time (in milliseconds).
+  - `-add_remove`: Configures whether agents will add (1) or remove (2) items from the list. If set to `0`, no action is taken.
 
-> **Nota:** Os agentes monitoram o tempo de resposta das requisições e podem alterar a configuração do sistema para tentar melhorar o desempenho, ajustando automaticamente o comportamento do distribuidor.
+> **Note:** Agents monitor request response times and can adjust the system's configuration to improve performance, dynamically optimizing the distributor's behavior.
 
-**Exemplo**:
+**Example**:
 ```bash
-./run.sh agentes -distributor_ip 192.168.0.1 -observation_window 5000 -add_remove 1
+./run.sh agents -distributor_ip 192.168.0.1 -observation_window 5000 -add_remove 1
 ```
 
 ### 6. **build**
-O comando `build` constrói as imagens Docker necessárias para o projeto.
+The `build` command builds the Docker images required for the project.
 
-- **Sem parâmetros adicionais**.
+- **No additional parameters**.
 
-> **Nota:** Utilize este comando sempre que fizer alterações no código ou na configuração Docker para garantir que as imagens estejam atualizadas.
+> **Note:** Run this command whenever you make changes to the code or Docker configuration to ensure the images are up-to-date.
 
-**Exemplo**:
+**Example**:
 ```bash
 ./run.sh build
 ```
 
 ### Windows
-No Windows, você precisará executar o script usando o **Git Bash**, **PowerShell**, ou **WSL** (caso esteja habilitado). Siga o passo a passo abaixo:
+On Windows, you need to run the script using **Git Bash**, **PowerShell**, or **WSL** (if enabled). Follow these steps:
 
-1. **Abra o terminal (Git Bash, PowerShell ou WSL)**.
-2. **Navegue até o diretório onde o `run.sh` está localizado**:
+1. **Open your terminal (Git Bash, PowerShell, or WSL)**.
+2. **Navigate to the directory where `run.sh` is located**:
    ```powershell
-   cd caminho\para\o\mas_ucb1
+   cd path\to\mas_ucb1
    ```
 
-3. **Execute o script utilizando o comando abaixo**:
+3. **Run the script with the following command**:
    ```bash
-   ./run.sh <comando> [opções]
+   ./run.sh <command> [options]
    ```
 
-4. **Comandos disponíveis**:
-   - `build`: Constrói as imagens Docker necessárias.
+4. **Available commands**:
+   - `build`: Builds the required Docker images.
      ```bash
      ./run.sh build
      ```
-   - `distributor`: Executa o contêiner do distribuidor.
+   - `distributor`: Runs the distributor container.
      ```bash
-     ./run.sh distributor -remote1_ip <ip> -remote2_ip <ip> -read_factor <valor>
+     ./run.sh distributor -remote1_ip <ip> -remote2_ip <ip> -read_factor <value>
      ```
-   - `remote1`: Executa o contêiner `remote1`.
+   - `remote1`: Runs the `remote1` container.
      ```bash
      ./run.sh remote1 -distributor_ip <ip>
      ```
-   - `remote2`: Executa o contêiner `remote2`.
+   - `remote2`: Runs the `remote2` container.
      ```bash
      ./run.sh remote2 -distributor_ip <ip>
      ```
-   - `clientadd`: Executa o cliente que adiciona dois itens.
+   - `clientadd`: Executes the client that adds two items.
      ```bash
      ./run.sh clientadd -distributor_ip <ip>
      ```
-   - `clientadd3`: Executa o cliente que adiciona trinta e oito itens.
-     ```bash
-     ./run.sh clientadd3 -distributor_ip <ip>
-     ```
-   - `clientadd4`: Executa o cliente que adiciona noventa itens.
-     ```bash
-     ./run.sh clientadd4 -distributor_ip <ip>
-     ```
-   - `clientget`: Executa o cliente que realiza uma leitura.
-     ```bash
-     ./run.sh clientget -distributor_ip <ip>
-     ```
-   - `agentes`: Executa o contêiner de agentes.
-     ```bash
-     ./run.sh agentes -distributor_ip <ip> -observation_window <valor> -add_remove <valor>
-     ```
 
+### Building Docker Images
+To build the Docker images, run the following command:
 
-### Opções do Script
-- `-distributor_ip`: IP do distribuidor (padrão: `localhost`)
-- `-remote1_ip`: IP do `remote1` (padrão: `localhost`)
-- `-remote2_ip`: IP do `remote2` (padrão: `localhost`)
-- `-read_factor`: Fator de leitura (padrão: `2`)
-- `-observation_window`: Janela de observação para os agentes (padrão: `5000`)
-- `-add_remove`: Define se os agentes vão adicionar (1) ou remover (2) itens da lista (padrão: `0` - nenhum)
+```bash
+./run.sh build
+```
 
-### Exemplos
-- **Executando o distribuidor com IPs customizados**:
-  ```bash
-  ./run.sh distributor -remote1_ip 192.168.0.2 -remote2_ip 192.168.0.3 -read_factor 3
-  ```
+## Prerequisites for Running Without Docker
+- [Dana Installation Guide](self_distributing_system/dana-installation.md)  
+- [JaCaMo Installation Guide](src/jacamo-installation.md)
 
-- **Executando o cliente que adiciona dois itens**:
-  ```bash
-  ./run.sh clientadd -distributor_ip 192.168.0.1
-  ```
+## How to Run the Project
 
-- **Construindo as imagens Docker**:
-  ```bash
-  ./run.sh build
-  ```
-
-## Pré-Requisitos para Rodar sem Docker
-- <a href="/self_distributing_system/dana-installation.md">Dana</a>
-- <a href="/src/jacamo-installation.md">JaCaMo</a>
-
-## Como executar o projeto
-### Compilação 
-Antes de conseguir executar os componentes do servidor, é necessário compilar os componentes em Dana.
+### Compilation
+Before running the server components, you need to compile them in Dana.
 
 #### Linux
-Para compilar o projeto em Dana, basta seguir os seguintes passos:
-1. Entre no diretório `self_distributing_system` usando `cd self_distributing_system`
-2. Dê permissão ao arquivo `compile.sh` usando `chmod +x ./compile.sh`
-3. Execute o arquivo usando o comando `./compile.sh`
+To compile the project using Dana, follow these steps:
+1. Navigate to the `self_distributing_system` directory using:  
+   ```bash
+   cd self_distributing_system
+   ```
+2. Grant execution permissions to the `compile.sh` file:  
+   ```bash
+   chmod +x ./compile.sh
+   ```
+3. Execute the script:  
+   ```bash
+   ./compile.sh
+   ```
 
 #### Windows
-No Windows, você pode rodar todos os comandos do `compile.sh` manualmente, utilizando o bloco de comandos abaixo:
+On Windows, manually run all the commands from the `compile.sh` script by executing the following:
+
 ```bash
 cd server
 dnc . -v -sp ../distributor
@@ -264,55 +239,56 @@ dnc . -sp ../ -v
 cd ..
 ```
 
-### Execução (sem Docker)
-Com os componentes de Dana compilados, podemos executar o projeto. Primeiramente, é preciso rodar os _distributors_ do projeto _self_distributing_system_. Para isso, abra três terminais no diretório _self_distributing_system/distributor_.
+### Running (Without Docker)
+With the Dana components compiled, the project can now be executed. Start by running the distributors for the `self_distributing_system` project. Open three terminals and navigate to the `self_distributing_system/distributor` directory.
 
-No primeiro execute:
+In the first terminal, run:  
 
 ```bash
 dana -sp "../server;../readn" Distributor.o
 ```
 
-Em um segundo terminal digite:
+In the second terminal, run:  
 
 ```bash
 dana -sp ../readn RemoteDist.o
 ```
 
-Em um terceiro terminal digite:
+In the third terminal, run:  
 
 ```bash
 dana -sp ../readn RemoteDist.o 8082 2011
 ```
 
-Com os _distributors_ sendo executados, precisamos adicionar elementos à lista antes de fazer requisições pelo _client_.Para isso, abra mais um terminal e entre no diretório _self_distributing_system/client_ e execute o comando:
+After the distributors are running, you need to add elements to the list before making requests with the client. Open another terminal, navigate to the `self_distributing_system/client` directory, and execute:
 
 ```bash
 dana Add.o
 ```
 
-Em seguida, rode o _client_ que fará as requisições usando:
+Then, to run the client and make requests, use:
+
 ```bash
 dana Get.o
 ```
 
-Por fim, precisamos executar o projeto JaCaMo. Abra mais um terminal no diretório base do projeto, onde o arquivo _gradlew_ está, e execute o comando.
+Finally, you need to run the JaCaMo project. Open another terminal in the base project directory, where the `gradlew` file is located, and execute:
 
 ```bash
 ./gradlew run
 ```
 
-Caso seja a primeira vez que você esteja rodando o projeto, talvez seja necessário dar permissão ao arquivo _gradlew_. Se este for o caso, execute o comando:
+If this is the first time running the project, you may need to grant permission to the `gradlew` file. If so, execute:
 
 ```bash
 chmod +x gradlew
 ```
 
-## Selecionando Quais Agentes Rodar
-Para selecionar qual algoritmo será usado, no arquivo `mas_ucb1.jcm` temos 3 opções: UCB1, composição única, e o sistema de agentes.
-### Rodando UCB1
-Para rodar o algoritmo UCB1, o bloco de código
-```
+## Selecting Which Agents to Run
+
+### Running UCB1
+To run the UCB1 algorithm, uncomment the following block in the `mas_ucb1.jcm` file:
+```java
 agent ucb: ucb_agent.asl.asl {
     focus: c1
 }
@@ -321,11 +297,16 @@ workspace w {
    artifact c1: example.Counter("ucb", 0)
 }
 ```
-precisa ser descomentado. Dentro de `Counter()`, temos dois atributos: os nomes do gráfico e do csv que serão gerados, e um número que representa se o algoritmo irá alterar a lista durante a execução ou não. Se deixado em 0, a lista se manterá constante durante a execução. Em 1, a lista será incrementada em 1 valor para cada iteração. Em 2, o algoritmo irá reduzir o tamanho da lista em 1 elemento por iteração.
 
-### Rodando composição única
-Para testar apenas uma composição, o bloco de código
-```
+In `Counter()`, there are two attributes: the names of the graph and CSV to be generated, and a number indicating whether the algorithm will modify the list during execution. Use:
+- `0` for a constant list,  
+- `1` to add an element per iteration, or  
+- `2` to remove an element per iteration.
+
+
+### Running Single Composition
+To test a single composition, uncomment the following block:
+```java
 agent onecomposition: onecomposition.asl {
     beliefs: action("0", "local", 0)
     // beliefs: action("1","propagate", 0)
@@ -333,11 +314,12 @@ agent onecomposition: onecomposition.asl {
     // beliefs: action("3","sharding", 0)
 }
 ```
-precisa ser descomentado. Neste caso, descomente apenas a composição a ser testada nos beliefs.
 
-### Rodando os agentes 
-Para rodar os agentes inteligentes, o bloco de código
-```
+Then uncomment only the composition to be tested in the `beliefs` section.
+
+### Running Agents
+To run the intelligent agents, uncomment the following block:
+```java
 agent bob: self_distributing_agent.asl {
     focus: c1
     beliefs:    number(0)
@@ -354,12 +336,16 @@ workspace w {
    artifact c1: example.Actions("agents", 0)
 }
 ```
-precisa ser descomentado. Para selecionar entre manter a lista constante, incrementar ou decrementar durante a execução, basta alterar o número entre 0, 1 e 2, respectivamente, na linha `artifact c1: example.Actions("agents", 0)`.
 
-## Casos analisados
-| Caso  | READ_FACTOR | Itens na Lista         | Modificação na Lista                  | UCB (Min) | UCB (Max) | ERRO Agentes |
-|-------|-------------|------------------------|---------------------------------------|-----------|-----------|--------------|
-| 1| 2           | Começa com 2, +1 por iteração | 1 elemento adicionado por iteração    | 3 ms      | 3500 ms   | 1.3          |
-| 2| 2           | 2 itens fixos           | Nenhuma                               | 3 ms      | 120 ms    | N/A          |
-| 3| 8           | 38 itens fixos          | Nenhuma                               | 2700 ms   | 3700 ms   | N/A          |
-| 4| 2           | 90, -1 por iteração     | 1 elemento removido por iteração      | 1 ms      | 5000 ms   | N/A          |
+To select between keeping the list constant, incrementing, or decrementing during execution, change the number (0, 1, or 2) in the line:
+```java
+artifact c1: example.Actions("agents", 0)
+```
+
+## Analyzed Cases
+| Case  | READ_FACTOR | Items in List         | List Modification                   | UCB (Min) | UCB (Max) | Agent Error |
+|-------|-------------|-----------------------|-------------------------------------|-----------|-----------|-------------|
+| 1     | 2           | Starts with 2, +1 per iteration | 1 item added per iteration         | 3 ms      | 3500 ms   | 1.3         |
+| 2     | 2           | 2 fixed items        | None                                | 3 ms      | 120 ms    | N/A         |
+| 3     | 8           | 38 fixed items       | None                                | 2700 ms   | 3700 ms   | N/A         |
+| 4     | 2           | 90, -1 per iteration | 1 item removed per iteration        | 1 ms      | 5000 ms   | N/A         |

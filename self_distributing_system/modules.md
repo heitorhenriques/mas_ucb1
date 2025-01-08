@@ -1,17 +1,38 @@
-# Detalhamento dos Módulos
+# Components Overview
 
-O sistema será composto de quatro elementos principais: o servidor web (*distributor*), o sistema de agentes, dois distribuidores remotos (*remote distributor*) e um cliente que fará as requisições ao servidor. 
+The system consists of four main components: the web server (*distributor*), the agent system, two remote distributors, and a client that will make requests to the server.
 
-A ideia principal por trás do conceito de Sistemas Auto-distribuídos (SDS) é transferir mais responsabilidade pelo design distribuído de sistemas de software para o próprio sistema. Os desenvolvedores de SDS precisam apenas projetar e desenvolver o software local (ou seja, software que roda em um único processo), deixando as decisões de design distribuído para serem realizadas pelo próprio sistema em tempo de execução, com base na observação do ambiente operacional atual.
+The main idea behind the concept of Self-Distributing Systems (SDS) is to delegate more responsibility for the distributed design of software systems to the system itself. SDS developers only need to design and develop local software (i.e., software running in a single process), leaving distributed design decisions to be made by the system at runtime based on its observation of the current operational environment.
 
-Dada uma métrica específica, por exemplo, o tempo de resposta coletado do sistema em execução, o SDS experimenta realocar e replicar seus componentes constituintes para aprender qual composição distribuída gera a maior recompensa. Para concretizar esse conceito, o SDS é desenvolvido usando um modelo baseado em componentes que permite que os sistemas de software sejam desenvolvidos a partir de componentes de software reutilizáveis e pequenos.
+### Functionality and Approach
 
-Esses modelos baseados em componentes permitem mudanças na arquitetura em tempo de execução sem tempo de inatividade, ou seja, enquanto o software continua a lidar com solicitações de entrada. Esse mecanismo de adaptação permite que o SDS substitua qualquer um de seus componentes constituintes por componentes proxy, Chamadas de Procedimento Remoto (RPCs) para redirecionar chamadas de função locais para os componentes realocados em outras máquinas.
+Given a specific metric, such as the response time collected from the running system, the SDS experiments with reallocating and replicating its constituent components to learn which distributed composition yields the highest reward. To realize this concept, the SDS is built using a component-based model that allows software systems to be developed from small, reusable software components.
 
-![alt text](image.png)
+These component-based models enable runtime architectural changes without downtime, meaning the software continues to handle incoming requests while adaptations occur. This adaptation mechanism allows the SDS to replace any of its constituent components with proxy components. These proxies use Remote Procedure Calls (RPCs) to redirect local function calls to components reallocated to other machines.
 
-A figura mostra um SDS executando em um cluster de 3 nós. No nível de infraestrutura, temos três máquinas conectadas à mesma rede local. No nível do sistema operacional, consideramos que todas as máquinas estão executando o $Process 1$, que possui um tempo de execução de modelo baseado em componentes que executa um software local originalmente projetado (rotulado como 'Service') e o framework SDS, composto pelos módulos Assembly, Perception e Distributor.
+![alt text](../image.png)
 
-O módulo Assembly é responsável por carregar, conectar os componentes e executá-los; o módulo Perception é responsável por inserir tipos especiais de componentes (denominados Perception proxy) que são responsáveis por coletar métricas de desempenho do sistema e de seu ambiente operacional; e, finalmente, o módulo Distributor é responsável por injetar o Distribution proxy no sistema local em execução, realocando e criando réplicas do componente original para serem executadas em máquinas externas.
+The figure illustrates an SDS running on a cluster of three nodes.  
 
-O SDS também possui o módulo Learning que executa em um processo diferente e é responsável por aprender qual composição do sistema tem o melhor desempenho. O módulo Learning interage com o Distributor por meio de uma API HTTP, através da qual o módulo Learning é capaz de: *i)* obter uma lista das possíveis composições do sistema, *ii)* consultar periodicamente o desempenho do sistema, e *iii)* atribuir uma composição específica ao sistema.
+- **Infrastructure Level**: Three machines connected to the same local network.  
+- **Operating System Level**: All machines are running $Process 1$, which includes a component-based runtime executing locally designed software (labeled as 'Service') and the SDS framework. This framework is composed of the **Assembly**, **Perception**, and **Distributor** modules.
+
+### Module Descriptions
+
+1. **Assembly Module**:  
+   - Responsible for loading, connecting, and executing components.  
+
+2. **Perception Module**:  
+   - Introduces special types of components (called Perception proxies) tasked with collecting performance metrics from the system and its operational environment.
+
+3. **Distributor Module**:  
+   - Injects the Distribution proxy into the local system, reallocating and replicating original components to execute on external machines.
+
+4. **Learning Module**:  
+   - Runs in a separate process and determines which system composition performs best.  
+   - Communicates with the Distributor module via an HTTP API, enabling it to:  
+     - *i)* Retrieve a list of possible system compositions.  
+     - *ii)* Periodically query the system's performance.  
+     - *iii)* Assign a specific composition to the system.  
+
+This modular approach ensures a dynamic, adaptive system capable of optimizing its performance based on real-time observations of its environment.

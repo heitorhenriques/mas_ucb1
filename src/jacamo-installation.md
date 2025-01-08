@@ -1,7 +1,8 @@
-# Instalação do JaCaMo
-A forma mais fácil de instalar e usar JaCaMo é através da instalação de Gradle. Outros métodos e mais detalhes para a instalação do JaCaMo podem ser encontradas no link: https://github.com/jacamo-lang/jacamo/blob/main/doc/install.adoc.
+# Installing JaCaMo
 
-Para instalar com Gradle, basta seguir os passos referentes ao seu sistema operacional:
+The easiest way to install and use JaCaMo is by using Gradle. Other methods and more details for JaCaMo installation can be found at: [JaCaMo Installation Guide](https://github.com/jacamo-lang/jacamo/blob/main/doc/install.adoc).
+
+To install using Gradle, follow the steps for your operating system:
 
 ## Linux
 ```bash
@@ -11,6 +12,6 @@ unzip np1.3.zip
 ```
 
 ## Windows
-1. Baixe o arquivo no link http://jacamo-lang.github.io/jacamo/nps/np1.3.zip
-2. Descompresse o arquivo
-3. Rode o arquivo `gradlew.bat`
+1. Download the file from the link: [http://jacamo-lang.github.io/jacamo/nps/np1.3.zip](http://jacamo-lang.github.io/jacamo/nps/np1.3.zip)
+2. Extract the file.
+3. Run the `gradlew.bat` file.

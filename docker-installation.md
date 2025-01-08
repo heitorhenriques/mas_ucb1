@@ -1,70 +1,75 @@
-### Docker
-Para instalar o Docker na sua máquina, siga os passos abaixo referentes ao seu sistema operacional.
+### Docker Installation
+
+To install Docker on your machine, follow the steps below according to your operating system.
+
 #### Linux
-1. Atualize sua lista de pacotes:
+1. **Update your package list:**
     ```bash
     sudo apt update
     ```
-2. Instale os pacotes pré-requisitados pelo Docker pelo comando abaixo:
+
+2. **Install prerequisites required by Docker:**
     ```bash
     sudo apt install apt-transport-https ca-certificates curl software-properties-common
     ```
-3. Adicione a chave GPG para o repositório oficial do Docker no seu sistema:
+
+3. **Add the GPG key for Docker's official repository:**
     ```bash
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
     ```
-4. Adicione o repositório do Docker às fontes do APT:
+
+4. **Add Docker's repository to APT sources:**
     ```bash
     sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
     ```
 
-5. Em seguida, atualize o banco de dados do pacote com os pacotes do Docker do recém adicionado repositório:
+5. **Update the package database to include Docker's repository:**
     ```bash
     sudo apt update
     ```
 
-6. Finalmente, instale o Docker:
+6. **Install Docker:**
     ```bash
     sudo apt install docker-ce
     ```
 
-7. Para rodar os comandos do Docker sem usar `sudo`, rode o seguinte comando:
+7. **Run Docker commands without `sudo`:**
     ```bash
     sudo usermod -aG docker ${USER}
     ```
 
 #### Windows
-1. **Baixe o instalador do Docker Desktop:**
-   - Acesse o site oficial do Docker e baixe o instalador do Docker Desktop para Windows:
-     [Link para Download](https://www.docker.com/products/docker-desktop/).
+1. **Download the Docker Desktop installer:**
+   - Visit the official Docker website and download the Docker Desktop installer for Windows:  
+     [Download Link](https://www.docker.com/products/docker-desktop/).
 
-3. **Execute o instalador:**
-   - Clique duas vezes no arquivo `.exe` baixado para iniciar a instalação.
-   - Marque a opção para ativar o **WSL 2** (Windows Subsystem for Linux 2) durante a instalação, se solicitado.
+2. **Run the installer:**
+   - Double-click the downloaded `.exe` file to begin installation.  
+   - Select the option to enable **WSL 2** (Windows Subsystem for Linux 2) during setup if prompted.
 
-4. **Habilite o WSL 2:**
-   - Se você ainda não tiver o WSL 2 instalado, abra o PowerShell como administrador e execute os comandos abaixo para habilitar o WSL e definir o WSL 2 como padrão:
+3. **Enable WSL 2:**
+   - If WSL 2 is not already enabled, open PowerShell as administrator and run the following commands:
      ```powershell
      dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
      dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
      wsl --set-default-version 2
      ```
 
-5. **Reinicie seu computador:**
-   - É necessário reiniciar o sistema para aplicar as mudanças.
+4. **Restart your computer:**
+   - Restart the system to apply the changes.
 
-6. **Finalize a instalação do Docker Desktop:**
-   - Após a reinicialização, abra o Docker Desktop. Ele pode pedir para você concluir a configuração do WSL 2.
+5. **Complete Docker Desktop setup:**
+   - After restarting, open Docker Desktop. It may prompt you to finish the WSL 2 configuration.
 
-7. **Verifique a instalação:**
-   - Para verificar se o Docker está instalado corretamente, abra o PowerShell ou o Prompt de Comando e execute:
+6. **Verify the installation:**
+   - To ensure Docker is installed correctly, open PowerShell or Command Prompt and run:
      ```powershell
      docker --version
      ```
 
-8. **Configuração opcional - Executar Docker sem privilégios de administrador:**
-   - Abra o Docker Desktop e vá para **Settings** > **General** e habilite a opção **"Use the WSL 2 based engine"**.
-   - Certifique-se de que seu usuário faz parte do grupo `docker-users`. Para isso, abra o PowerShell como administrador e execute:
+7. **Optional Configuration – Run Docker without administrator privileges:**
+   - Open Docker Desktop, go to **Settings** > **General**, and enable the **"Use the WSL 2 based engine"** option.  
+   - Add your user to the `docker-users` group. Open PowerShell as administrator and execute:
      ```powershell
-     net localgroup docker-users "SEU_USUARIO" /add
+     net localgroup docker-users "YOUR_USERNAME" /add
      ```

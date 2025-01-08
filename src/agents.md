@@ -1,23 +1,23 @@
-# Detalhamento dos Agentes
+# Detailing the Agents
 
-Para enfrentar os desafios de ambientes dinâmicos em sistemas distribuídos, propomos uma abordagem multiagente que permite aprendizado e adaptação em tempo real. Essa abordagem utiliza múltiplos agentes de aprendizado que começam sem informações prévias ou treinamento, permitindo que o sistema aprenda continuamente as dinâmicas do ambiente e determine as composições ótimas do sistema conforme as condições mudam.  
+To address the challenges of dynamic environments in distributed systems, we propose a multi-agent approach that enables real-time learning and adaptation. This approach employs multiple learning agents that start without prior information or training, allowing the system to continuously learn the dynamics of the environment and determine the optimal system compositions as conditions change.
 
-Cada agente no sistema multiagente é responsável por avaliar uma composição específica do sistema e medir o desempenho dessa composição quando aplicada. Os agentes comunicam-se para trocar informações sobre as métricas coletadas e, juntos, chegam a um consenso sobre qual composição apresenta o melhor desempenho. 
+Each agent in the multi-agent system is responsible for evaluating a specific system composition and measuring its performance when applied. The agents communicate to exchange information about the collected metrics and, together, reach a consensus on which composition shows the best performance.
 
-Inicialmente, o sistema passa por uma fase de exploração, durante a qual cada agente testa sua composição, coletando métricas de desempenho por um período predefinido. Todos os agentes se revezam nesse processo, garantindo que todas as composições sejam avaliadas. Uma das métricas utilizadas é o tempo médio de resposta, representado por $Avg_i^t$, que corresponde ao tempo médio observado para a composição $i$ em um intervalo de tempo $t$. 
+Initially, the system undergoes an exploration phase, during which each agent tests its composition, collecting performance metrics for a predefined period. All agents take turns in this process, ensuring that all compositions are evaluated. One of the metrics used is the average response time, represented by $Avg_i^t$, which corresponds to the average time observed for composition $i$ over a time interval $t$.
 
-O aprendizado é realizado ao longo do tempo com base nas diferenças observadas no desempenho de cada composição. A fórmula  
+Learning is conducted over time based on observed differences in the performance of each composition. The formula  
 
 $$
 \Delta^t_i = \frac{1}{\mathcal{N}-1} \sum_{k=1}^{\mathcal{N}} \big(Avg_i^{(t-k-1)} - Avg_i^{(t-k)}\big)
 $$
 
-calcula a média das diferenças entre as observações do tempo médio de resposta para a composição $i $em intervalos de tempo consecutivos. Essa análise permite aos agentes compreender como o ambiente evolui e ajustar suas escolhas de composição de forma dinâmica.  
+calculates the average of the differences between the observations of the average response time for composition $i$ across consecutive time intervals. This analysis allows the agents to understand how the environment evolves and dynamically adjust their composition choices.
 
-Após a fase de exploração, o sistema pode determinar qual composição apresenta a melhor perspectiva de desempenho ao comparar os valores de $\Delta^t_i$ para todas as composições. Essa análise é feita utilizando a fórmula  
+After the exploration phase, the system can determine which composition offers the best performance prospect by comparing the $\Delta^t_i$ values for all compositions. This analysis is performed using the formula  
 
 $$
 \Delta^t \mathit{MIN} = \min(\Delta^t_i, \ldots, \Delta^t_n),
 $$
 
-que identifica a composição com o menor valor de $\Delta^t_i$, ou seja, aquela que se adapta melhor às condições do ambiente em $t$.  
+which identifies the composition with the smallest $\Delta^t_i$ value, i.e., the one that best adapts to the environmental conditions at time $t$.  
