@@ -9,8 +9,6 @@ This project aims to develop a multiagent approach for learning distributed comp
 
 ## Proposal Description
 
-The proposal is to investigate the application of multiagent systems in the context of self-adaptive distributed systems, focusing on formulating the problem as a Multiplayer Multi-Armed Bandit (MMAB). In this approach, multiple agents collaborate to determine the optimal system configuration in response to client requests, adapting the system in real time as conditions change.
-
 The proposed solution is software-based and uses a multiagent approach for the dynamic configuration of distributed systems. The system will be modeled as an environment with multiple "arms" (possible configurations), where each agent represents a specific configuration strategy. The agent system will monitor the system's performance in terms of response time and adapt the system configuration at runtime to optimize performance. Additionally, the solution will be developed in a simulation and testing environment involving a cluster of three nodes connected over a network.
 
 ## Key Features
